@@ -5,11 +5,12 @@ export default function VolunteerPage() {
   useEffect(() => {
     async function loadVolunteers() {
       const volunteers = await getVolunteers();
+      
       return volunteers;
     }
 
-    loadVolunteers
-  })
+    loadVolunteers()
+  }, [])
 
   return (
     <>
