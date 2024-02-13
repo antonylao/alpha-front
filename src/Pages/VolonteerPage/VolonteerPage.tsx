@@ -1,6 +1,7 @@
 import { useEffect, useState } from "react";
 import { getVolunteerById, getVolunteers, addVolunteer} from "../../services/api/volunteers";
 import './Volonteer.css';
+import SearchBarVolunteer from "../../Components/SearchBar/SearchBarVolonteer/SearchBarVolunteer";
 
 export default function VolunteerPage() {
   const [listVolunteers, setListVolunteers] = useState<any>([])
@@ -39,6 +40,8 @@ export default function VolunteerPage() {
   return (
     <>
       <h1>Volunteer Page Title</h1>
+
+      <SearchBarVolunteer />
 
       {listVolunteers.map((volunteer:any, index:number) => (
         <div key={index}>
