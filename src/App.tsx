@@ -1,21 +1,19 @@
 import "./App.css";
-import { Footer } from "./Components/Footer/Footer";
-import VolunteerPage from "./Pages/VolonteerPage/VolonteerPage";
-import { Route, Routes } from "react-router-dom";
-
+import { Create } from "./Components/Buttons/CreateEvent/Create";
+import { EventCard } from "./Components/Card/EventCard/EventCard";
 
 function App() {
   return (
     <>
-      <Routes>
+      <Create />
+      <EventCard />
+      {/* <Routes>
         <Route path="/volunteers" element={ <VolunteerPage />} />
       </Routes>
         
-      <Footer />
-
+      <Footer /> */}
     </>
   );
-
 }
 
 export default App;
