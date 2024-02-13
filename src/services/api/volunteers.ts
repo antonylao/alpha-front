@@ -1,7 +1,42 @@
 import axios from "axios"
+import { useApi } from "../../hooks/useApi";
+
+const api = useApi();
 
 export async function getVolunteers() {
-  const {data} = await axios.get("https://jsonplaceholder.typicode.com/users")
+  try {
+    const {data} = await api.get("users")
+    return data;
+  } catch(err) {
+    console.log(err)
+  }
+}
 
-  return data;
+export async function getVolunteerById(id:number) {
+  try {
+    const {data} = await api.get(`users/${id}`)
+    return data;
+  } catch(err) {
+    console.log(err)
+  }
+}
+
+//use this function with sign in, sign up, forgotten password
+export async function getVolunteerByIdWithoutToken(id:number) {
+  try {
+    const {data} = await axios.get(`${import.meta.env.VITE_API_BASE_URL_DEV}users/${id}`)
+    return data;
+  } catch(err) {
+    console.log(err)
+  }
+}
+
+
+export async function addVolunteer(body:any) {
+  try {
+    const {data} = await api.post(`users`, body)
+    return data;
+  } catch(err) {
+    console.log(err)
+  }
 }
