@@ -1,9 +1,11 @@
 import { useEffect, useState } from "react"
 import { getComments } from "../../services/api/comments"
+import Pagination from "../../Components/Pagination/Pagination"
+
 
 export default function CommentPage() {
 
-    const [comments, setComments] = useState<any>()
+    const [comments, setComments] = useState<any>([])
 
     useEffect(() => {
         async function loadComments() {
@@ -13,8 +15,11 @@ export default function CommentPage() {
         loadComments();
     })
 
+
    
     return (
+
+
             //mapping des commentaires
         /* 
         {comments.map((comment: any, index:number) => 
@@ -44,30 +49,34 @@ export default function CommentPage() {
                     </button>
                 </div>  
             </div>
-            <div className="commentlist grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-4">
-                <div className="relative mt-6 m-4 text-gray-700 bg-white shadow-md bg-clip-border rounded-xl w-96 p-3">
+            <div className="commentlist grid grid-cols-1 md:grid-cols-2 lg:grid-cols-2 gap-4">
+            {comments.map((comment: any, index: number) => 
+                <div key={index} className="relative mt-6  text-gray-700 bg-white shadow-md bg-clip-border rounded-xl w-96 p-3 w-auto">
                     <div className=" ps-3 pe-3  pb-2 flex justify-between">
-                        <p>
-                            Nom de l'Event
-                        </p>
-                        <div className="relative grid select-none items-center whitespace-nowrap rounded-lg bg-gray-900 py-1.5 px-3  text-xs uppercase text-white h-7 w-17">
-                            <span className="">Concert</span>
+                        <div className="flex justify-between">  
+                            <p className="pe-5">
+                                {comment.name}
+                            </p>
+                            <div className="relative grid select-none items-center whitespace-nowrap rounded-lg bg-gray-900 py-1.5 px-3  text-xs uppercase text-white h-7 w-17">
+                                <span className="">{comment.id}</span>
+                            </div>
                         </div>
-                        <p>Date de l'Event</p>
+                        <p>{comment.id}</p>
                     </div>
-                    <div className="relative grid select-none items-center whitespace-nowrap rounded-lg bg-gray-100 text-xs uppercase text-black h-7 w-12 m-2">
-                        <span className="">Tâche</span>
+                    <div className="relative grid select-none items-center whitespace-nowrap rounded-lg bg-gray-200 text-xs uppercase text-black h-7 w-12 m-2">
+                        <span className="">{comment.postId}</span>
                     </div>
                         <p className="block font-sans text-base antialiased font-light leading-relaxed text-inherit p-1 border rounded">
-                            Commentaire laissé par le bénévole
+                        {comment.body}
                         </p>
                     <div className="pt-4 flex justify-end">
-                        <p className="">Nom du Bénévole</p>
-                    </div>
+                        <p className="">{comment.email}</p>
+                    </div>  
                 </div>
-                
+                )}
             </div>
         </div>
+
         </>
     )
 

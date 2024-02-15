@@ -14,8 +14,8 @@ function App() {
       <StickyNavbar />
 
       <Routes>
+        <Route path="/" element={ <EventPage />} />
         <Route path="/volunteers" element={ <VolunteerPage />} />
-        <Route path="/events" element={ <EventPage />} />
         <Route path="/pending_requests" element={ <PendingRequestPage />} />
         <Route path="/comments" element={ <CommentPage />} />
       </Routes>

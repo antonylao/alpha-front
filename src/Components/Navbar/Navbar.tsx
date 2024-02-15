@@ -1,7 +1,7 @@
 import React from "react";
 import {
     Navbar,
-    MobileNav,
+    Collapse,
     Typography,
     Button,
     Menu,
@@ -38,7 +38,7 @@ export default function StickyNavbar() {
         color="blue-gray"
         className="p-1 font-normal"
       >
-        <a href="#" className="flex items-center">
+        <a href="/" className="flex items-center">
           Evènements
         </a>
       </Typography>
@@ -48,7 +48,7 @@ export default function StickyNavbar() {
         color="blue-gray"
         className="p-1 font-normal"
       >
-        <a href="#" className="flex items-center">
+        <a href="/comments" className="flex items-center">
           Commentaires
         </a>
       </Typography>
@@ -58,7 +58,7 @@ export default function StickyNavbar() {
         color="blue-gray"
         className="p-1 font-normal"
       >
-        <a href="#" className="flex items-center">
+        <a href="/volunteers" className="flex items-center">
           Bénévoles
         </a>
       </Typography>
@@ -68,7 +68,7 @@ export default function StickyNavbar() {
         color="blue-gray"
         className="p-1 font-normal"
       >
-        <a href="#" className="flex items-center">
+        <a href="/pending_requests" className="flex items-center">
           Requêtes en cours
         </a>
       </Typography>
@@ -205,9 +205,9 @@ export default function StickyNavbar() {
             <ProfileMenu />
           </div>
         </div>
-        <MobileNav open={openNav}>
+        <Collapse open={openNav}>
           {navList}
-        </MobileNav>
+        </Collapse>
       </Navbar>
     </div>
   );
