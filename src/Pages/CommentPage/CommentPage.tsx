@@ -1,6 +1,6 @@
 import { useEffect, useState } from "react"
 import { getComments } from "../../services/api/comments"
-import Pagination from "../../Components/Pagination/Pagination"
+import CircularPagination from "../../Components/Pagination/Pagination"
 
 
 export default function CommentPage() {
@@ -74,6 +74,7 @@ export default function CommentPage() {
                     </div>  
                 </div>
                 )}
+                <CircularPagination/>
             </div>
         </div>
 

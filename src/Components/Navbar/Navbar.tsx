@@ -1,151 +1,137 @@
 import React from "react";
 import {
     Navbar,
-    Collapse,
     Typography,
-    Button,
-    Menu,
-    MenuHandler,
-    MenuList,
-    MenuItem,
+    // Button,
+    // Menu,
+    // MenuHandler,
+    // MenuList,
+    // MenuItem,
     Avatar,
     IconButton,
+    Collapse,
   } from "@material-tailwind/react";
-  import {
-    UserCircleIcon,   
-    ChevronDownIcon,
-    PowerIcon,
-  } from "@heroicons/react/24/solid";
+  // import {
+  //   UserCircleIcon,   
+  //   ChevronDownIcon,
+  //   PowerIcon,
+  // } from "@heroicons/react/24/solid";
 import logo from "./logo_Alpha.png"
+import { NavLink } from 'react-router-dom'
 import "./Navbar.css"
 
 
 export default function StickyNavbar() {
   const [openNav, setOpenNav] = React.useState(false);
 
-  // React.useEffect(() => {
-  //   window.addEventListener(
-  //     "resize",
-  //     () => window.innerWidth >= 960 && setOpenNav(false),
-  //   );
-  // }, []);
+ React.useEffect(() => {
+   window.addEventListener(
+     "resize",
+     () => window.innerWidth >= 960 && setOpenNav(false),
+   );
+ }, []);
 
   const navList = (
     <ul className="mt-2 mb-4 flex flex-col gap-2 lg:mb-0 lg:mt-0 lg:flex-row lg:items-center lg:gap-6">
-      <Typography
-        as="li"
-        variant="small"
-        color="blue-gray"
-        className="p-1 font-normal"
-      >
-        <a href="/" className="flex items-center">
-          Evènements
-        </a>
-      </Typography>
-      <Typography
-        as="li"
-        variant="small"
-        color="blue-gray"
-        className="p-1 font-normal"
-      >
-        <a href="/comments" className="flex items-center">
-          Commentaires
-        </a>
-      </Typography>
-      <Typography
-        as="li"
-        variant="small"
-        color="blue-gray"
-        className="p-1 font-normal"
-      >
-        <a href="/volunteers" className="flex items-center">
-          Bénévoles
-        </a>
-      </Typography>
-      <Typography
-        as="li"
-        variant="small"
-        color="blue-gray"
-        className="p-1 font-normal"
-      >
-        <a href="/pending_requests" className="flex items-center">
-          Requêtes en cours
-        </a>
-      </Typography>
+      <nav>
+      <NavLink
+      to="/my_profile"
+      className={({ isActive }) => (isActive ? "activeLink" : undefined)}>
+        <Avatar
+          variant="circular"
+          size="sm"
+          alt="tania andrew"
+          className="border border-gray-900 p-0.5"
+          src="https://www.zooplus.fr/magazine/wp-content/uploads/2017/10/Kanarienvogel-768x512.jpg"
+        />
+      </NavLink>
+
+      <NavLink
+      to="/"
+      className={({ isActive }) => (isActive ? "activeLink" : undefined)} >
+      Evènements
+      </NavLink>
+
+      <NavLink
+      to="/comments"
+      className={({ isActive }) => (isActive ? "activeLink" : undefined)}>
+      Commentaires
+      </NavLink>
+
+      <NavLink
+      to="/volunteers"
+      className={({ isActive }) => (isActive ? "activeLink" : undefined)}>
+      Bénévoles
+      </NavLink>
+
+      <NavLink
+      to="/pending_requests"
+      className={({ isActive }) => (isActive ? "activeLink" : undefined)}>
+      Requêtes en cours
+      </NavLink>
+
+      <NavLink
+      to="#"
+      className={({ isActive }) => (isActive ? "activeLink" : undefined)}>
+      Déconnexion
+      </NavLink>
+
+
+      </nav>
     </ul>
   );
 
-  const profileMenuItems = [
-    {
-      label: "Mon profil",
-      icon: UserCircleIcon,
-    },
-    {
-      label: "Déconnexion",
-      icon: PowerIcon,
-    },
-  ];
+  // const profileMenuItems = [
+  //   {
+  //     label: "Mon profil",
+  //     icon: UserCircleIcon,
+  //   },
+  //   {
+  //     label: "Déconnexion",
+  //     icon: PowerIcon,
+  //   },
+  // ];
 
-  function ProfileMenu() {
-    const [isMenuOpen, setIsMenuOpen] = React.useState(false);
+  // function ProfileMenu() {
+  //   const [isMenuOpen, setIsMenuOpen] = React.useState(false);
   
-    const closeMenu = () => setIsMenuOpen(false);
+  //   const closeMenu = () => setIsMenuOpen(false);
   
-    return (
-      <Menu open={isMenuOpen} handler={setIsMenuOpen} placement="bottom-end">
-        <MenuHandler>
-          <Button
-            variant="text"
-            color="blue-gray"
-            className="flex items-center gap-1 rounded-full py-0.5 pr-2 pl-0.5 lg:ml-auto"
-          >
-            <Avatar
-              variant="circular"
-              size="sm"
-              alt="tania andrew"
-              className="border border-gray-900 p-0.5"
-              src="https://www.zooplus.fr/magazine/wp-content/uploads/2017/10/Kanarienvogel-768x512.jpg"
-            />
-            <ChevronDownIcon
-              strokeWidth={2.5}
-              className={`h-3 w-3 transition-transform ${
-                isMenuOpen ? "rotate-180" : ""
-              }`}
-            />
-          </Button>
-        </MenuHandler>
-        <MenuList className="p-1">
-          {profileMenuItems.map(({ label, icon }, key) => {
-            const isLastItem = key === profileMenuItems.length - 1;
-            return (
-              <MenuItem
-                key={label}
-                onClick={closeMenu}
-                className={`flex items-center gap-2 rounded ${
-                  isLastItem
-                    ? "hover:bg-red-500/10 focus:bg-red-500/10 active:bg-red-500/10"
-                    : ""
-                }`}
-              >
-                {React.createElement(icon, {
-                  className: `h-4 w-4 ${isLastItem ? "text-red-500" : ""}`,
-                  strokeWidth: 2,
-                })}
-                <Typography
-                  as="span"
-                  variant="small"
-                  className="font-normal"
-                  color={isLastItem ? "red" : "inherit"}
-                >
-                  {label}
-                </Typography>
-              </MenuItem>
-            );
-          })}
-        </MenuList>
-      </Menu>
-    );
-  }
+  //   return (
+  //     <Menu open={isMenuOpen} handler={setIsMenuOpen} placement="bottom-end">
+        
+  //       <MenuList className="p-1">
+  //         {profileMenuItems.map(({ label, icon }, key) => {
+  //           const isLastItem = key === profileMenuItems.length - 1;
+  //           return (
+  //             <MenuItem
+  //               key={label}
+  //               onClick={closeMenu}
+  //               className={`flex items-center gap-2 rounded ${
+  //                 isLastItem
+  //                   ? "hover:bg-red-500/10 focus:bg-red-500/10 active:bg-red-500/10"
+  //                   : ""
+  //               }`}
+  //             >
+  //               {React.createElement(icon, {
+  //                 className: `h-4 w-4 ${isLastItem ? "text-red-500" : ""}`,
+  //                 strokeWidth: 2,
+  //               })}
+  //               <Typography
+  //                 as="span"
+  //                 variant="small"
+  //                 className="font-normal"
+  //                 color={isLastItem ? "red" : "inherit"}
+  //               >
+  //                 {label}
+  //               </Typography>
+  //             </MenuItem>
+  //           );
+  //         })}
+  //       </MenuList>
+  //     </Menu>
+  //   );
+  // }
 
 
   return (
@@ -154,7 +140,7 @@ export default function StickyNavbar() {
         <div className="flex items-center justify-between text-blue-gray-900">
           <Typography
             as="a"
-            href="#"
+            href="/"
             className="mr-4 cursor-pointer py-1.5 font-medium"
           >
             <img
@@ -202,7 +188,7 @@ export default function StickyNavbar() {
                 </svg>
               )}
             </IconButton>
-            <ProfileMenu />
+            {/* <ProfileMenu /> */}
           </div>
         </div>
         <Collapse open={openNav}>
