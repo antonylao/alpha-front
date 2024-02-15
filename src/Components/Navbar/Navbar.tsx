@@ -7,6 +7,7 @@ import {
     // MenuHandler,
     // MenuList,
     // MenuItem,
+    // MobileNav,
     Avatar,
     IconButton,
     Collapse,
@@ -32,53 +33,53 @@ export default function StickyNavbar() {
  }, []);
 
   const navList = (
-    <ul className="mt-2 mb-4 flex flex-col gap-2 lg:mb-0 lg:mt-0 lg:flex-row lg:items-center lg:gap-6">
-      <nav>
-      <NavLink
-      to="/my_profile"
-      className={({ isActive }) => (isActive ? "activeLink" : undefined)}>
-        <Avatar
-          variant="circular"
-          size="sm"
-          alt="tania andrew"
-          className="border border-gray-900 p-0.5"
-          src="https://www.zooplus.fr/magazine/wp-content/uploads/2017/10/Kanarienvogel-768x512.jpg"
-        />
-      </NavLink>
+    <nav>
+      <ul className="mt-2 mb-4 flex flex-col gap-2 lg:mb-0 lg:mt-0 lg:flex-row lg:items-center lg:gap-6">
+        <NavLink
+        to="/my_profile"
+        className={({ isActive }) => (isActive ? "activeLink" : undefined)}>
+          <Avatar
+            variant="circular"
+            size="sm"
+            alt="tania andrew"
+            className="border border-gray-900 p-0.5"
+            src="https://www.zooplus.fr/magazine/wp-content/uploads/2017/10/Kanarienvogel-768x512.jpg"
+          />
+        </NavLink>
 
-      <NavLink
-      to="/"
-      className={({ isActive }) => (isActive ? "activeLink" : undefined)} >
-      Evènements
-      </NavLink>
+        <NavLink
+        to="/"
+        className={({ isActive }) => (isActive ? "activeLink" : undefined)} >
+        Evènements
+        </NavLink>
 
-      <NavLink
-      to="/comments"
-      className={({ isActive }) => (isActive ? "activeLink" : undefined)}>
-      Commentaires
-      </NavLink>
+        <NavLink
+        to="/comments"
+        className={({ isActive }) => (isActive ? "activeLink" : undefined)}>
+        Commentaires
+        </NavLink>
 
-      <NavLink
-      to="/volunteers"
-      className={({ isActive }) => (isActive ? "activeLink" : undefined)}>
-      Bénévoles
-      </NavLink>
+        <NavLink
+        to="/volunteers"
+        className={({ isActive }) => (isActive ? "activeLink" : undefined)}>
+        Bénévoles
+        </NavLink>
 
-      <NavLink
-      to="/pending_requests"
-      className={({ isActive }) => (isActive ? "activeLink" : undefined)}>
-      Requêtes en cours
-      </NavLink>
+        <NavLink
+        to="/pending_requests"
+        className={({ isActive }) => (isActive ? "activeLink" : undefined)}>
+        Requêtes en cours
+        </NavLink>
 
-      <NavLink
-      to="#"
-      className={({ isActive }) => (isActive ? "activeLink" : undefined)}>
-      Déconnexion
-      </NavLink>
+        <NavLink
+        to="#"
+        className={({ isActive }) => (isActive ? "activeLink" : undefined)}>
+        Déconnexion
+        </NavLink>
 
 
-      </nav>
-    </ul>
+      </ul>
+    </nav>
   );
 
   // const profileMenuItems = [
