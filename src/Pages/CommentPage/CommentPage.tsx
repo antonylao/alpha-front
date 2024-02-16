@@ -1,20 +1,55 @@
 import { useEffect, useState } from "react"
 import { getComments } from "../../services/api/comments"
+import { Select, Option } from '@material-tailwind/react';
+import { normalizeString, stringToRegExp } from "../../services/utils/Utils";
 import CircularPagination from "../../Components/Pagination/Pagination"
+import CalendarStart from "../../Components/SearchBar/SearchBarComment/Calendar/calendarstart"
+import CalendarEnd from "../../Components/SearchBar/SearchBarComment/Calendar/calendarend"
+import SearchBarComment from '../../Components/SearchBar/SearchBarComment/SearchBar'
+import "./Comment.css"
 
 
 export default function CommentPage() {
 
     const [comments, setComments] = useState<any>([])
+    const [allComments, setAllComments] = useState<any>([])
+    
+    const handleChange = (value: any) => {
+    console.log('value:', value);
+  };
+
+  console.log("haha", comments)
 
     useEffect(() => {
         async function loadComments() {
-            const result = await getComments();
-            setComments(result)
+        const result = await getComments();
+        setAllComments(result)
+        setComments(result)
         }
+        console.log("loadcomment", loadComments())
         loadComments();
-    })
+    }, [])
 
+    const receiveSearchBarCommentData = (value:string) => {
+        value = normalizeString(value)
+    
+        if (value.length === 0) {
+          setComments([...allComments]);
+          return}
+
+    
+        const searchValRegexp = stringToRegExp(value);
+    
+        setComments(
+          [...allComments].filter((comments:any) => {
+            console.log("coucou de comment page",comments)
+    
+            return (
+              comments.name.match(searchValRegexp)
+            );
+          })
+        );
+    } 
 
    
     return (
@@ -30,28 +65,28 @@ export default function CommentPage() {
 
 
         <>
-        <div className="container">
-            <div className="searchbar">
-                <div className="relative flex w-full max-w-[24rem]">
-                    <div className="relative h-10 w-full min-w-[200px]">
-                        <input type="search"
-                        className="peer h-full w-full rounded-[7px] border border-blue-gray-200 border-t-transparent bg-transparent px-3 py-2.5 pr-20 font-sans text-sm font-normal text-blue-gray-700 outline outline-0 transition-all placeholder-shown:border placeholder-shown:border-blue-gray-200 placeholder-shown:border-t-blue-gray-200 focus:border-2 focus:border-gray-900 focus:border-t-transparent focus:outline-0 disabled:border-0 disabled:bg-blue-gray-50"
-                        placeholder=" Nom de l'évènement" value="" />
-                        <label
-                        className="before:content[' '] after:content[' '] pointer-events-none absolute left-0 -top-1.5 flex h-full w-full select-none !overflow-visible truncate text-[11px] font-normal leading-tight text-gray-500 transition-all before:pointer-events-none before:mt-[6.5px] before:mr-1 before:box-border before:block before:h-1.5 before:w-2.5 before:rounded-tl-md before:border-t before:border-l before:border-blue-gray-200 before:transition-all after:pointer-events-none after:mt-[6.5px] after:ml-1 after:box-border after:block after:h-1.5 after:w-2.5 after:flex-grow after:rounded-tr-md after:border-t after:border-r after:border-blue-gray-200 after:transition-all peer-placeholder-shown:text-sm peer-placeholder-shown:leading-[3.75] peer-placeholder-shown:text-blue-gray-500 peer-placeholder-shown:before:border-transparent peer-placeholder-shown:after:border-transparent peer-focus:text-[11px] peer-focus:leading-tight peer-focus:text-gray-900 peer-focus:before:border-t-2 peer-focus:before:border-l-2 peer-focus:before:!border-gray-900 peer-focus:after:border-t-2 peer-focus:after:border-r-2 peer-focus:after:!border-gray-900 peer-disabled:text-transparent peer-disabled:before:border-transparent peer-disabled:after:border-transparent peer-disabled:peer-placeholder-shown:text-blue-gray-500">
 
-                        </label>
-                    </div>
-                    <button disabled
-                    className="!absolute right-1 top-1 select-none rounded bg-blue-gray-500 py-2 px-4 text-center align-middle font-sans text-xs font-bold uppercase text-white shadow-md shadow-blue-gray-500/20 transition-all hover:shadow-lg hover:shadow-blue-gray-500/40 focus:opacity-[0.85] focus:shadow-none active:opacity-[0.85] active:shadow-none disabled:pointer-events-none disabled:opacity-50 disabled:shadow-none"
-                    type="button">
-                        Rechercher
-                    </button>
-                </div>  
+        
+        <div className="container">
+            <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-4">
+            <div className='w-72 filter-input'>
+                <Select label='Sélectionner une ou plusieurs tâches' onChange={handleChange} >
+                    <Option>Billetterie</Option>
+                    <Option>Vente boissons et nourriture</Option>
+                    <Option>Orientation clientèle</Option>
+                    <Option>Backstage</Option>
+                    <Option>Assistant régisseur</Option>
+                    <Option>Assistant lumière</Option>
+                    <Option>Assistant son</Option>
+                </Select>
+            </div>
+                <CalendarStart />
+                <CalendarEnd />
+                <SearchBarComment sendToCommentPage={receiveSearchBarCommentData} />
             </div>
             <div className="commentlist grid grid-cols-1 md:grid-cols-2 lg:grid-cols-2 gap-4">
             {comments.map((comment: any, index: number) => 
-                <div key={index} className="relative mt-6  text-gray-700 bg-white shadow-md bg-clip-border rounded-xl w-96 p-3 w-auto">
+                <div key={index} className="relative text-gray-700 bg-white shadow-md bg-clip-border rounded-xl w-96 p-3 w-auto">
                     <div className=" ps-3 pe-3  pb-2 flex justify-between">
                         <div className="flex justify-between">  
                             <p className="pe-5">
@@ -74,7 +109,13 @@ export default function CommentPage() {
                     </div>  
                 </div>
                 )}
-                <CircularPagination/>
+            </div>
+            <div className="grid grid-cols-1 md:grid-cols-1 lg:grid-cols-3 gap-4 m-4">
+                <div></div>
+                <div className="">
+                    <CircularPagination/>   
+                </div>
+                <div></div>
             </div>
         </div>
 
@@ -83,4 +124,5 @@ export default function CommentPage() {
 
 
 }
+
 
