@@ -7,62 +7,58 @@ import { normalizeString, stringToRegExp } from "../../services/utils/Utils";
 import { useMutation, useQuery } from "@tanstack/react-query";
 
 export default function VolunteerPage() { 
-  // const [searchValue, setSearchValue] = useState<any>('')
-  const [filteredListVolunteers, setFilteredListVolunteers] = useState<any>([])
-  
+  //UPDATED CODE
+  const [filteredListVolunteers, setFilteredListVolunteers] = useState<any>([]);
+  const [firstMount, setFirstMount] = useState<boolean>(true);
+
   const {data: completeListVolunteers, isLoading: isLoadingCompleteListVolunteers, isError: isErrorCompleteListVolunteers} = useQuery({
     queryKey:["completeListVolunteers"],
     // queryFn: getVolunteers,
     queryFn: () => {return fakerVolunteers.datas},
+    // initialData: [],
   })
 
+  console.log("complete list volunteers")
+  console.log(completeListVolunteers)
+
   useEffect(() => {
-    console.log("useEffect called")
+    if (firstMount) {
+      console.log("first mount");
+      setFirstMount(false);
+      return;
+    } 
+
+    console.log("remount")
     setFilteredListVolunteers(completeListVolunteers)
   }, [completeListVolunteers]);
 
+  // //ERROR: creates infinite loop
   // if (!isLoadingCompleteListVolunteers && !isErrorCompleteListVolunteers) {
   //   setFilteredListVolunteers(completeListVolunteers)
   // }
 
-
-  // const changeFilteredListVolunteers = useMutation ({
-  //   mutationFn: () => {
-  //     console.log("in mutationFN")
-  //     console.log(searchValue)
-  //     const searchValRegexp = stringToRegExp(searchValue);
-  //     if (completeListVolunteers) {
-  //       completeListVolunteers.filter((volunteer:any) => {
-  //         console.log(volunteer)
-
-  //         return (
-  //           `${volunteer.firstname} ${volunteer.lastname}`.match(searchValRegexp) ||
-  //           `${volunteer.lastname} ${volunteer.firstname}`.match(searchValRegexp) 
-  //         );
-  //       })
-  //     } else {
-  //       return completeListVolunteers;
-  //     }
-  //   },
-  // });
+  //END UPDATED CODE
 
   //ORIGINAL CODE
   // const [completeListVolunteers,setCompleteListVolunteers] = useState<any>([])
-  // const [listVolunteers, setListVolunteers] = useState<any>([])
+  // const [filteredListVolunteers, setFilteredListVolunteers] = useState<any>([])
   // useEffect(() => {
   //   async function loadVolunteers() {
   //     //API call
   //     // const volunteers = await getVolunteers();
 
-  //     const volunteers = fakerVolunteers
+  //     const volunteers = fakerVolunteers;
 
   //     setCompleteListVolunteers(volunteers.datas);
-  //     setListVolunteers(volunteers.datas)
+  //     setFilteredListVolunteers(volunteers.datas);
   //   }
 
   //   loadVolunteers()
   // }, [])
+  //END ORIGINAL CODE
 
+
+  //COMMON CODE
   const receiveSearchBarData = (value:string) => {
     value = normalizeString(value)
     if (value.length === 0) {
@@ -84,12 +80,11 @@ export default function VolunteerPage() {
         );
       })
     );
-
-
   }
+  //END COMMON CODE
 
-  if (isLoadingCompleteListVolunteers) return <div>Chargement...</div>;
-  if (isErrorCompleteListVolunteers) return <div>Erreur lors de la récupération de la liste complète des bénévoles</div>;
+  // if (isLoadingCompleteListVolunteers) return <div>Chargement...</div>;
+  // if (isErrorCompleteListVolunteers) return <div>Erreur lors de la récupération de la liste complète des bénévoles</div>;
 
   return (
     <>

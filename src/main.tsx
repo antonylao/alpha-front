@@ -7,7 +7,7 @@ import { UserProvider } from './hooks/contexts/user.context.tsx'
 import { QueryClient, QueryClientProvider } from '@tanstack/react-query'
 
 ReactDOM.createRoot(document.getElementById('root')!).render(
-  <React.StrictMode>
+  // <React.StrictMode>
     <BrowserRouter>
       <UserProvider>
         <QueryClientProvider client={new QueryClient}>
@@ -15,5 +15,5 @@ ReactDOM.createRoot(document.getElementById('root')!).render(
         </QueryClientProvider>
       </UserProvider>
     </BrowserRouter>
-  </React.StrictMode>,
+  // </React.StrictMode>
 )
