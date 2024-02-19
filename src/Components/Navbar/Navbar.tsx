@@ -12,11 +12,6 @@ import {
     IconButton,
     Collapse,
   } from "@material-tailwind/react";
-  // import {
-  //   UserCircleIcon,   
-  //   ChevronDownIcon,
-  //   PowerIcon,
-  // } from "@heroicons/react/24/solid";
 import logo from "./logo_Alpha.png"
 import { NavLink } from 'react-router-dom'
 import "./Navbar.css"
@@ -36,7 +31,7 @@ export default function StickyNavbar() {
     <nav>
       <ul className="mt-2 mb-4 flex flex-col gap-2 lg:mb-0 lg:mt-0 lg:flex-row lg:items-center lg:gap-6">
         <NavLink
-        to="/my_profile"
+        to="#"
         className={({ isActive }) => (isActive ? "activeLink" : undefined)}>
           <Avatar
             variant="circular"
