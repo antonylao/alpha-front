@@ -7,11 +7,25 @@ import {
 } from "@material-tailwind/react";
 import { WarningButton } from "../../Buttons/Warning/Warning";
  
-export function WarningConfirmation() {
+export function WarningConfirmation(props:any) {
+  const {warningValue, banValue, sendToVolunteerCard} = props
+
   const [open, setOpen] = React.useState(false);
+
+  const handleOpen = () => {
+    if (banValue === true || warningValue == true) {
+      return;
+    }
+
+    setOpen(!open);
+  }
  
-  const handleOpen = () => setOpen(!open);
- 
+  const handleValidate = () => {
+    //warning value should be false because of the handleOpen condition
+    sendToVolunteerCard(!warningValue)
+
+    setOpen(!open);
+  }
   return (
     <>
       <WarningButton onClick={handleOpen} />
@@ -27,7 +41,7 @@ export function WarningConfirmation() {
           >
             <span>Annuler</span>
           </Button>
-          <Button variant="gradient" color="green" onClick={handleOpen}>
+          <Button variant="gradient" color="green" onClick={handleValidate}>
             <span>Valider</span>
           </Button>
         </DialogFooter>

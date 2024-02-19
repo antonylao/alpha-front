@@ -1,14 +1,15 @@
 import { Typography } from "@material-tailwind/react";
 import { RatingDone } from "./RatingDone";
  
-export function RatingVolunteerProfile() {
-  const rating=4
+export function RatingByTask(props:any) {
+  const {task, rating, count} = props
+
   return (
     <div className="flex items-center gap-2 font-bold text-blue-gray-500">
-      {rating}
+      <p>{task}: {rating}</p>
       <RatingDone value={rating}/>
       <Typography color="blue-gray" className="font-medium text-blue-gray-500">
-        (13)
+        ({count})
       </Typography>
     </div>
   );

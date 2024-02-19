@@ -9,6 +9,7 @@ import {
 } from "@material-tailwind/react";
 import { RatingDone } from "../../Rating/RatingDone";
 import { RatingPending } from "../../Rating/RatingPending";
+import { PastEventsButton } from "../../Buttons/PastEvents/PastEvents";
 
 const TABLE_HEAD = ["Titre", "Date et heure", "Tâche", "Note", ""];
  
@@ -54,9 +55,7 @@ export function PastEventsModal() {
  
   return (
     <>
-      <Button onClick={handleOpen} variant="gradient">
-        Open Dialog XL
-      </Button>
+      <PastEventsButton onClick={handleOpen} />
 
       <Dialog
         open={open}

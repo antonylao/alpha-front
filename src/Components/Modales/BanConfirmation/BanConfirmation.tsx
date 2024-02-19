@@ -7,11 +7,25 @@ import {
 } from "@material-tailwind/react";
 import { BanButton } from "../../Buttons/Ban/Ban";
  
-export function BanConfirmation() {
+export function BanConfirmation(props:any) {
+  const {banValue, sendToVolunteerCard} = props
+
   const [open, setOpen] = React.useState(false);
- 
-  const handleOpen = () => setOpen(!open);
- 
+
+  const handleOpen = () => {
+    if (banValue === true) {
+      return;
+    }
+
+    setOpen(!open);
+  }
+
+  const handleValidate = () => {
+    //ban value should be false because of the handleOpen condition
+    sendToVolunteerCard(!banValue)
+
+    setOpen(!open);
+  }
   return (
     <>
       <BanButton onClick={handleOpen} />
@@ -27,7 +41,7 @@ export function BanConfirmation() {
           >
             <span>Annuler</span>
           </Button>
-          <Button variant="gradient" color="green" onClick={handleOpen}>
+          <Button variant="gradient" color="green" onClick={handleValidate}>
             <span>Valider</span>
           </Button>
         </DialogFooter>

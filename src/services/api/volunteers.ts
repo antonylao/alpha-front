@@ -12,6 +12,17 @@ export async function getVolunteers() {
   }
 }
 
+
+//IN CONSTRUCTION
+export async function getVolunteersFiltered(search: '') {
+  try {
+    const {data} = await api.get("users")
+    return data;
+  } catch(err) {
+    console.log(err)
+  }
+}
+
 export async function getVolunteerById(id:number) {
   try {
     const {data} = await api.get(`users/${id}`)
@@ -25,6 +36,33 @@ export async function getVolunteerById(id:number) {
 export async function getVolunteerByIdWithoutToken(id:number) {
   try {
     const {data} = await axios.get(`${import.meta.env.VITE_API_BASE_URL_DEV}users/${id}`)
+    return data;
+  } catch(err) {
+    console.log(err)
+  }
+}
+
+export async function getVolunteerWarningById(id:number) {
+  try {
+    const {data} = await api.get(`todos/${id}`)
+    return data["completed"]
+  } catch(err) {
+    console.log(err)
+  }
+}
+
+export async function getVolunteerBanById(id:number) {
+  try {
+    const {data} = await api.get(`todos/${199 - id}`)
+    return data["completed"]
+  } catch(err) {
+    console.log(err)
+  }
+}
+
+export async function updateVolunteerWarning(id:number, warning:boolean) {
+  try {
+    const {data} = await api.patch(`users/${id}`, {warning: warning})
     return data;
   } catch(err) {
     console.log(err)
