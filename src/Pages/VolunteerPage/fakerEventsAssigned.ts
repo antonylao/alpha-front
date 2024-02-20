@@ -49,6 +49,27 @@ const fakerData = [
     task_name: "Billetterie",
     volunteer_assignment_rating: undefined,
   },
+  {
+    user_id: 3,
+    event_title: "La Teuf 2",
+    event_start_on: "2023-01-26 16:35:00",
+    task_name: "Billetterie",
+    volunteer_assignment_rating: undefined,
+  },
+  {
+    user_id: 4,
+    event_title: "La Teuf 2",
+    event_start_on: "2023-01-26 16:35:00",
+    task_name: "Billetterie",
+    volunteer_assignment_rating: undefined,
+  },
+  {
+    user_id: 5,
+    event_title: "La Teuf 2",
+    event_start_on: "2023-01-26 16:35:00",
+    task_name: "Billetterie",
+    volunteer_assignment_rating: undefined,
+  },
 
 ]
 
@@ -57,4 +78,4 @@ const fakerEventsAssigned = {
   status: 200
 }
 
-export {fakerEventsAssigned}
+export { fakerEventsAssigned }

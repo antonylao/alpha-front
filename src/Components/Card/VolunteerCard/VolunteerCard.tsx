@@ -15,42 +15,38 @@ import { useEffect, useState } from "react";
 import { RatingDetails } from "../../PopUp/RatingDetails";
 import { PastEventsModal } from "../../Modales/PastEvents/PastEvents";
 import { fakerVolunteers } from "../../../Pages/VolunteerPage/fakerVolunteers";
+import { useQuery } from "@tanstack/react-query";
 // import { getVolunteerById } from "../../../services/api/volunteers";
 
-export function VolunteerCard(props:any) {
-  const {id} = props
+export function VolunteerCard(props: any) {
+  const { id } = props
 
   const [volunteer, setVolunteer] = useState<any>({})
   const [warning, setWarning] = useState<boolean>(false)
   const [ban, setBan] = useState<boolean>(false)
   const [borderColor, setBorderColor] = useState<string>("border-transparent")
 
+  //minor issue: data is fetched again (already fetched the complete list on the volunteer page)
+  const { data, isSuccess, isLoading, isError } = useQuery({
+    queryKey: [`volunteer_${id}`],
+    // queryFn: getVolunteerById(id),
+    queryFn: () => { return fakerVolunteers.datas.filter((obj) => obj.id === id)[0] },
+  })
 
   useEffect(() => {
-    async function loadVolunteer(id:number) {
-      //API call
-      // const data = await getVolunteerById(id)
-
-      const data = fakerVolunteers.datas.filter((obj) => obj.id === id)[0]
-
+    if (isSuccess) {
       setVolunteer(data)
       if (data["ban"] === 'true') {
         handleBan()
-        return;
-      }
-      if (data["warning"] === 'true') {
-
+      } else if (data["warning"] === 'true') {
         handleWarning()
       }
     }
-
-    loadVolunteer(id)
-  }, [])
+  }, [isSuccess])
 
   const handleBan = () => {
     //modify BDD: ban value of volunteer by its id: set to true
     // updateVolunteerBan(volunteerId, newWarning);
-
 
     fakerVolunteers.datas.filter((obj) => obj.id === id)[0].ban = "true"
 
@@ -74,7 +70,8 @@ export function VolunteerCard(props:any) {
   const receiveBanData = () => {
     handleBan()
   }
-
+  if (isLoading) return <div>Chargement...</div>;
+  if (isError) return <div>Erreur lors de la récupération du bénévole {id}</div>;
 
   return (
     <Card className={`w-full max-w-[26rem] shadow-lg border-2 ${borderColor} `}>
@@ -86,13 +83,13 @@ export function VolunteerCard(props:any) {
         <div className="to-bg-black-10 absolute inset-0 h-full w-full bg-gradient-to-tr from-transparent via-transparent to-black/60 " />
       </CardHeader>
       <CardBody>
-          <Typography
-            variant="h5"
-            color="blue-gray"
-            className="font-medium"
-          >
-            {`${volunteer.firstname} ${volunteer.lastname}`}
-          </Typography>
+        <Typography
+          variant="h5"
+          color="blue-gray"
+          className="font-medium"
+        >
+          {`${volunteer.firstname} ${volunteer.lastname}`}
+        </Typography>
 
         <Typography color="gray">
           {volunteer.email}
@@ -103,7 +100,7 @@ export function VolunteerCard(props:any) {
         <div className="flex justify-center">
           {/* Rating Component is inside the popover component */}
           {/* <RatingVolunteerProfile /> */}
-          <RatingDetails />
+          <RatingDetails id={id} />
         </div>
         <p>warning: {String(warning)}, ban: {String(ban)}</p>
       </CardBody>
@@ -112,8 +109,8 @@ export function VolunteerCard(props:any) {
         {/* <BanButton /> */}
         {/* <WarningButton /> */}
         {/* <PastEventsButton /> */}
-        <BanConfirmation banValue={ban} sendToVolunteerCard={receiveBanData}/>
-        <WarningConfirmation warningValue={warning} banValue={ban} sendToVolunteerCard={receiveWarningData}/>
+        <BanConfirmation banValue={ban} sendToVolunteerCard={receiveBanData} />
+        <WarningConfirmation warningValue={warning} banValue={ban} sendToVolunteerCard={receiveWarningData} />
         <PastEventsModal />
       </CardFooter>
     </Card>
