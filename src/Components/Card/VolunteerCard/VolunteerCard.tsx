@@ -111,7 +111,7 @@ export function VolunteerCard(props: any) {
         {/* <PastEventsButton /> */}
         <BanConfirmation banValue={ban} sendToVolunteerCard={receiveBanData} />
         <WarningConfirmation warningValue={warning} banValue={ban} sendToVolunteerCard={receiveWarningData} />
-        <PastEventsModal />
+        <PastEventsModal id={id} />
       </CardFooter>
     </Card>
   );

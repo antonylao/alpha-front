@@ -18,21 +18,21 @@ function App() {
       <StickyNavbar />
 
       <Routes>
-        <Route path="/" element={ <EventPage />} />
-        <Route path="/volunteers" element={ <VolunteerPage />} />
-        <Route path="/pending_requests" element={ <PendingRequestPage />} />
-        <Route path="/comments" element={ <CommentPage />} />
+        {/* <Route path="/" element={ <EventPage />} /> */}
+        <Route path="/volunteers" element={<VolunteerPage />} />
+        <Route path="/pending_requests" element={<PendingRequestPage />} />
+        <Route path="/comments" element={<CommentPage />} />
         {/* Uncomment line below when events page is made */}
-        {/* <Route path="/" element={<Navigate to="/events" replace />} /> */}
-        <Route path="/signin" element={ <SignInPage /> } />
+        <Route path="/" element={<Navigate to="/events" replace />} />
+        <Route path="/signin" element={<SignInPage />} />
 
         <Route element={<PrivateRoute />} >
-          <Route path="/volunteers" element={ <VolunteerPage />} />
+          <Route path="/volunteers" element={<VolunteerPage />} />
         </Route>
-        
-        <Route path="*" element={ <NotFoundPage /> } />
+
+        <Route path="*" element={<NotFoundPage />} />
       </Routes>
-        
+
       <Footer />
       <ReactQueryDevtools initialIsOpen={false} />
     </>

@@ -13,3 +13,7 @@ export function normalizeString(str: string) {
 }
 
 
+export function roundToFloat(num: number, nbOfFloatDigits: number) {
+  const multiplicator = 10 ** nbOfFloatDigits
+  return Math.round(num * multiplicator) / multiplicator
+}
