@@ -2,19 +2,13 @@ import React from "react";
 import {
     Navbar,
     Typography,
-    // Button,
-    // Menu,
-    // MenuHandler,
-    // MenuList,
-    // MenuItem,
-    // MobileNav,
-    Avatar,
     IconButton,
     Collapse,
   } from "@material-tailwind/react";
 import logo from "./logo_Alpha.png"
 import { NavLink } from 'react-router-dom'
 import "./Navbar.css"
+import {DialogWithForm} from "../Modales/OrganiserProfile/OrganiserProfile"
 
 
 export default function StickyNavbar() {
@@ -29,19 +23,7 @@ export default function StickyNavbar() {
 
   const navList = (
     <nav>
-      <ul className="mt-2 mb-4 flex flex-col gap-2 lg:mb-0 lg:mt-0 lg:flex-row lg:items-center lg:gap-6">
-        <NavLink
-        to="#"
-        className={({ isActive }) => (isActive ? "activeLink" : undefined)}>
-          <Avatar
-            variant="circular"
-            size="sm"
-            alt="tania andrew"
-            className="border border-gray-900 p-0.5"
-            src="https://www.zooplus.fr/magazine/wp-content/uploads/2017/10/Kanarienvogel-768x512.jpg"
-          />
-        </NavLink>
-
+      <ul className="mt-2 mb-4 flex flex-col gap-2 lg:mb-0 lg:mt-0 lg:flex-row lg:items-center lg:gap-10">
         <NavLink
         to="/"
         className={({ isActive }) => (isActive ? "activeLink" : undefined)} >
@@ -72,62 +54,19 @@ export default function StickyNavbar() {
         Déconnexion
         </NavLink>
 
+        <NavLink
+        to="#"
+        className={({ isActive }) => (isActive ? "activeLink" : undefined)}>
+          <DialogWithForm/>
+        </NavLink>
+        
+
 
       </ul>
     </nav>
   );
 
-  // const profileMenuItems = [
-  //   {
-  //     label: "Mon profil",
-  //     icon: UserCircleIcon,
-  //   },
-  //   {
-  //     label: "Déconnexion",
-  //     icon: PowerIcon,
-  //   },
-  // ];
 
-  // function ProfileMenu() {
-  //   const [isMenuOpen, setIsMenuOpen] = React.useState(false);
-  
-  //   const closeMenu = () => setIsMenuOpen(false);
-  
-  //   return (
-  //     <Menu open={isMenuOpen} handler={setIsMenuOpen} placement="bottom-end">
-        
-  //       <MenuList className="p-1">
-  //         {profileMenuItems.map(({ label, icon }, key) => {
-  //           const isLastItem = key === profileMenuItems.length - 1;
-  //           return (
-  //             <MenuItem
-  //               key={label}
-  //               onClick={closeMenu}
-  //               className={`flex items-center gap-2 rounded ${
-  //                 isLastItem
-  //                   ? "hover:bg-red-500/10 focus:bg-red-500/10 active:bg-red-500/10"
-  //                   : ""
-  //               }`}
-  //             >
-  //               {React.createElement(icon, {
-  //                 className: `h-4 w-4 ${isLastItem ? "text-red-500" : ""}`,
-  //                 strokeWidth: 2,
-  //               })}
-  //               <Typography
-  //                 as="span"
-  //                 variant="small"
-  //                 className="font-normal"
-  //                 color={isLastItem ? "red" : "inherit"}
-  //               >
-  //                 {label}
-  //               </Typography>
-  //             </MenuItem>
-  //           );
-  //         })}
-  //       </MenuList>
-  //     </Menu>
-  //   );
-  // }
 
 
   return (

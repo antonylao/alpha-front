@@ -1,7 +1,8 @@
 import { useEffect, useState } from "react"
 import { getComments } from "../../services/api/comments"
-import { Select, Option } from '@material-tailwind/react';
+import { Select } from '@material-tailwind/react';
 import { normalizeString, stringToRegExp } from "../../services/utils/Utils";
+import { CheckboxVerticalListGroup } from "../../Components/Comments/TaskList/TaskListDropdown"
 import CircularPagination from "../../Components/Pagination/Pagination"
 import CalendarStart from "../../Components/SearchBar/SearchBarComment/Calendar/calendarstart"
 import CalendarEnd from "../../Components/SearchBar/SearchBarComment/Calendar/calendarend"
@@ -18,8 +19,6 @@ export default function CommentPage() {
     console.log('value:', value);
   };
 
-  console.log("haha", comments)
-
     useEffect(() => {
         async function loadComments() {
         const result = await getComments();
@@ -30,20 +29,18 @@ export default function CommentPage() {
         loadComments();
     }, [])
 
+    // fonction filtre sur search bar 
     const receiveSearchBarCommentData = (value:string) => {
         value = normalizeString(value)
     
         if (value.length === 0) {
           setComments([...allComments]);
           return}
-
     
         const searchValRegexp = stringToRegExp(value);
     
         setComments(
           [...allComments].filter((comments:any) => {
-            console.log("coucou de comment page",comments)
-    
             return (
               comments.name.match(searchValRegexp)
             );
@@ -71,13 +68,7 @@ export default function CommentPage() {
             <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-4">
             <div className='w-72 filter-input'>
                 <Select label='Sélectionner une ou plusieurs tâches' onChange={handleChange} >
-                    <Option>Billetterie</Option>
-                    <Option>Vente boissons et nourriture</Option>
-                    <Option>Orientation clientèle</Option>
-                    <Option>Backstage</Option>
-                    <Option>Assistant régisseur</Option>
-                    <Option>Assistant lumière</Option>
-                    <Option>Assistant son</Option>
+                    <CheckboxVerticalListGroup/>
                 </Select>
             </div>
                 <CalendarStart />
