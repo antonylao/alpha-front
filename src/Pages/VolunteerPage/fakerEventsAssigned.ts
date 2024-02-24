@@ -1,6 +1,6 @@
 const fakerData = [
   {
-    user_id: 1,
+    volunteer_id: 1,
     event_id: 1,
     task_id: 1,
     event_title: "La teuf",
@@ -9,7 +9,7 @@ const fakerData = [
     volunteer_assignment_rating: "5",
   },
   {
-    user_id: 1,
+    volunteer_id: 1,
     event_id: 2,
     task_id: 6,
     event_title: "La teuf 2",
@@ -18,7 +18,7 @@ const fakerData = [
     volunteer_assignment_rating: "4",
   },
   {
-    user_id: 1,
+    volunteer_id: 1,
     event_id: 3,
     task_id: 1,
     event_title: "La teuf 3",
@@ -27,7 +27,7 @@ const fakerData = [
     volunteer_assignment_rating: "4",
   },
   {
-    user_id: 1,
+    volunteer_id: 1,
     event_id: 4,
     task_id: 1,
     event_title: "La teuf 4",
@@ -36,7 +36,7 @@ const fakerData = [
     volunteer_assignment_rating: undefined,
   },
   {
-    user_id: 1,
+    volunteer_id: 1,
     event_id: 5,
     task_id: 1,
     event_title: "La teuf 5",
@@ -45,7 +45,7 @@ const fakerData = [
     volunteer_assignment_rating: "2",
   },
   {
-    user_id: 2,
+    volunteer_id: 2,
     event_id: 6,
     task_id: 1,
     event_title: "Concert 6",
@@ -54,7 +54,7 @@ const fakerData = [
     volunteer_assignment_rating: "4",
   },
   {
-    user_id: 2,
+    volunteer_id: 2,
     event_id: 2,
     task_id: 1,
     event_title: "La Teuf 2",
@@ -63,7 +63,7 @@ const fakerData = [
     volunteer_assignment_rating: "2",
   },
   {
-    user_id: 3,
+    volunteer_id: 3,
     event_id: 2,
     task_id: 1,
     event_title: "La Teuf 2",
@@ -72,7 +72,7 @@ const fakerData = [
     volunteer_assignment_rating: undefined,
   },
   {
-    user_id: 4,
+    volunteer_id: 4,
     event_id: 2,
     task_id: 1,
     event_title: "La Teuf 2",
@@ -81,7 +81,7 @@ const fakerData = [
     volunteer_assignment_rating: undefined,
   },
   {
-    user_id: 5,
+    volunteer_id: 5,
     event_id: 2,
     task_id: 1,
     event_title: "La Teuf 2",

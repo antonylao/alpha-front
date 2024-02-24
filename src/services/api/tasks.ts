@@ -1,4 +1,7 @@
 import { fakerTasks } from "../../Pages/VolunteerPage/fakerTasks"
+import { useApi } from "../../hooks/useApi";
+
+const api = useApi();
 
 export async function getTasks() {
   try {

@@ -10,6 +10,7 @@ import PrivateRoute from "./services/utils/PrivateRoute";
 import { SignInPage } from "./Pages/SignInPage/SignInPage";
 import VolunteerPage from "./Pages/VolunteerPage/VolunteerPage";
 import { ReactQueryDevtools } from "@tanstack/react-query-devtools";
+import { VolunteerEventPage } from "./VOLUNTEER_FRONT/Pages/Event/VOLUNTEEREventPage";
 
 
 function App() {
@@ -19,18 +20,24 @@ function App() {
 
       <Routes>
         {/* <Route path="/" element={ <EventPage />} /> */}
-        <Route path="/volunteers" element={<VolunteerPage />} />
-        <Route path="/pending_requests" element={<PendingRequestPage />} />
-        <Route path="/comments" element={<CommentPage />} />
-        {/* Uncomment line below when events page is made */}
-        <Route path="/" element={<Navigate to="/events" replace />} />
+
+        {/* <Route path="/" element={<Navigate to="/events" replace />} /> */}
         <Route path="/signin" element={<SignInPage />} />
 
         <Route element={<PrivateRoute />} >
+          <Route path="/events" element={<EventPage />} />
           <Route path="/volunteers" element={<VolunteerPage />} />
+          <Route path="/pending_requests" element={<PendingRequestPage />} />
+          <Route path="/comments" element={<CommentPage />} />
         </Route>
 
+        {/* VOLUNTEER FRONT PAGES */}
+        <Route path="/volunteer_front_events" element={<VolunteerEventPage />} />
+
+        {/* not defined paths */}
         <Route path="*" element={<NotFoundPage />} />
+
+
       </Routes>
 
       <Footer />

@@ -5,10 +5,6 @@ import {
   CardFooter,
   Typography,
 } from "@material-tailwind/react";
-// import { BanButton } from "../../Buttons/Ban/Ban";
-// import { PastEventsButton } from "../../Buttons/PastEvents/PastEvents";
-// import { WarningButton } from "../../Buttons/Warning/Warning";
-// import { RatingVolunteerProfile } from "../../Rating/RatingVolunteerProfile";
 import { BanConfirmation } from "../../Modales/BanConfirmation/BanConfirmation";
 import { WarningConfirmation } from "../../Modales/WarningConfirmation/WarningConfirmation";
 import { useEffect, useState } from "react";
@@ -16,7 +12,7 @@ import { RatingDetails } from "../../PopUp/RatingDetails";
 import { PastEventsModal } from "../../Modales/PastEvents/PastEvents";
 import { fakerVolunteers } from "../../../Pages/VolunteerPage/fakerVolunteers";
 import { useQuery } from "@tanstack/react-query";
-// import { getVolunteerById } from "../../../services/api/volunteers";
+import { updateVolunteerBan, updateVolunteerWarning } from "../../../services/api/volunteers";
 
 export function VolunteerCard(props: any) {
   const { id } = props
@@ -25,8 +21,9 @@ export function VolunteerCard(props: any) {
   const [warning, setWarning] = useState<boolean>(false)
   const [ban, setBan] = useState<boolean>(false)
   const [borderColor, setBorderColor] = useState<string>("border-transparent")
+  const [refetchAndRemountRatingDetails, setRefetchAndRemountRatingDetails] = useState<number>(0)
 
-  //minor issue: data is fetched again (already fetched the complete list on the volunteer page)
+  //performance issue: data is fetched again (already fetched the complete list on the volunteer page)
   const { data, isSuccess, isLoading, isError } = useQuery({
     queryKey: [`volunteer_${id}`],
     // queryFn: getVolunteerById(id),
@@ -45,24 +42,21 @@ export function VolunteerCard(props: any) {
   }, [isSuccess])
 
   const handleBan = () => {
-    //modify BDD: ban value of volunteer by its id: set to true
-    // updateVolunteerBan(volunteerId, newWarning);
+    const newBan = true
+    updateVolunteerBan(id, newBan);
 
-    fakerVolunteers.datas.filter((obj) => obj.id === id)[0].ban = "true"
-
-    setBan(!ban)
+    setBan(newBan)
     setBorderColor("border-red-700")
   }
 
   const handleWarning = () => {
-    //modify BDD: warning value of volunteer by its id: set to true
-    // updateVolunteerWarning(volunteerId, newWarning);
+    const newWarning = true
+    updateVolunteerWarning(id, newWarning);
 
-    fakerVolunteers.datas.filter((obj) => obj.id === id)[0].warning = "true"
-
-    setWarning(!warning)
+    setWarning(newWarning)
     setBorderColor("border-yellow-400")
   }
+
   const receiveWarningData = () => {
     handleWarning()
   }
@@ -70,6 +64,11 @@ export function VolunteerCard(props: any) {
   const receiveBanData = () => {
     handleBan()
   }
+
+  const newRatingToApplyInRatingDetails = () => {
+    setRefetchAndRemountRatingDetails(refetchAndRemountRatingDetails + 1)
+  }
+
   if (isLoading) return <div>Chargement...</div>;
   if (isError) return <div>Erreur lors de la récupération du bénévole {id}</div>;
 
@@ -100,19 +99,21 @@ export function VolunteerCard(props: any) {
         <div className="flex justify-center">
           {/* Rating Component is inside the popover component */}
           {/* <RatingVolunteerProfile /> */}
-          <RatingDetails id={id} />
+          <RatingDetails id={id} countRatingApplied={refetchAndRemountRatingDetails} />
         </div>
         <p>warning: {String(warning)}, ban: {String(ban)}</p>
       </CardBody>
       <CardFooter className="group mt-8 inline-flex flex-row-reverse flex-wrap items-center gap-3">
         {/* buttons are inside the modal components */}
-        {/* <BanButton /> */}
-        {/* <WarningButton /> */}
-        {/* <PastEventsButton /> */}
+        {/* <BanButton />
+        <WarningButton />
+        <PastEventsButton /> */}
         <BanConfirmation banValue={ban} sendToVolunteerCard={receiveBanData} />
         <WarningConfirmation warningValue={warning} banValue={ban} sendToVolunteerCard={receiveWarningData} />
-        <PastEventsModal id={id} />
+        <PastEventsModal id={id} newRatingApplied={newRatingToApplyInRatingDetails} />
       </CardFooter>
     </Card>
   );
 };
+
+

@@ -14,29 +14,41 @@ import { RatingPending } from "../../Rating/RatingPending";
 import { PastEventsButton } from "../../Buttons/PastEvents/PastEvents";
 import { useMutation, useQuery, useQueryClient } from "@tanstack/react-query";
 import { getEventsAssignedByVolunteerId, updateVolunteerAssignmentRating } from "../../../services/api/volunteer_assignments";
+import axios from "axios";
 // import { parse } from "@formkit/tempo";
 
 const TABLE_HEAD = ["Titre", "Date et heure", "Tâche", "Note", ""];
 
 export function PastEventsModal(props: any) {
-  const { id } = props
+  const { id, newRatingApplied } = props
 
   const [open, setOpen] = React.useState(false);
   const [eventsAssigned, setEventsAssigned] = useState<any>([])
   const [newRatings, setNewRatings] = useState<any>([])
 
-  // const queryClient = useQueryClient();
-  // const addRating = useMutation({
-  //   mutationFn: (ids, newVal) => { updateVolunteerAssignmentRating(ids, newVal) },
-  //   onSuccess: () => {
-  //     queryClient.invalidateQueries({ queryKey: [`eventsAssignedListVolunteer${id}`] })
-  //   }
-  // })
+  const queryClient = useQueryClient();
+  const updateRating = useMutation({
+    mutationFn: ({ ids, data }) => {
+      return axios.post(`https://jsonplaceholder.typicode.com/posts/patch/${ids.volunteer_id}`, data)
+    },
+    // doesn't return the correct post value with a faker
+    // mutationFn: ({ ids, newVal }) => { return updateVolunteerAssignmentRating({ ids, newVal }) },
+    onSuccess: () => {
+      queryClient.invalidateQueries({ queryKey: [`eventsAssignedListVolunteer${id}`], refetchType: 'all' })
+    },
+    onError: () => {
+      console.log("error branch")
+      // queryClient.invalidateQueries({ queryKey: [`eventsAssignedListVolunteer${id}`], refetchType: 'all' })
+      // queryClient.refetchQueries({ queryKey: [`eventsAssignedListVolunteer${id}`], type: 'active' })
+      queryClient.refetchQueries({ stale: true })
+    }
+  })
 
-  // console.log(newRatings)
+  // console.log("test")
+  // console.log(updateVolunteerAssignmentRating({ ids: { volunteer_id: 1, event_id: 1, task_id: 1 }, newVal: 3 }))
 
   const { data, isSuccess, isLoading, isError } = useQuery({
-    queryKey: [`eventsAssignedList_volunteer_${id}`],
+    queryKey: [`eventsAssignedListVolunteer${id}`],
     queryFn: () => getEventsAssignedByVolunteerId(id),
   })
 
@@ -55,11 +67,9 @@ export function PastEventsModal(props: any) {
   }
 
   const receiveRatingValue = (obj: any) => {
-    console.log("received")
-    console.log(obj)
-    //if there is already a rating for this event and task, replace the value of the rating by the new one
     let indexNewRating = NaN;
 
+    //if there is already a rating for this event and task, replace the value of the rating by the new one
     newRatings.every((elt, index) => {
       if (elt.event_id === obj.event_id && elt.task_id === obj.task_id) {
         indexNewRating = index;
@@ -69,8 +79,6 @@ export function PastEventsModal(props: any) {
       return true;
     });
 
-    console.log(`indexNewRating : ${indexNewRating}`)
-    console.log(newRatings[indexNewRating])
 
     if (isNaN(indexNewRating)) {
       setNewRatings([...newRatings, { volunteer_id: obj.volunteer_id, event_id: obj.event_id, task_id: obj.task_id, value: obj.rating_value }])
@@ -82,13 +90,10 @@ export function PastEventsModal(props: any) {
   }
 
   const handleClick = (ids, newVal) => {
-    console.log("handle click called")
-    const eventsAssignedCopy = eventsAssigned.map((elt) => elt)
-    console.log(eventsAssignedCopy)
-    console.log(newVal)
+    const eventsAssignedCopy = [...eventsAssigned]
 
     if (!newVal) {
-      console.log("exit handleClick")
+      console.log("No rating to apply. Possible to use react hook form for display?")
       return;
     }
     // eventsAssignedCopy.filter((obj) => obj.event_id === event_id && obj.task_id === task_id)[0]
@@ -101,7 +106,9 @@ export function PastEventsModal(props: any) {
     eventsAssignedCopy[index].volunteer_assignment_rating = newVal
 
     setEventsAssigned(eventsAssignedCopy)
-    updateVolunteerAssignmentRating(ids, newVal)
+    // updateVolunteerAssignmentRating({ ids, newVal })
+    updateRating.mutate({ ids, newVal })
+    newRatingApplied()
   }
 
   const ratingChanged = (eventId, taskId) => {
@@ -177,13 +184,13 @@ export function PastEventsModal(props: any) {
                         </Typography>
                       </td>
                       <td className={classes}>
-                        <Typography
+                        {/* <Typography
                           variant="small"
                           color="blue-gray"
                           className="font-medium"
-                        >
-                          {volunteer_assignment_rating ? <RatingDone rating={Number(volunteer_assignment_rating)} /> : <RatingPending volunteerId={id} taskId={task_id} eventId={event_id} sendToParent={receiveRatingValue} />}
-                        </Typography>
+                        > */}
+                        {volunteer_assignment_rating ? <RatingDone rating={Number(volunteer_assignment_rating)} /> : <RatingPending volunteerId={id} taskId={task_id} eventId={event_id} sendToParent={receiveRatingValue} />}
+                        {/* </Typography> */}
                       </td>
                       <td className={classes}>
                         {

@@ -11,14 +11,26 @@ export async function getEventsAssignedByVolunteerId(id: number) {
     // return data;
 
     //in VolunteerPage: component RatingDetails and PastEventsModal
-    return fakerEventsAssigned.datas.filter((obj) => obj.user_id === id)
+    return fakerEventsAssigned.datas.filter((obj) => obj.volunteer_id === id)
   } catch (err) {
     console.log(err)
   }
 }
 
-export async function updateVolunteerAssignmentRating(ids, newVal) {
-  const assignment = await fakerEventsAssigned.datas.filter((obj) => obj.user_id === ids.volunteer_id && obj.event_id === ids.event_id && obj.task_id === ids.task_id)[0]
-  assignment.volunteer_assignment_rating = newVal;
-  return assignment;
-}
+// export async function updateVolunteerAssignmentRating(ids, newVal) {
+export async function updateVolunteerAssignmentRating({ ids, newVal }) {
+  // const data = await api.get("/users/1")
+  const data = await api.post(`users`, { rating: newVal })
+
+  //API PATCH request on table volunteer_assignment, organiser_rating column, on the row including the ids specified
+
+  // in VolunteerPage: component PastEvents
+  // const data = fakerEventsAssigned.datas.filter((obj) => obj.volunteer_id === ids.volunteer_id && obj.event_id === ids.event_id && obj.task_id === ids.task_id)[0]
+  // console.log("in update function");
+  // console.log("ids", ids)
+  // console.log("faker elts ids")
+
+  // fakerEventsAssigned.datas.forEach((obj) => console.log(obj.volunteer_id, obj.event_id, obj.task_id))
+  // data.volunteer_assignment_rating = newVal;
+  return data;
+};

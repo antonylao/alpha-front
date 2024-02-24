@@ -77,6 +77,19 @@ export async function updateVolunteerWarning(id: number, warning: boolean) {
   }
 }
 
+export async function updateVolunteerBan(id: number, ban: boolean) {
+  try {
+    // const { data } = await api.patch(`users/${id}`, { ban: ban })
+    // return data;
+
+    //in VolunteerPage: component VolunteerCard
+    fakerVolunteers.datas.filter((obj) => obj.id === id)[0].ban = String(ban)
+    return fakerVolunteers.datas.filter((obj) => obj.id === id)[0]
+  } catch (err) {
+    console.log(err)
+  }
+}
+
 export async function addVolunteer(body: any) {
   try {
     const { data } = await api.post(`users`, body)
