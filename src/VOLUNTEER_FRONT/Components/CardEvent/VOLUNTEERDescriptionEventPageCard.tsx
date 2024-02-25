@@ -3,16 +3,17 @@
 // Notez que vous ne pouvez être validé que pour une seul tâche par événement. 
 import {
   Card,
-  CardHeader,
   CardBody,
   Typography,
   CardFooter,
+  Chip,
 } from "@material-tailwind/react";
+import { eventTypeBackgroundColor } from "../../../services/utils/Utils";
 
 const PARAGRAPHS = [
   "Vous trouverez ici tous les événements à venir.",
   "Vous pouvez postuler à des tâches qui ont déjà atteint le nombre requis de bénévoles, si jamais un désistement venait à se produire.",
-  "Notez que vous ne pouvez être validé que pour une seul tâche par événement. "
+  "Notez que vous ne pouvez être validé que pour une seule tâche par événement. "
 ]
 
 export function VolunteerDescriptionEventPageCard({ types }: any) {
@@ -31,20 +32,11 @@ export function VolunteerDescriptionEventPageCard({ types }: any) {
           ))}
         </CardBody>
         <CardFooter>
-          <div className="flex items-center ml-auto space-x-1">
-            {types.map((type, index) => (
-              <div key={index}
-                className={`border border-black rounded-full ${type === "concert"
-                  ? "bg-blue-500"
-                  : type === "theatre"
-                    ? "bg-orange-500"
-                    : type === "one_man_show"
-                      ? "bg-red-500"
-                      : ""
-                  }`}
-              >
-                {type}
-              </div>
+          <Typography variant="paragraph" >Codes couleurs pour les types d'événements</Typography>
+          <div className="flex flex-wrap gap-2 items-center ml-auto space-x-1">
+            {types.map((type: string, index: number) => (
+              <Chip key={index} value={type}
+                className={`border border-black rounded-full ${eventTypeBackgroundColor(type)}`} />
             ))}
           </div>
         </CardFooter>

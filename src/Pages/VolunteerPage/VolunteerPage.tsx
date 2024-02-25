@@ -19,6 +19,7 @@ export default function VolunteerPage() {
     }
   }, [isSuccess])
 
+
   const receiveSearchBarData = (value: string) => {
     value = normalizeString(value)
     if (value.length === 0) {
@@ -30,7 +31,7 @@ export default function VolunteerPage() {
     const searchValRegexp = stringToRegExp(value);
 
     setFilteredListVolunteers(
-      data.filter((volunteer: any) => {
+      data?.filter((volunteer: any) => {
         console.log(volunteer)
 
         return (

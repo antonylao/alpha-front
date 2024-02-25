@@ -17,3 +17,13 @@ export function roundToFloat(num: number, nbOfFloatDigits: number) {
   const multiplicator = 10 ** nbOfFloatDigits
   return Math.round(num * multiplicator) / multiplicator
 }
+
+export function eventTypeBackgroundColor(type: string) {
+  return (type === "concert"
+    ? "bg-blue-500"
+    : type === "theatre"
+      ? "bg-orange-500"
+      : type === "one_man_show"
+        ? "bg-red-500"
+        : "")
+}

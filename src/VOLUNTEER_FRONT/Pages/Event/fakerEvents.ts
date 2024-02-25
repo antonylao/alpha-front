@@ -6,6 +6,7 @@ const fakerData = [
     start_on: "2021-01-26 16:35:00",
     duration: "02:35:00",
     type: "concert",
+    room: 'Salle 1',
     picture: "/event_picture.jpg"
   },
   {
@@ -15,6 +16,7 @@ const fakerData = [
     start_on: "2021-01-26 16:35:00",
     duration: "02:35:00",
     type: "theatre",
+    room: 'Salle 1',
     picture: "/event_picture.jpg"
   },
   {
@@ -24,6 +26,7 @@ const fakerData = [
     start_on: "2021-01-26 16:35:00",
     duration: "02:35:00",
     type: "one_man_show",
+    room: 'Salle 1',
     picture: "/event_picture.jpg"
   },
   {
@@ -33,6 +36,7 @@ const fakerData = [
     start_on: "2021-01-26 16:35:00",
     duration: "02:35:00",
     type: "one_man_show",
+    room: 'Salle 1',
     picture: "/event_picture.jpg"
   },
   {
@@ -42,6 +46,7 @@ const fakerData = [
     start_on: "2021-01-26 16:35:00",
     duration: "02:35:00",
     type: "concert",
+    room: 'Salle 1',
     picture: "/event_picture.jpg"
   },
   {
@@ -51,6 +56,7 @@ const fakerData = [
     start_on: "2021-01-26 16:35:00",
     duration: "02:35:00",
     type: "theatre",
+    room: 'Salle 1',
     picture: "/event_picture.jpg"
   },
   {
@@ -60,6 +66,7 @@ const fakerData = [
     start_on: "2021-01-26 16:35:00",
     duration: "02:35:00",
     type: "theatre",
+    room: 'Salle 1',
     picture: "/event_picture.jpg"
   },
   {
@@ -69,6 +76,7 @@ const fakerData = [
     start_on: "2021-01-26 16:35:00",
     duration: "02:35:00",
     type: "concert",
+    room: 'Salle 1',
     picture: "/event_picture.jpg"
   },
 ]

@@ -4,18 +4,16 @@ import {
   CardBody,
   Typography,
   CardFooter,
+  Chip,
 } from "@material-tailwind/react";
 
 import { useEffect, useState } from "react";
-import { BanButton } from "../../../Components/Buttons/Ban/Ban";
-import { WarningButton } from "../../../Components/Buttons/Warning/Warning";
-import { PastEventsButton } from "../../../Components/Buttons/PastEvents/PastEvents";
 import { format, parse } from "@formkit/tempo";
-import { ApplyButton } from "./ApplyButton/ApplyButton";
 import { ModaleTaskList } from "./ModaleTaskList/ModaleTaskList";
+import { eventTypeBackgroundColor } from "../../../services/utils/Utils";
 
 export function VolunteerEventCard({ data }: any) {
-  console.log(data)
+  console.log(data.id)
 
   return (
     <>
@@ -36,18 +34,8 @@ export function VolunteerEventCard({ data }: any) {
             >
               {data.title}
             </Typography>
-            <div
-              className={`border border-black rounded-full ${data.type === "concert"
-                ? "bg-blue-500"
-                : data.type === "theatre"
-                  ? "bg-orange-500"
-                  : data.type === "one_man_show"
-                    ? "bg-red-500"
-                    : ""
-                }`}
-            >
-              {data.type}
-            </div>
+            <Chip value={data.room}
+              className={`border border-black rounded-full ${eventTypeBackgroundColor(data.type)}`} />
           </div>
           <Typography color="gray" className="mb-5">{data.description}</Typography>
 

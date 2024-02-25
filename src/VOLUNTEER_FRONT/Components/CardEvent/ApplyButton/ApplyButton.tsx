@@ -4,9 +4,9 @@ import { IoEnter } from "react-icons/io5";
 export function ApplyButton({ onClick }: any) {
   return (
     <>
-      <Button onClick={onClick}>
+      <button onClick={onClick}>
         <IoEnter />
-      </Button>
+      </button>
     </>
   )
 }
