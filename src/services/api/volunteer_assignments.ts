@@ -19,7 +19,7 @@ export async function getEventsAssignedByVolunteerId(id: number) {
   }
 }
 
-export async function getTasksInfoForVolunteerEventIndexPage({ volunteerId, eventId }) {
+export async function getTasksInfoForVolunteerEventIndexPage({ volunteerId, eventId }: any) {
   // const { data } = await api.get("/")
   // return data;
 
@@ -28,7 +28,7 @@ export async function getTasksInfoForVolunteerEventIndexPage({ volunteerId, even
 }
 
 // export async function updateVolunteerAssignmentRating(ids, newVal) {
-export async function updateVolunteerAssignmentRating({ ids, newVal }) {
+export async function updateVolunteerAssignmentRating({ ids, newVal }: any) {
   //API PATCH request on table volunteer_assignment, organiser_rating column, on the row including the ids specified
   // const data = await api.get("/users/1")
   // const { data } = await api.patch(`users`, { rating: newVal })
@@ -53,7 +53,7 @@ export async function getVolunteerAssignmentInfoForEventsToCommentOnPage() {
   }
 }
 
-export async function updateVolunteerAssignmentComment({ ids, newVal }) {
+export async function updateVolunteerAssignmentComment({ ids, newVal }: any) {
   const volunteerId = ids.volunteerId
   const eventId = ids.eventId
   const taskId = ids.taskId
@@ -68,7 +68,7 @@ export async function updateVolunteerAssignmentComment({ ids, newVal }) {
 }
 
 
-export async function updateVolunteerAssignmentStatus({ ids, newVal }) {
+export async function updateVolunteerAssignmentStatus({ ids, newVal }: any) {
   const volunteerId = ids.volunteer_id
   const eventId = ids.event_id
   const taskId = ids.task_id
@@ -83,7 +83,7 @@ export async function updateVolunteerAssignmentStatus({ ids, newVal }) {
   return data
 }
 
-function deleteVolunteerAssignmentRow(ids) {
+function deleteVolunteerAssignmentRow(ids: any) {
   const volunteerId = ids.volunteer_id
   const eventId = ids.event_id
   const taskId = ids.task_id

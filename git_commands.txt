@@ -10,6 +10,6 @@ git push origin develop
 
 (when all merges are done to develop)
 git pull origin develop
-git checkout <my_branch>
-git merge <my_branch>
-(check for merge conflicts)
+git branch -d <my_branch>
+git checkout -b <new_branch>
+git pull origin develop
