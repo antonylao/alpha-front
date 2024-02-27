@@ -8,7 +8,7 @@ const VolunteerEventTypesToggledContext = createContext<any>({
 export function VolunteerEventTypesToggledProvider({ children }: any) {
   const [eventTypesToggled, setEventTypesToggled] = useState<Set<string>>(new Set<string>());
 
-  function updateEventTypesToggled(eventTypesCopy) {
+  function updateEventTypesToggled(eventTypesCopy: Set<string>) {
     setEventTypesToggled(eventTypesCopy)
   }
 

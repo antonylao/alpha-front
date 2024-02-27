@@ -13,6 +13,7 @@ import { PastEventsModal } from "../../Modales/PastEvents/PastEvents";
 import { fakerVolunteers } from "../../../Pages/VolunteerPage/fakerVolunteers";
 import { useQuery } from "@tanstack/react-query";
 import { updateVolunteerBan, updateVolunteerWarning } from "../../../services/api/volunteers";
+import { cardBorderColor } from "../../../services/utils/Utils";
 
 export function VolunteerCard(props: any) {
   const { id } = props
@@ -20,7 +21,7 @@ export function VolunteerCard(props: any) {
   const [volunteer, setVolunteer] = useState<any>({})
   const [warning, setWarning] = useState<boolean>(false)
   const [ban, setBan] = useState<boolean>(false)
-  const [borderColor, setBorderColor] = useState<string>("border-transparent")
+  const [borderColor, setBorderColor] = useState<string>(cardBorderColor(''))
   const [refetchAndRemountRatingDetails, setRefetchAndRemountRatingDetails] = useState<number>(0)
 
   //performance issue: data is fetched again (already fetched the complete list on the volunteer page)
@@ -46,7 +47,7 @@ export function VolunteerCard(props: any) {
     updateVolunteerBan(id, newBan);
 
     setBan(newBan)
-    setBorderColor("border-red-700")
+    setBorderColor(cardBorderColor("ban"))
   }
 
   const handleWarning = () => {
@@ -54,7 +55,7 @@ export function VolunteerCard(props: any) {
     updateVolunteerWarning(id, newWarning);
 
     setWarning(newWarning)
-    setBorderColor("border-yellow-400")
+    setBorderColor(cardBorderColor("warning"))
   }
 
   const receiveWarningData = () => {

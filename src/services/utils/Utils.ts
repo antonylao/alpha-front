@@ -18,6 +18,8 @@ export function roundToFloat(num: number, nbOfFloatDigits: number) {
   return Math.round(num * multiplicator) / multiplicator
 }
 
+//COLOR FUNCTIONS
+
 export function eventTypeBackgroundColor(type: string) {
   return (type === "concert"
     ? "bg-blue-500"
@@ -26,4 +28,24 @@ export function eventTypeBackgroundColor(type: string) {
       : type === "one_man_show"
         ? "bg-red-500"
         : "")
+}
+
+export function cardBorderColor(str: string) {
+  switch (str) {
+    case 'warning':
+    case 'pending':
+    case 'not_commented':
+      return "border-yellow-400"
+      break;
+    case 'ban':
+    case 'refused':
+      return "border-red-700"
+      break;
+    case 'validated':
+    case 'commented':
+      return "border-green-700"
+      break;
+    default:
+      return "border-transparent"
+  }
 }

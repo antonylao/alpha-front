@@ -7,7 +7,9 @@ import {
 } from "@material-tailwind/react";
 import { WarningButton } from "../../../../../Components/Buttons/Warning/Warning";
 
-export function TaskApplyCancelConfirmation() {
+export function TaskApplyCancelConfirmation(props: any) {
+
+  const { ids, validated } = props
 
   const [open, setOpen] = React.useState(false);
 
@@ -16,7 +18,7 @@ export function TaskApplyCancelConfirmation() {
   }
 
   const handleValidate = () => {
-    //make necessary actions on confirmation here
+    validated(ids)
 
     setOpen(!open);
   }

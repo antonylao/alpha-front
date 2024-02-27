@@ -11,6 +11,7 @@ import { SignInPage } from "./Pages/SignInPage/SignInPage";
 import VolunteerPage from "./Pages/VolunteerPage/VolunteerPage";
 import { ReactQueryDevtools } from "@tanstack/react-query-devtools";
 import { VolunteerEventPage } from "./VOLUNTEER_FRONT/Pages/Event/VOLUNTEEREventPage";
+import { EventsAwaitingComment } from "./VOLUNTEER_FRONT/Pages/EventsAwaitingComment/EventsAwaitingComment";
 
 
 function App() {
@@ -33,6 +34,7 @@ function App() {
 
         {/* VOLUNTEER FRONT PAGES */}
         <Route path="/volunteer_front_events" element={<VolunteerEventPage />} />
+        <Route path="/volunteer_front_events_awaiting_comment" element={<EventsAwaitingComment />} />
 
         {/* not defined paths */}
         <Route path="*" element={<NotFoundPage />} />

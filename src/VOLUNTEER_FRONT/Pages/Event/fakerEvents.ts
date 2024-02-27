@@ -7,7 +7,7 @@ const fakerData = [
     duration: "02:35:00",
     type: "concert",
     room: 'Salle 1',
-    picture: "/event_picture.jpg"
+    picture: "/event_picture.jpg",
   },
   {
     id: 2,
@@ -17,7 +17,7 @@ const fakerData = [
     duration: "02:35:00",
     type: "theatre",
     room: 'Salle 1',
-    picture: "/event_picture.jpg"
+    picture: "/event_picture.jpg",
   },
   {
     id: 3,
@@ -27,7 +27,7 @@ const fakerData = [
     duration: "02:35:00",
     type: "one_man_show",
     room: 'Salle 1',
-    picture: "/event_picture.jpg"
+    picture: "/event_picture.jpg",
   },
   {
     id: 4,
@@ -37,7 +37,7 @@ const fakerData = [
     duration: "02:35:00",
     type: "one_man_show",
     room: 'Salle 1',
-    picture: "/event_picture.jpg"
+    picture: "/event_picture.jpg",
   },
   {
     id: 5,
@@ -47,7 +47,7 @@ const fakerData = [
     duration: "02:35:00",
     type: "concert",
     room: 'Salle 1',
-    picture: "/event_picture.jpg"
+    picture: "/event_picture.jpg",
   },
   {
     id: 6,
@@ -57,7 +57,7 @@ const fakerData = [
     duration: "02:35:00",
     type: "theatre",
     room: 'Salle 1',
-    picture: "/event_picture.jpg"
+    picture: "/event_picture.jpg",
   },
   {
     id: 7,
@@ -67,7 +67,7 @@ const fakerData = [
     duration: "02:35:00",
     type: "theatre",
     room: 'Salle 1',
-    picture: "/event_picture.jpg"
+    picture: "/event_picture.jpg",
   },
   {
     id: 8,
@@ -77,7 +77,17 @@ const fakerData = [
     duration: "02:35:00",
     type: "concert",
     room: 'Salle 1',
-    picture: "/event_picture.jpg"
+    picture: "/event_picture.jpg",
+  },
+  {
+    id: 9,
+    title: "Should not appear on event index page!",
+    description: "quia et suscipit\nsuscipit recusandae consequuntur expedita et cum\nreprehenderit molestiae ut ut quas totam\nnostrum rerum est autem sunt rem eveniet architecto",
+    start_on: "2025-01-26 16:35:00",
+    duration: "02:35:00",
+    type: "concert",
+    room: 'Salle 1',
+    picture: "/event_picture.jpg",
   },
 ]
 

@@ -15,7 +15,7 @@ import { PastEventsButton } from "../../Buttons/PastEvents/PastEvents";
 import { useMutation, useQuery, useQueryClient } from "@tanstack/react-query";
 import { getEventsAssignedByVolunteerId, updateVolunteerAssignmentRating } from "../../../services/api/volunteer_assignments";
 import axios from "axios";
-// import { parse } from "@formkit/tempo";
+import clone from 'just-clone';
 
 const TABLE_HEAD = ["Titre", "Date et heure", "Tâche", "Note", ""];
 
@@ -31,7 +31,7 @@ export function PastEventsModal(props: any) {
     mutationFn: ({ ids, data }) => {
       return axios.post(`https://jsonplaceholder.typicode.com/posts/patch/${ids.volunteer_id}`, data)
     },
-    // doesn't return the correct post value with a faker
+    // doesn't return the correct value with a faker
     // mutationFn: ({ ids, newVal }) => { return updateVolunteerAssignmentRating({ ids, newVal }) },
     onSuccess: () => {
       queryClient.invalidateQueries({ queryKey: [`eventsAssignedListVolunteer${id}`], refetchType: 'all' })
@@ -54,7 +54,8 @@ export function PastEventsModal(props: any) {
 
   useEffect(() => {
     if (isSuccess) {
-      setEventsAssigned([...data])
+      const dataCopy = clone(data)
+      setEventsAssigned(dataCopy)
     }
   }, [isSuccess])
 
@@ -90,7 +91,7 @@ export function PastEventsModal(props: any) {
   }
 
   const handleClick = (ids, newVal) => {
-    const eventsAssignedCopy = [...eventsAssigned]
+    const eventsAssignedCopy = clone(eventsAssigned)
 
     if (!newVal) {
       console.log("No rating to apply. Possible to use react hook form for display?")
@@ -106,8 +107,9 @@ export function PastEventsModal(props: any) {
     eventsAssignedCopy[index].volunteer_assignment_rating = newVal
 
     setEventsAssigned(eventsAssignedCopy)
-    // updateVolunteerAssignmentRating({ ids, newVal })
-    updateRating.mutate({ ids, newVal })
+    // updateRating.mutate({ ids, newVal })
+    //mutationFn called directly because we can't use it yet 
+    updateVolunteerAssignmentRating({ ids, newVal })
     newRatingApplied()
   }
 

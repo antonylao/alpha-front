@@ -1,5 +1,5 @@
 import { useContext, useEffect, useState } from "react"
-import { getEvents } from "../../../services/api/events"
+import { getEvents, getUpcomingEvents } from "../../../services/api/events"
 
 import { VolunteerDescriptionEventPageCard } from "../../Components/CardEvent/VOLUNTEERDescriptionEventPageCard"
 import { EventFilter } from "../../Components/EventFilter/EventFilter"
@@ -9,7 +9,6 @@ import { useQuery } from "@tanstack/react-query"
 import { VolunteerEventCard } from "../../Components/CardEvent/VOLUNTEEREventCard"
 import VolunteerEventTypesToggledContext from "../../../hooks/contexts/volunteerEventTypesToggled.context"
 
-
 export function VolunteerEventPage() {
   const [filteredEvents, setFilteredEvents] = useState<any>([])
   const [searchBarValue, setSearchBarValue] = useState<any>("")
@@ -18,8 +17,8 @@ export function VolunteerEventPage() {
   const { eventTypesToggled, updateEventTypesToggled } = useContext(VolunteerEventTypesToggledContext)
 
   const { data, isSuccess, isLoading, isError } = useQuery({
-    queryKey: ["completeListEvents"],
-    queryFn: getEvents,
+    queryKey: [`allUpcomingEvents`],
+    queryFn: () => getUpcomingEvents(),
   })
 
   const eventTypes = [...new Set<string>(data?.map((event: any) => { return event.type }))]
@@ -55,22 +54,6 @@ export function VolunteerEventPage() {
 
   const receiveSearchBarData = (value: string) => {
     setSearchBarValue(value)
-    // value = normalizeString(value)
-
-    // const searchValRegexp = stringToRegExp(value);
-
-    // setFilteredEvents(
-    //   data.filter((event: any) => {
-
-    //     return (
-    //       event.title.match(searchValRegexp) && eventTypesToggled.includes(event.type)
-    //     );
-    //   })
-    // );
-  }
-
-  const receiveCheckBoxesInfo = (value: Array<any>) => {
-    console.log(value)
   }
 
   if (isLoading) return <div>Chargement...</div>;

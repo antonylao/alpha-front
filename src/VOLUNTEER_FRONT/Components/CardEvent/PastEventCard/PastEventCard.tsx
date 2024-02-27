@@ -9,27 +9,22 @@ import {
 
 import { useEffect, useState } from "react";
 import { format, parse } from "@formkit/tempo";
-import { ModaleTaskList } from "./ModaleTaskList/ModaleTaskList";
-import { cardBorderColor, eventTypeBackgroundColor } from "../../../services/utils/Utils";
+import { ModaleTaskList } from "../ModaleTaskList/ModaleTaskList";
+import { cardBorderColor, eventTypeBackgroundColor } from "../../../../services/utils/Utils";
+import { ModalComment } from "./CommentButton/ModalComment";
 
-export function VolunteerEventCard({ data }: any) {
+export function PastEventCard({ data }: any) {
 
-  const [borderColor, setBorderColor] = useState<string>(cardBorderColor(''))
+  const onMountBorderColor = data.comment ? cardBorderColor('commented') : cardBorderColor('not_commented')
 
-  const receiveAssignmentsData = (data: any) => {
-    console.log(data)
-    if (data.filter((obj) => obj.volunteer_assignment_status === 'validated').length > 0) {
-      console.log('validated')
-      setBorderColor(cardBorderColor('validated'))
-    } else if (data.filter((obj) => obj.volunteer_assignment_status === 'pending').length > 0) {
-      console.log('pending')
-      setBorderColor(cardBorderColor('pending'))
-    } else if (data.filter((obj) => obj.volunteer_assignment_status === 'refused').length > 0) {
-      console.log('refused')
-      setBorderColor(cardBorderColor('refused'))
-    } else {
-      setBorderColor(cardBorderColor(''))
-    }
+  const [borderColor, setBorderColor] = useState<string>('')
+
+  useEffect(() => {
+    setBorderColor(onMountBorderColor)
+  }, [onMountBorderColor])
+
+  const receiveCommentAppliedData = () => {
+    setBorderColor(cardBorderColor('commented'))
   }
 
   return (
@@ -56,14 +51,15 @@ export function VolunteerEventCard({ data }: any) {
           </div>
           <Typography color="gray" className="mb-5">{data.description}</Typography>
 
-          <Typography color="gray">{format(parse(data.start_on, "YYYY-MM-DD HH:MM:SS"), { date: "full", time: "short" }, "fr")}</Typography>
+          <Typography color="gray" className="mb-5">{format(parse(data.start_on, "YYYY-MM-DD HH:MM:SS"), { date: "full", time: "short" }, "fr")}</Typography>
+          <Typography color="gray" >{data.task_name}</Typography>
         </CardBody>
         <CardFooter>
           <div className="flex items-center">
             <div>{`Durée: ${format(parse(data.duration, "HH:mm:ss"), { time: "short" }, "fr")}`}</div>
             <div className="flex items-center ml-auto space-x-1">
               <div className="">
-                <ModaleTaskList eventId={data.id} sendAssignmentsData={receiveAssignmentsData} />
+                <ModalComment ids={{ volunteerId: data.volunteer_id, eventId: data.event_id, taskId: data.task_id }} comment={data.comment} commentApplied={receiveCommentAppliedData} />
               </div>
             </div>
           </div>
