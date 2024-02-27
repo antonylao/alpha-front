@@ -1,6 +1,7 @@
 import axios from "axios"
 import { useApi } from "../../hooks/useApi";
 import { fakerVolunteers } from "../../Pages/VolunteerPage/fakerVolunteers";
+import { fakerVolunteerSignedIn } from "../../VOLUNTEER_FRONT/Components/Navbar/fakerVolunteerSignedIn";
 
 const api = useApi();
 
@@ -16,20 +17,22 @@ export async function getVolunteers() {
   }
 }
 
-
-//IN CONSTRUCTION
-export async function getVolunteersFiltered(searchFilter: '') {
+export async function getVolunteerById(id: number) {
   try {
-    const { data } = await api.get("users")
+    const { data } = await api.get(`users/${id}`)
     return data;
   } catch (err) {
     console.log(err)
   }
 }
 
-export async function getVolunteerById(id: number) {
+export async function getVolunteerProfilePictureById(id: number) {
   try {
-    const { data } = await api.get(`users/${id}`)
+    // const { data } = await api.get(`users/${id}/profile_picture`)
+    // return data;
+
+    //in VolunteerNavbar : faker only has one id of 1
+    const data = fakerVolunteerSignedIn.datas.filter((obj) => obj.id === id)[0]
     return data;
   } catch (err) {
     console.log(err)
