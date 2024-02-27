@@ -10,6 +10,9 @@ import PrivateRoute from "./services/utils/PrivateRoute";
 import { SignInPage } from "./Pages/SignInPage/SignInPage";
 import VolunteerPage from "./Pages/VolunteerPage/VolunteerPage";
 import { ReactQueryDevtools } from "@tanstack/react-query-devtools";
+import  VolonteerSignIn  from "./Volonteers/Pages/SignInUpPage/SignInUpPage"
+import MyProfilePage from "./Volonteers/Pages/MyProfile/MyprofilePage";
+
 
 
 function App() {
@@ -25,6 +28,8 @@ function App() {
         {/* Uncomment line below when events page is made */}
         {/* <Route path="/" element={<Navigate to="/events" replace />} /> */}
         <Route path="/signin" element={ <SignInPage /> } />
+        <Route path="/volonteer_signin" element={ <VolonteerSignIn /> } />
+        <Route path="/my_profile" element={ <MyProfilePage /> } />
 
         <Route element={<PrivateRoute />} >
           <Route path="/volunteers" element={ <VolunteerPage />} />

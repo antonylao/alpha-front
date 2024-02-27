@@ -1,14 +1,14 @@
 import React from "react";
+import logo from "./logo_Alpha.png"
+import { NavLink } from 'react-router-dom'
+import "./Navbar.css"
+import { FormProfile } from "../Modales/OrganiserProfile/OrganiserProfile";
 import {
     Navbar,
     Typography,
     IconButton,
     Collapse,
   } from "@material-tailwind/react";
-import logo from "./logo_Alpha.png"
-import { NavLink } from 'react-router-dom'
-import "./Navbar.css"
-import {DialogWithForm} from "../Modales/OrganiserProfile/OrganiserProfile"
 
 
 export default function StickyNavbar() {
@@ -57,7 +57,7 @@ export default function StickyNavbar() {
         <NavLink
         to="#"
         className={({ isActive }) => (isActive ? "activeLink" : undefined)}>
-          <DialogWithForm/>
+          <FormProfile/>
         </NavLink>
         
 

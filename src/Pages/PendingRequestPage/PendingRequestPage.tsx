@@ -1,6 +1,6 @@
 import CircularPagination from "../../Components/Pagination/Pagination"
 import "../../Components/Navbar/Navbar.css"
-// import { BookingCard } from "../../Components/Card/EventCard/EventCard"
+import { PastEventCard } from "../../Components/Card/PastEventCard/PastEventCard"
 
 
 export default function PendingRequestPage() {
@@ -23,15 +23,8 @@ export default function PendingRequestPage() {
                 <div></div>
                 
             </div>
-            <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-4">
-                {/* <BookingCard/>
-                <BookingCard/>
-                <BookingCard/>
-                <BookingCard/>
-                <BookingCard/>
-                <BookingCard/>
-                <BookingCard/>
-                <BookingCard/> */}
+            <div className="">
+            <PastEventCard/>
             </div>
             <div className="flex justify-center m-5">
                 <CircularPagination/>
