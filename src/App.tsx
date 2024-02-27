@@ -25,7 +25,7 @@ function App() {
       <Routes>
         {/* <Route path="/" element={ <EventPage />} /> */}
 
-        {/* <Route path="/" element={<Navigate to="/events" replace />} /> */}
+        <Route path="/" element={<Navigate to="/events" replace />} />
         <Route path="/signin" element={ <SignInPage /> } />
 
         <Route element={<PrivateRoute />} >
