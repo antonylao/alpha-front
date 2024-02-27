@@ -10,8 +10,8 @@ import PrivateRoute from "./services/utils/PrivateRoute";
 import { SignInPage } from "./Pages/SignInPage/SignInPage";
 import VolunteerPage from "./Pages/VolunteerPage/VolunteerPage";
 import { ReactQueryDevtools } from "@tanstack/react-query-devtools";
-import  VolonteerSignIn  from "./Volonteers/Pages/SignInUpPage/SignInUpPage"
-import MyProfilePage from "./Volonteers/Pages/MyProfile/MyprofilePage";
+import  VolonteerSignIn  from "./VOLUNTEER_FRONT/Pages/SignInUpPage/SignInUpPage"
+import MyProfilePage from "./VOLUNTEER_FRONT/Pages/MyProfile/MyprofilePage";
 
 import { VolunteerEventPage } from "./VOLUNTEER_FRONT/Pages/Event/VOLUNTEEREventPage";
 import { EventsAwaitingComment } from "./VOLUNTEER_FRONT/Pages/EventsAwaitingComment/EventsAwaitingComment";
