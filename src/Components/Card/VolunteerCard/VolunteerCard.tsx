@@ -78,6 +78,7 @@ export function VolunteerCard(props: any) {
       <CardHeader floated={false} color="blue-gray">
         <img
           src={volunteer.picture}
+          className="rounded-full object-cover"
           alt="ui/ux review check"
         />
         <div className="to-bg-black-10 absolute inset-0 h-full w-full bg-gradient-to-tr from-transparent via-transparent to-black/60 " />

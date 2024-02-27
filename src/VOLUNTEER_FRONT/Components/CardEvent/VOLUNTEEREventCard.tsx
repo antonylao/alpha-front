@@ -49,12 +49,13 @@ export function VolunteerEventCard({ data }: any) {
               color="blue-gray"
               className="font-medium mr-5"
             >
-              {data.title}
+              {data.title.slice(0, 15)}
+
             </Typography>
             <Chip value={data.room}
               className={`border border-black rounded-full ${eventTypeBackgroundColor(data.type)}`} />
           </div>
-          <Typography color="gray" className="mb-5">{data.description}</Typography>
+          <Typography color="gray" className="mb-5">{data.description.slice(0, 100)}</Typography>
 
           <Typography color="gray">{format(parse(data.start_on, "YYYY-MM-DD HH:MM:SS"), { date: "full", time: "short" }, "fr")}</Typography>
         </CardBody>
