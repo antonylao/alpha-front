@@ -7,8 +7,7 @@ import {
   IconButton,
   Collapse,
 } from "@material-tailwind/react";
-import { getVolunteerProfilePictureById } from "../../../services/api/volunteers";
-import { useQuery } from "@tanstack/react-query";
+
 import { ProfileIcon } from "./ProfileIcon/ProfileIcon";
 
 export default function VolunteerNavbar() {
@@ -61,7 +60,7 @@ export default function VolunteerNavbar() {
         <div className="flex items-center justify-between text-blue-gray-900">
           <Typography
             as="a"
-            href="/"
+            href="/volunteer_front_events"
             className="mr-4 cursor-pointer py-1.5 font-medium"
           >
             <img

@@ -38,9 +38,6 @@ export function PastEventsModal(props: any) {
     },
     onError: () => {
       console.log("error branch")
-      // queryClient.invalidateQueries({ queryKey: [`eventsAssignedListVolunteer${id}`], refetchType: 'all' })
-      // queryClient.refetchQueries({ queryKey: [`eventsAssignedListVolunteer${id}`], type: 'active' })
-      queryClient.refetchQueries({ stale: true })
     }
   })
 
@@ -114,7 +111,10 @@ export function PastEventsModal(props: any) {
   }
 
   const ratingChanged = (eventId: number, taskId: number) => {
-    return !!(newRatings.filter((obj: any) => obj.event_id === eventId && obj.task_id === taskId)[0])
+    return (
+      newRatings.filter((obj: any) => obj.event_id === eventId && obj.task_id === taskId)
+        .length > 0
+    )
   }
 
   if (isLoading) return <div>Chargement...</div>;

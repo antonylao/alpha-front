@@ -11,11 +11,11 @@ import { SignInPage } from "./Pages/SignInPage/SignInPage";
 import VolunteerPage from "./Pages/VolunteerPage/VolunteerPage";
 import { ReactQueryDevtools } from "@tanstack/react-query-devtools";
 import VolonteerSignIn from "./Volonteers/Pages/SignInUpPage/SignInUpPage"
-import MyProfilePage from "./Volonteers/Pages/MyProfile/MyprofilePage";
 
 import { VolunteerEventPage } from "./VOLUNTEER_FRONT/Pages/Event/VOLUNTEEREventPage";
 import { EventsAwaitingComment } from "./VOLUNTEER_FRONT/Pages/EventsAwaitingComment/EventsAwaitingComment";
 import VolunteerNavbar from "./VOLUNTEER_FRONT/Components/Navbar/VolunteerNavbar";
+import MyProfilePage from "./VOLUNTEER_FRONT/Pages/MyProfile/MyprofilePage";
 
 
 function App() {

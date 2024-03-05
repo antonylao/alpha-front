@@ -75,14 +75,13 @@ export function VolunteerCard(props: any) {
 
   return (
     <Card className={`w-full max-w-[26rem] shadow-lg border-2 ${borderColor} `}>
-      <CardHeader floated={false} color="blue-gray">
+      <div className="flex justify-center mt-3">
         <img
           src={volunteer.picture}
-          className="rounded-full object-cover"
+          className="rounded-full object-cover aspect-square p-4"
           alt="ui/ux review check"
         />
-        <div className="to-bg-black-10 absolute inset-0 h-full w-full bg-gradient-to-tr from-transparent via-transparent to-black/60 " />
-      </CardHeader>
+      </div>
       <CardBody>
         <Typography
           variant="h5"

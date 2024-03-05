@@ -47,8 +47,6 @@ export default function VolunteerPage() {
 
   return (
     <>
-      <h1>Volunteer Page Title</h1>
-
       <SearchBarVolunteer sendToVolunteerPage={receiveSearchBarData} />
       <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-4">
         {filteredListVolunteers.map((volunteer: any) => (

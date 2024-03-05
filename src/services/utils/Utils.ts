@@ -4,7 +4,7 @@ function escapeRegExp(str: string) {
 
 export function stringToRegExp(str: string) {
   str = escapeRegExp(str);
-  return new RegExp(str, 'ig'); //g is needed?
+  return new RegExp(str, 'ig');
 }
 
 //removes trailing whitespaces between words, and at the beginning and end
