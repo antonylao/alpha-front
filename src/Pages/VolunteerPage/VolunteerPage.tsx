@@ -50,7 +50,7 @@ export default function VolunteerPage() {
       <h1>Volunteer Page Title</h1>
 
       <SearchBarVolunteer sendToVolunteerPage={receiveSearchBarData} />
-      <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-4">
+      <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-4 mt-3">
         {filteredListVolunteers.map((volunteer: any) => (
           <div key={volunteer.id}>
             <VolunteerCard id={volunteer.id} />

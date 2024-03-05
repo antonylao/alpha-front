@@ -49,19 +49,12 @@ export default function StickyNavbar() {
         </NavLink>
 
         <NavLink
-        to="#"
+        to=""
         className={({ isActive }) => (isActive ? "activeLink" : undefined)}>
         Déconnexion
         </NavLink>
 
-        <NavLink
-        to="#"
-        className={({ isActive }) => (isActive ? "activeLink" : undefined)}>
-          <FormProfile/>
-        </NavLink>
-        
-
-
+        <FormProfile/>
       </ul>
     </nav>
   );

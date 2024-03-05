@@ -1,8 +1,18 @@
 import axios from "axios"
 import { useApi } from "../../hooks/useApi";
 import { fakerVolunteers } from "../../Pages/VolunteerPage/fakerVolunteers";
+import { fakerprofile } from "../../VOLUNTEER_FRONT/Pages/MyProfile/fakerprofile";
 
 const api = useApi();
+
+interface Volunteer {
+  firstName: string
+  lastName: string
+  email: string, 
+  password: string,
+  phoneNumber: string
+  profilePicture: File
+}
 
 export async function getVolunteers() {
   try {
@@ -85,6 +95,25 @@ export async function updateVolunteerBan(id: number, ban: boolean) {
     //in VolunteerPage: component VolunteerCard
     fakerVolunteers.datas.filter((obj) => obj.id === id)[0].ban = String(ban)
     return fakerVolunteers.datas.filter((obj) => obj.id === id)[0]
+  } catch (err) {
+    console.log(err)
+  }
+}
+
+export async function updateVolunteerProfile (id: number, newData: Volunteer) {
+  try {
+    // const { data } = await api.put(`users/${id}`, data)
+    // return data;
+
+    //in VolunteerProfilePage: component MyProfileCard
+    const data = fakerprofile.datas.filter((obj) => obj.id === id)[0]
+    Object.keys(newData).forEach((key) => {
+      if(key !== "profilePicture"){
+        data[key] = newData[key]
+      } 
+    })
+    console.log("data update", data)
+    return data
   } catch (err) {
     console.log(err)
   }

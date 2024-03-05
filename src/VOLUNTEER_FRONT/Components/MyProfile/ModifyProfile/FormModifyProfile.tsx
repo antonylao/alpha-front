@@ -3,6 +3,7 @@ import { useForm } from "react-hook-form";
 import { useState } from "react";
 import {yupResolver} from '@hookform/resolvers/yup'
 import * as yup from "yup"; 
+import { updateVolunteerProfile } from "../../../../services/api/volunteers";
 import {
     Dialog,
     Avatar,
@@ -15,22 +16,27 @@ import {
   } from "@material-tailwind/react";
 
   interface Volunteer {
-    firstName: string
-    lastName: string
+    firstName: string,
+    lastName: string,
     email: string, 
     password: string,
-    confirmPassword: string
-    phoneNumber: string
-    picture: File
+    phoneNumber: string,
+    profilePicture: File
   }
 
 // lien de la video tuto hookform/yup utilisée dans ce code 
 // https://www.youtube.com/watch?v=wlltgs5jmZw&ab_channel=PedroTech
 
-export const FormModifyProfile = () =>{
+export const FormModifyProfile = (props: any) =>{
 
+    const { newProfile } = props
     const [volunteer, setVolunteer] = useState<Volunteer[]>([])
     const phoneRegex = /^(?:(?:\+|00)33|0)\s*[1-9](?:[\s.-]*\d{2}){4}$/
+    const [picture, setPicture] = useState('');
+
+    const loadPicture = (e: any) => {
+        setPicture(URL.createObjectURL(e.target.files[0]));
+    };
 
     // schema indique la forme que doit prendre l'objet recu du formulaire
     const schema = yup.object({
@@ -49,23 +55,27 @@ export const FormModifyProfile = () =>{
         // use "ref" to get the value of passwrod.
         .oneOf([yup.ref("password")], "Les mots de passes ne sont pas identiques"),
         phoneNumber: yup.string().matches(phoneRegex, 'Veuillez rentrer un numéro de téléphone français').required("Veuillez renseigner un numéro de téléphone"),
+        profilePicture: yup.mixed()
     })
 
     // le resorlver fait le lien entre hookform et yup pour integrer le schema 
-    // de facon à implementer les validations crées dans le schema 
+    // de facon à implementer les validations créées dans le schema 
     // sur le formulaire
     const { register, handleSubmit, formState: {errors} } = useForm({
         resolver: yupResolver(schema)
     })
 
     const onSubmit = (data: any) => {
-        console.log("Hookform profile", data)
-        setVolunteer([data])
-        console.log("volunteer", volunteer)
+        setVolunteer(data)
+        updateVolunteerProfile(1 , data)
+        newProfile(data)
     }
+
 
     const [open, setOpen] = React.useState(false);
     const handleOpen = () => setOpen((cur) => !cur);
+
+    
 
     return (
         <>
@@ -77,70 +87,85 @@ export const FormModifyProfile = () =>{
         className="border border-gray-900 p-0.5"
         src="/Edit_icon-icons.com_55921.png"/>
         <Dialog
-        size="xs"
+        size="lg"
         open={open}
         handler={handleOpen}
         className="bg-transparent shadow-none"
         >
             <form onSubmit={handleSubmit(onSubmit)}>
-                <Card className="mx-auto w-full max-w-[24rem]">
-                    <CardBody className="flex flex-col gap-4">
-                        <Typography 
-                        variant="h4" 
-                        color="blue-gray"
-                        >
-                            Modifier mon profile
-                        </Typography>
-                        <Typography
-                        className="-mb-2" 
-                        variant="h6"
-                        >
-                            Prénom
-                        </Typography>
-                        <Input size="lg" type="text" placeholder="Prénom" {...register("firstName")} autoComplete="on"/>
-                        <p className="error-message">{errors.firstName?.message}</p>
-                        <Typography
-                        className="-mb-2" 
-                        variant="h6"
-                        >
-                            Nom
-                        </Typography>
-                        <Input size="lg" type="text" placeholder="Nom" {...register("lastName")} autoComplete="on"/>
-                        <p className="error-message">{errors.lastName?.message}</p>
-                        <Typography
-                        className="-mb-2" 
-                        variant="h6"
-                        >
-                            Adresse mail
-                        </Typography>
-                        <Input size="lg" type="email" placeholder="Email" {...register("email")} autoComplete="on"/>
-                        <p className="error-message">{errors.email?.message}</p>
-                        <Typography 
-                        className="-mb-2" 
-                        variant="h6"
-                        >
-                            Nouveau mot de passe
-                        </Typography>
-                        <Input size="lg" type="password" placeholder="Nouveau mot de passe" {...register("password")} autoComplete="off" />
-                        <p className="error-message">{errors.password?.message}</p>
-                        <Typography 
-                        className="-mb-2" 
-                        variant="h6"
-                        >
-                            Confirmer le nouveau mot de passe
-                        </Typography>
-                        <Input size="lg" type="password" placeholder="Confirmer le mot de passe" {...register("confirmPassword")} autoComplete="off" />
-                        <p className="error-message">{errors.confirmPassword?.message}</p>
-                        <Typography 
-                        className="-mb-2" 
-                        variant="h6"
-                        >
-                            N° de téléphone
-                        </Typography>
-                        <Input size="lg" type="text" placeholder="N° de téléphone" {...register("phoneNumber")} autoComplete="off" />
-                        <p className="error-message">{errors.phoneNumber?.message}</p>
+                <Card className="">
+                    <CardBody className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-2 gap-4">
+                        <div>
+                            <Typography
+                            className="mb-1 mt-5" 
+                            variant="h6"
+                            >
+                                Prénom
+                            </Typography>
+                            <Input size="lg" type="text" placeholder="Prénom" {...register("firstName")} autoComplete="on"/>
+                            <p className="error-message">{errors.firstName?.message}</p>
+                            <Typography
+                            className="mb-1 mt-5" 
+                            variant="h6"
+                            >
+                                Nom
+                            </Typography>
+                            <Input size="lg" type="text" placeholder="Nom" {...register("lastName")} autoComplete="on"/>
+                            <p className="error-message">{errors.lastName?.message}</p>
+                            <Typography
+                            className="mb-1 mt-5" 
+                            variant="h6"
+                            >
+                                Adresse mail
+                            </Typography>
+                            <Input size="lg" type="email" placeholder="Email" {...register("email")} autoComplete="on"/>
+                            <p className="error-message">{errors.email?.message}</p>
+                            <Typography 
+                            className="mb-1 mt-5" 
+                            variant="h6"
+                            >
+                                Nouveau mot de passe
+                            </Typography>
+                            <Input size="lg" type="password" placeholder="Nouveau mot de passe" {...register("password")} autoComplete="off" />
+                            <p className="error-message">{errors.password?.message}</p>
+                            <Typography 
+                            className="mb-1 mt-5" 
+                            variant="h6"
+                            >
+                                Confirmer le nouveau mot de passe
+                            </Typography>
+                            <Input size="lg" type="password" placeholder="Confirmer le mot de passe" {...register("confirmPassword")} autoComplete="off" />
+                            <p className="error-message">{errors.confirmPassword?.message}</p>
+                            <Typography 
+                            className="mb-1 mt-5" 
+                            variant="h6"
+                            >
+                                N° de téléphone
+                            </Typography>
+                            <Input size="lg" type="text" placeholder="N° de téléphone" {...register("phoneNumber")} autoComplete="off" />
+                            <p className="error-message">{errors.phoneNumber?.message}</p>
+                        </div>
+                        <div>
+                            <Typography 
+                            className="mb-1 mt-5" 
+                            variant="h6"
+                            >
+                                Photo de profile
+                            </Typography>
+                            <Input 
+                                size="lg" 
+                                type="file" 
+                                placeholder="Photo de profile" 
+                                accept='image/*'
+                                {...register("profilePicture")}
+                                onChange={loadPicture} 
+                                />
+                            <div className="rounded h-80 w-80 mt-6 ms-10">
+                                <img className="object-cover rounded-full h-80 w-80 border-2 border-black bg-gray-300"  src={picture}></img>
+                            </div>
+                        </div>
                     </CardBody>
-                    <CardFooter className="pt-0 flex justify-between">
+                    <CardFooter className="pt-0 flex justify-around">
                         <Button
                         variant="text"
                         color="red"
