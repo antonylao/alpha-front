@@ -12,13 +12,13 @@ export function Create() {
       </CardBody>
       <CardFooter className="mt-10 pt-3">
         <div className="flex justify-around ">
-          <div className="border border-black rounded full bg-red-500 p-1">
+          <div className="border border-black rounded full bg-blue-500 p-1">
             01
           </div>
           <div className="border border-black rounded full bg-orange-500 p-1">
             02
           </div>
-          <div className="border border-black rounded full bg-blue-500 p-1">
+          <div className="border border-black rounded full bg-red-500 p-1">
             03
           </div>
         </div>
