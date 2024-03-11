@@ -32,12 +32,24 @@ export function EventIndex() {
     setFilteredPosts(pastPosts);
   };
 
+  const filterPostsByCategory = (categoryId) => {
+    if (categoryId === "") {
+      setFilteredPosts(posts);
+    } else {
+      const filtered = posts.filter(
+        (post) => post.categories.toString() === categoryId.toString()
+      );
+      setFilteredPosts(filtered);
+    }
+  };
+
   return (
     <>
       <SearchBar
         onFilterFuturePosts={filterFuturePosts}
         onFilterPastPosts={filterPastPosts}
         posts={posts}
+        onCategoryChange={filterPostsByCategory}
       />
       <Exemple filteredPosts={filteredPosts} />
     </>

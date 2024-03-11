@@ -7,10 +7,30 @@ import {
   IconButton,
   Input,
 } from "@material-tailwind/react";
+import Data from "./data.json";
 
-export function SearchBar({ onFilterFuturePosts, onFilterPastPosts, posts }) {
+function mapCategoryIdToLabel(categoryId) {
+  switch (categoryId) {
+    case 1:
+      return "Theatre";
+    case 2:
+      return "One-man-show";
+    case 3:
+      return "Concert";
+    default:
+      return "Unknown";
+  }
+}
+
+export function SearchBar({
+  onFilterFuturePosts,
+  onFilterPastPosts,
+  posts,
+  onCategoryChange,
+}) {
   const [openNav, setOpenNav] = React.useState(false);
   const [search, setSearch] = useState("");
+  const [selectedCategory, setSelectedCategory] = useState("");
 
   React.useEffect(() => {
     window.addEventListener(
@@ -41,6 +61,13 @@ export function SearchBar({ onFilterFuturePosts, onFilterPastPosts, posts }) {
     post.title.toLowerCase().includes(search.toLowerCase())
   );
 
+  const categories = Array.from(new Set(Data.map((item) => item.categories)));
+
+  const handleCategoryChange = (e) => {
+    setSelectedCategory(e.target.value);
+    onCategoryChange(e.target.value);
+  };
+
   const navList = (
     <ul className="mt-2 mb-4 flex flex-col gap-2 lg:mb-0 lg:mt-0 lg:flex-row lg:items-center lg:gap-6">
       <Typography
@@ -49,9 +76,20 @@ export function SearchBar({ onFilterFuturePosts, onFilterPastPosts, posts }) {
         color="blue-gray"
         className="flex items-center gap-x-2 p-1 font-medium"
       >
-        <a href="#" className="flex items-center">
-          Catégories
-        </a>
+        <select
+          className="flex items-center"
+          onChange={handleCategoryChange}
+          value={selectedCategory}
+        >
+          <option value="" disabled selected>
+            Catégorie
+          </option>
+          {categories.map((categoryId, index) => (
+            <option key={index} value={categoryId}>
+              {mapCategoryIdToLabel(categoryId)}
+            </option>
+          ))}
+        </select>
       </Typography>
       <Typography
         as="li"
