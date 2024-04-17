@@ -21,6 +21,8 @@ export function VolunteerEventPage() {
     queryFn: () => getUpcomingEvents(),
   })
 
+  // console.log("🚀 ~ VolunteerEventPage ~ data:", data)
+
   const eventTypes = [...new Set<string>(data?.map((event: any) => { return event.type }))]
 
   useEffect(() => {

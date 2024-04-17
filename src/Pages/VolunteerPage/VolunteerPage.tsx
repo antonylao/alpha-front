@@ -48,7 +48,7 @@ export default function VolunteerPage() {
   return (
     <>
       <SearchBarVolunteer sendToVolunteerPage={receiveSearchBarData} />
-      <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-4">
+      <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-4 auto-rows-max">
         {filteredListVolunteers.map((volunteer: any) => (
           <div key={volunteer.id}>
             <VolunteerCard id={volunteer.id} />

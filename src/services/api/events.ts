@@ -20,11 +20,13 @@ export async function getEvents() {
 
 export async function getUpcomingEvents() {
     try {
-        // const { data } = await api.get("posts");
-        // return data;
+        const { data } = await api.get("event/upcoming");
+        console.log("🚀 ~ getUpcomingEvents ~ datas:", data.datas)
 
-        //in VOLUNTEER: Event page
-        return fakerEvents.datas.filter((obj) => parse(obj.start_on, "YYYY-MM-DD HH:MM:SS") < new Date())
+        return data.datas;
+
+        //faker: in VOLUNTEER: Event page
+        // return fakerEvents.datas.filter((obj) => parse(obj.start_on, "YYYY-MM-DD HH:MM:SS") < new Date())
 
     } catch (err) {
         console.log("ERROR")

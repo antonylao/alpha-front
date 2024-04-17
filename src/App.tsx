@@ -18,6 +18,7 @@ import VolunteerNavbar from "./VOLUNTEER_FRONT/Components/Navbar/VolunteerNavbar
 import MyProfilePage from "./VOLUNTEER_FRONT/Pages/MyProfile/MyprofilePage";
 
 
+
 function App() {
   return (
     <>
@@ -27,6 +28,7 @@ function App() {
       <Routes>
         {/* <Route path="/" element={ <EventPage />} /> */}
 
+        {/* If using replace, the navigation will replace the current entry in the history stack instead of adding a new one. */}
         <Route path="/" element={<Navigate to="/events" replace />} />
         <Route path="/signin" element={<SignInPage />} />
 

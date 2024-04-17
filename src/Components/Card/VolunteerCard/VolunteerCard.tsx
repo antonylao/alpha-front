@@ -74,7 +74,7 @@ export function VolunteerCard(props: any) {
   if (isError) return <div>Erreur lors de la récupération du bénévole {id}</div>;
 
   return (
-    <Card className={`w-full max-w-[26rem] shadow-lg border-2 ${borderColor} `}>
+    <Card className={`w-full max-w-[26rem] shadow-lg border-2 break-words h-full ${borderColor} `}>
       <div className="flex justify-center mt-3">
         <img
           src={volunteer.picture}
@@ -104,14 +104,15 @@ export function VolunteerCard(props: any) {
         </div>
         <p>warning: {String(warning)}, ban: {String(ban)}</p>
       </CardBody>
-      <CardFooter className="group mt-8 inline-flex flex-row-reverse flex-wrap items-center gap-3">
+      <CardFooter className="flex place-content-end mt-auto gap-3">
+        {/* <CardFooter className="group mt-8 inline-flex flex-row-reverse flex-wrap items-center gap-3"> */}
         {/* buttons are inside the modal components */}
         {/* <BanButton />
         <WarningButton />
         <PastEventsButton /> */}
-        <BanConfirmation banValue={ban} sendToVolunteerCard={receiveBanData} />
-        <WarningConfirmation warningValue={warning} banValue={ban} sendToVolunteerCard={receiveWarningData} />
         <PastEventsModal id={id} newRatingApplied={newRatingToApplyInRatingDetails} />
+        <WarningConfirmation warningValue={warning} banValue={ban} sendToVolunteerCard={receiveWarningData} />
+        <BanConfirmation banValue={ban} sendToVolunteerCard={receiveBanData} />
       </CardFooter>
     </Card>
   );

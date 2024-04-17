@@ -13,11 +13,12 @@ import { ModaleTaskList } from "./ModaleTaskList/ModaleTaskList";
 import { cardBorderColor, eventTypeBackgroundColor } from "../../../services/utils/Utils";
 
 export function VolunteerEventCard({ data }: any) {
+  // console.log("🚀 ~ VolunteerEventCard ~ data:", data)
 
   const [borderColor, setBorderColor] = useState<string>(cardBorderColor(''))
 
   const receiveAssignmentsData = (data: any) => {
-    console.log(data)
+    console.log("🚀 ~ receiveAssignmentsData ~ data:", data)
     if (data.filter((obj) => obj.volunteer_assignment_status === 'validated').length > 0) {
       console.log('validated')
       setBorderColor(cardBorderColor('validated'))
@@ -52,12 +53,12 @@ export function VolunteerEventCard({ data }: any) {
               {data.title.slice(0, 15)}
 
             </Typography>
-            <Chip value={data.room}
+            <Chip value={data.room.name}
               className={`border border-black rounded-full ${eventTypeBackgroundColor(data.type)}`} />
           </div>
           <Typography color="gray" className="mb-5">{data.description.slice(0, 100)}</Typography>
 
-          <Typography color="gray">{format(parse(data.start_on, "YYYY-MM-DD HH:MM:SS"), { date: "full", time: "short" }, "fr")}</Typography>
+          <Typography color="gray">{format(parse(data.startOn, "YYYY-MM-DD HH:MM:SS"), { date: "full", time: "short" }, "fr")}</Typography>
         </CardBody>
         <CardFooter>
           <div className="flex items-center">

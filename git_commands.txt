@@ -13,3 +13,14 @@ git pull origin develop
 git branch -d <my_branch>
 git checkout -b <new_branch>
 git pull origin develop
+
+------------------
+(pour prendre changements de develop)
+depuis <branch>
+git add ./ ; git commit -m ".."
+git checkout develop
+git pull origin develop
+git checkout <branch>
+git merge develop
+(check for merge conflict)
+git add ./ ; git commit -m ".."

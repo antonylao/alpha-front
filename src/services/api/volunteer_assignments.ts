@@ -3,6 +3,7 @@ import { useApi } from "../../hooks/useApi";
 import { fakerEventsAssigned } from "../../Pages/VolunteerPage/fakerEventsAssigned";
 import { fakerVolunteerAssignments } from "../../VOLUNTEER_FRONT/Pages/Event/fakerVolunteerAssignments";
 import { fakerVolunteerAssignmentsComments } from "../../VOLUNTEER_FRONT/Pages/EventsAwaitingComment/fakerVolunteerAssignmentsComments";
+import { getConnectedUserId } from "../utils/JWTUtils";
 
 const api = useApi();
 
@@ -19,12 +20,18 @@ export async function getEventsAssignedByVolunteerId(id: number) {
   }
 }
 
-export async function getTasksInfoForVolunteerEventIndexPage({ volunteerId, eventId }: any) {
-  // const { data } = await api.get("/")
-  // return data;
+export async function getTasksInfoForVolunteerEventIndexPage(eventId: number) {
+  const { data } = await api.get(`event/upcoming/${eventId}/task`)
+  console.log(`🚀 ~ getTasksInfoForVolunteerEventIndexPage (eventId: ${eventId}) ~ data.datas:`, data.datas)
+  const connectedUserId = getConnectedUserId()
+
+
+  const dataFiltered = data.datas.filter((obj) => obj.userId === connectedUserId)
+  console.log("🚀 ~ getTasksInfoForVolunteerEventIndexPage ~ dataFiltered:", dataFiltered)
+  return dataFiltered;
 
   //in VOLUNTEER event index page: component ModaleTaskList
-  return fakerVolunteerAssignments.datas.filter((obj) => obj.volunteer_id === volunteerId && obj.event_id === eventId)
+  // return fakerVolunteerAssignments.datas.filter((obj) => obj.volunteer_id === 1 && obj.event_id === eventId)
 }
 
 // export async function updateVolunteerAssignmentRating(ids, newVal) {
@@ -51,6 +58,15 @@ export async function getVolunteerAssignmentInfoForEventsToCommentOnPage() {
     console.log("ERROR")
     console.log(err)
   }
+}
+
+//! not done
+export async function createVolunteerAssignment({ ids, status }) {
+  const volunteerId = ids.volunteerId
+  const eventId = ids.eventId
+  const taskId = ids.taskId
+
+  const { data } = await api.post(`users`, { volunteer_comment: newVal })
 }
 
 export async function updateVolunteerAssignmentComment({ ids, newVal }: any) {
