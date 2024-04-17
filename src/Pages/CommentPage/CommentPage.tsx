@@ -1,5 +1,5 @@
 import { useEffect, useState } from "react"
-import { getComments } from "../../services/api/comments"
+import { getCommentsV2 } from "../../services/api/comments"
 import { Select } from '@material-tailwind/react';
 import { normalizeString, stringToRegExp } from "../../services/utils/Utils";
 import { CheckboxVerticalListGroup } from "../../Components/Comments/TaskList/TaskListDropdown"
@@ -21,7 +21,7 @@ export default function CommentPage() {
 
     useEffect(() => {
         async function loadComments() {
-            const result = await getComments();
+            const result = await getCommentsV2();
             setAllComments(result)
             setComments(result)
         }
@@ -53,7 +53,6 @@ export default function CommentPage() {
     return (
         <>
 
-
             <div className="container">
                 <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-4 mt-6">
                     <div className='w-72 filter-input'>
@@ -71,7 +70,7 @@ export default function CommentPage() {
                             <div className=" ps-3 pe-3  pb-2 flex justify-between">
                                 <div className="flex justify-between">
                                     <p className="pe-5">
-                                        {comment.name}
+                                        {comment.eventTask.event.title}
                                     </p>
                                     <div className="relative grid select-none items-center whitespace-nowrap rounded-lg bg-gray-900 py-1.5 px-3  text-xs uppercase text-white h-7 w-17">
                                         <span className="">{comment.id}</span>
@@ -80,13 +79,13 @@ export default function CommentPage() {
                                 <p>{comment.id}</p>
                             </div>
                             <div className="relative grid select-none items-center whitespace-nowrap rounded-lg bg-gray-200 text-xs uppercase text-black h-7 w-12 m-2">
-                                <span className="">{comment.postId}</span>
+                                <span className="">{comment.eventTask.event.id}</span>
                             </div>
                             <p className="block font-sans text-base antialiased font-light leading-relaxed text-inherit p-1 border rounded">
-                                {comment.body}
+                                {comment.volunteerComment}
                             </p>
                             <div className="pt-4 flex justify-end">
-                                <p className="">{comment.email}</p>
+                                <p className="">{comment.user.firstname}</p>
                             </div>
                         </div>
                     )}
@@ -98,7 +97,7 @@ export default function CommentPage() {
                     </div>
                     <div></div>
                 </div>
-            </div>
+            </div> 
 
         </>
     )

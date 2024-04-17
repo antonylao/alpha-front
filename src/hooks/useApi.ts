@@ -2,12 +2,12 @@ import axios, { AxiosInstance } from "axios";
 
 export function useApi() {
 
-    //const headers = { 'Access-Control-Allow-Origin': '*' };
+    const headers = { 'Access-Control-Allow-Origin': '*' };
 
     const api: AxiosInstance = axios.create({
-        baseURL: import.meta.env.VITE_API_BASE_URL_PROD,
-        // baseURL: "https://jsonplaceholder.typicode.com",
-        //headers
+        // baseURL: import.meta.env.VITE_API_BASE_URL_PROD,
+        baseURL: "http://localhost:3000/",
+        headers
     })
 
     api.interceptors.request.use((config:any) => {

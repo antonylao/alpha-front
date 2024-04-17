@@ -4,7 +4,7 @@ const api = useApi();
 
 export async function getPosts() {
     try {
-        const {data} = await axios.get("https://jsonplaceholder.typicode.com/posts");
+        const {data} = await axios.get("http://localhost:3000/organiser/pending_requests");
         console.log(data)
         return data;
     } catch (err) {
