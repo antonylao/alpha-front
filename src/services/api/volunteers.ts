@@ -26,17 +26,6 @@ export async function getVolunteers() {
   }
 }
 
-
-//IN CONSTRUCTION
-export async function getVolunteersFiltered(searchFilter: '') {
-  try {
-    const { data } = await api.get("users")
-    return data;
-  } catch (err) {
-    console.log(err)
-  }
-}
-
 export async function getVolunteerById(id: number) {
   try {
     const { data } = await api.get(`users/${id}`)

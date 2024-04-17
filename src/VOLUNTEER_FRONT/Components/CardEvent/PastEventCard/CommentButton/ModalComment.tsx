@@ -2,7 +2,6 @@ import React, { useEffect, useState } from "react";
 import {
   Button,
   Dialog,
-  DialogHeader,
   DialogBody,
   DialogFooter,
   Textarea,
@@ -12,7 +11,7 @@ import axios from "axios";
 import { updateVolunteerAssignmentComment } from "../../../../../services/api/volunteer_assignments";
 import { useMutation, useQueryClient } from "@tanstack/react-query";
 
-export function ModalComment(props) {
+export function ModalComment(props: any) {
   const { ids, comment, commentApplied } = props
   const [open, setOpen] = React.useState(false);
   const [commentContent, setCommentContent] = useState(comment)
@@ -22,7 +21,7 @@ export function ModalComment(props) {
   //set comment with a useMutation
   const queryClient = useQueryClient();
   const updateComment = useMutation({
-    mutationFn: ({ ids, newVal }) => {
+    mutationFn: ({ ids, newVal }: any) => {
       return axios.patch(`https://jsonplaceholder.typicode.com/posts/patch/${ids.eventId}`, newVal)
     },
     // doesn't return the correct value with a faker
@@ -46,7 +45,7 @@ export function ModalComment(props) {
 
   const handleOpen = () => setOpen(!open);
 
-  const handleChange = (e) => {
+  const handleChange = (e: any) => {
     setCommentContent(e.target.value)
   }
 
@@ -65,7 +64,7 @@ export function ModalComment(props) {
 
   return (
     <>
-      <CommentButton onClick={handleOpen} variant="gradient" />
+      <CommentButton onClick={handleOpen} />
       <Dialog open={open} handler={handleOpen}>
         <DialogBody>
           {comment ? <Textarea disabled label="Commentaire" value={commentContent} /> :

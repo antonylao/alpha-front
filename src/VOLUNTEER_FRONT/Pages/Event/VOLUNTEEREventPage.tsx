@@ -21,15 +21,15 @@ export function VolunteerEventPage() {
     queryFn: () => getUpcomingEvents(),
   })
 
+  // console.log("🚀 ~ VolunteerEventPage ~ data:", data)
+
   const eventTypes = [...new Set<string>(data?.map((event: any) => { return event.type }))]
 
   useEffect(() => {
     if (isSuccess && useEffectFirstCall) {
       setFilteredEvents(data)
-      // updateEventTypesToggled([...new Set<string>(data.map((event: any) => { return event.type }))])
 
-      const allEventTypes = new Set<string>(data.map((event: any) => { return event.type }))
-      // console.log(allEventTypes)
+      const allEventTypes = new Set<string>(data?.map((event: any) => { return event.type }))
       updateEventTypesToggled(allEventTypes)
 
       setUseEffectFirstCall(false)
@@ -40,7 +40,6 @@ export function VolunteerEventPage() {
       const searchValueNormalized = normalizeString(searchBarValue)
 
       const searchValRegexp = stringToRegExp(searchValueNormalized);
-      console.log(eventTypesToggled)
       setFilteredEvents(
         data?.filter((event: any) => {
 

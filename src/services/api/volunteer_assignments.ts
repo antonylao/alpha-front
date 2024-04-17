@@ -3,6 +3,7 @@ import { useApi } from "../../hooks/useApi";
 import { fakerEventsAssigned } from "../../Pages/VolunteerPage/fakerEventsAssigned";
 import { fakerVolunteerAssignments } from "../../VOLUNTEER_FRONT/Pages/Event/fakerVolunteerAssignments";
 import { fakerVolunteerAssignmentsComments } from "../../VOLUNTEER_FRONT/Pages/EventsAwaitingComment/fakerVolunteerAssignmentsComments";
+import { getConnectedUserId } from "../utils/JWTUtils";
 
 const api = useApi();
 
@@ -19,16 +20,22 @@ export async function getEventsAssignedByVolunteerId(id: number) {
   }
 }
 
-export async function getTasksInfoForVolunteerEventIndexPage({ volunteerId, eventId }) {
-  // const { data } = await api.get("/")
-  // return data;
+export async function getTasksInfoForVolunteerEventIndexPage(eventId: number) {
+  const { data } = await api.get(`event/upcoming/${eventId}/task`)
+  console.log(`🚀 ~ getTasksInfoForVolunteerEventIndexPage (eventId: ${eventId}) ~ data.datas:`, data.datas)
+  const connectedUserId = getConnectedUserId()
+
+
+  const dataFiltered = data.datas.filter((obj) => obj.userId === connectedUserId)
+  console.log("🚀 ~ getTasksInfoForVolunteerEventIndexPage ~ dataFiltered:", dataFiltered)
+  return dataFiltered;
 
   //in VOLUNTEER event index page: component ModaleTaskList
-  return fakerVolunteerAssignments.datas.filter((obj) => obj.volunteer_id === volunteerId && obj.event_id === eventId)
+  // return fakerVolunteerAssignments.datas.filter((obj) => obj.volunteer_id === 1 && obj.event_id === eventId)
 }
 
 // export async function updateVolunteerAssignmentRating(ids, newVal) {
-export async function updateVolunteerAssignmentRating({ ids, newVal }) {
+export async function updateVolunteerAssignmentRating({ ids, newVal }: any) {
   //API PATCH request on table volunteer_assignment, organiser_rating column, on the row including the ids specified
   // const data = await api.get("/users/1")
   // const { data } = await api.patch(`users`, { rating: newVal })
@@ -53,7 +60,16 @@ export async function getVolunteerAssignmentInfoForEventsToCommentOnPage() {
   }
 }
 
-export async function updateVolunteerAssignmentComment({ ids, newVal }) {
+//! not done
+export async function createVolunteerAssignment({ ids, status }) {
+  const volunteerId = ids.volunteerId
+  const eventId = ids.eventId
+  const taskId = ids.taskId
+
+  const { data } = await api.post(`users`, { volunteer_comment: newVal })
+}
+
+export async function updateVolunteerAssignmentComment({ ids, newVal }: any) {
   const volunteerId = ids.volunteerId
   const eventId = ids.eventId
   const taskId = ids.taskId
@@ -68,7 +84,7 @@ export async function updateVolunteerAssignmentComment({ ids, newVal }) {
 }
 
 
-export async function updateVolunteerAssignmentStatus({ ids, newVal }) {
+export async function updateVolunteerAssignmentStatus({ ids, newVal }: any) {
   const volunteerId = ids.volunteer_id
   const eventId = ids.event_id
   const taskId = ids.task_id
@@ -83,7 +99,7 @@ export async function updateVolunteerAssignmentStatus({ ids, newVal }) {
   return data
 }
 
-function deleteVolunteerAssignmentRow(ids) {
+function deleteVolunteerAssignmentRow(ids: any) {
   const volunteerId = ids.volunteer_id
   const eventId = ids.event_id
   const taskId = ids.task_id

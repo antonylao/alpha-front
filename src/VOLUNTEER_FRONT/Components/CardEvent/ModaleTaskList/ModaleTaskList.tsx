@@ -9,9 +9,10 @@ import {
 } from "@material-tailwind/react";
 import { ApplyButton } from "../ApplyButton/ApplyButton";
 import { useMutation, useQuery, useQueryClient } from "@tanstack/react-query";
-import { getTasksInfoForVolunteerEventIndexPage } from "../../../../services/api/volunteer_assignments";
+import { createVolunteerAssignment, getTasksInfoForVolunteerEventIndexPage } from "../../../../services/api/volunteer_assignments";
 import { TaskApplyCancelConfirmation } from "./ConfirmationCancel/ConfirmationCancel";
 import axios from "axios";
+import { VolunteerAssignmentStatus } from "../../../../services/utils/BddEnums";
 
 const TABLE_HEAD = ["Tâche", "Nb Requis/Validés", "Statut", ""];
 
@@ -22,7 +23,7 @@ export function ModaleTaskList(props: any) {
 
   //get volunteer id via the URL ? 
   // const {volunteerId} = useParams()
-  // fix for now: 
+  //* fix for now: 
   const volunteerId = 1;
 
   const [open, setOpen] = React.useState(false);
@@ -30,10 +31,8 @@ export function ModaleTaskList(props: any) {
 
   const { data, isSuccess, isLoading, isError } = useQuery({
     queryKey: [`TasksForEvent${eventId}AndAssignmentInfos`],
-    queryFn: () => getTasksInfoForVolunteerEventIndexPage({ volunteerId, eventId }),
+    queryFn: () => getTasksInfoForVolunteerEventIndexPage(eventId),
   })
-
-
 
   useEffect(() => {
     if (isSuccess) {
@@ -50,11 +49,12 @@ export function ModaleTaskList(props: any) {
     // doesn't return the correct value with a faker
     // mutationFn: ({ ids, action }) => {
     //   switch (action) {
+    //     //! replace by enum values
     //     case "cancel":
-    //       return deleteVolunteerAssignmentRow(ids)
+    //       return updateVolunteerAssignmentStatus({ ids, newVal: 'cancel' })
     //       break;
-    //     case "validate":
-    //       return updateVolunteerAssignmentStatus({ ids, newVal: 'validated' })
+    //     case "apply":
+    //       return createVolunteerAssignment({ ids, status: VolunteerAssignmentStatus.PENDING })
     //       break;
     //   }
     // },
@@ -137,19 +137,19 @@ export function ModaleTaskList(props: any) {
                 </tr>
               </thead>
               <tbody>
-                {data.map(({ volunteer_id, event_id, task_id, task_name, volunteer_assignment_count_validated, event_task_nb_volunteers_required, volunteer_assignment_status }, index: number) => {
+                {data?.map(({ userId, eventId, taskId, taskName, countValidatedAssignment, nbVolunteersRequired, volunteerAssignmentStatus }, index: number) => {
                   const isLast = index === data.length - 1;
                   const classes = isLast ? "p-4" : "p-4 border-b border-blue-gray-50";
 
                   return (
-                    <tr key={task_name}>
+                    <tr key={taskName}>
                       <td className={classes}>
                         <Typography
                           variant="small"
                           color="blue-gray"
                           className="font-normal"
                         >
-                          {task_name}
+                          {taskName}
                         </Typography>
                       </td>
                       <td className={classes}>
@@ -158,7 +158,7 @@ export function ModaleTaskList(props: any) {
                           color="blue-gray"
                           className="font-normal"
                         >
-                          {`${volunteer_assignment_count_validated}/${event_task_nb_volunteers_required}`}
+                          {`${countValidatedAssignment}/${nbVolunteersRequired}`}
                         </Typography>
                       </td>
                       <td className={classes}>
@@ -167,15 +167,15 @@ export function ModaleTaskList(props: any) {
                           color="blue-gray"
                           className="font-normal"
                         >
-                          {volunteer_assignment_status ? volunteer_assignment_status : ''}
+                          {volunteerAssignmentStatus ? volunteerAssignmentStatus : ''}
                         </Typography>
                       </td>
                       <td className={classes}>
                         {
-                          (volunteer_assignment_status === 'pending') ?
-                            <Button onClick={() => handleClick({ volunteerId: volunteer_id, eventId: event_id, taskId: task_id }, 'cancel')}>Annuler</Button> :
-                            (volunteer_assignment_status === 'validated') ? <TaskApplyCancelConfirmation ids={{ volunteerId: volunteer_id, eventId: event_id, taskId: task_id }} validated={receiveValidationCancel} /> :
-                              <Button onClick={() => handleClick({ volunteerId: volunteer_id, eventId: event_id, taskId: task_id }, 'apply')}>Postuler</Button>
+                          (volunteerAssignmentStatus === 'pending') ?
+                            <Button onClick={() => handleClick({ volunteerId: volunteerId, eventId: eventId, taskId: taskId }, 'cancel')}>Annuler</Button> :
+                            (volunteerAssignmentStatus === 'validated') ? <TaskApplyCancelConfirmation ids={{ volunteerId: volunteerId, eventId: eventId, taskId: taskId }} validated={receiveValidationCancel} /> :
+                              <Button onClick={() => handleClick({ volunteerId: volunteerId, eventId: eventId, taskId: taskId }, 'apply')}>Postuler</Button>
                         }
                       </td>
                     </tr>

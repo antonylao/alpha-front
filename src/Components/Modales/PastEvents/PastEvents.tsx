@@ -28,7 +28,7 @@ export function PastEventsModal(props: any) {
 
   const queryClient = useQueryClient();
   const updateRating = useMutation({
-    mutationFn: ({ ids, data }) => {
+    mutationFn: ({ ids, data }: any) => {
       return axios.post(`https://jsonplaceholder.typicode.com/posts/patch/${ids.volunteer_id}`, data)
     },
     // doesn't return the correct value with a faker
@@ -38,9 +38,6 @@ export function PastEventsModal(props: any) {
     },
     onError: () => {
       console.log("error branch")
-      // queryClient.invalidateQueries({ queryKey: [`eventsAssignedListVolunteer${id}`], refetchType: 'all' })
-      // queryClient.refetchQueries({ queryKey: [`eventsAssignedListVolunteer${id}`], type: 'active' })
-      queryClient.refetchQueries({ stale: true })
     }
   })
 
@@ -71,7 +68,7 @@ export function PastEventsModal(props: any) {
     let indexNewRating = NaN;
 
     //if there is already a rating for this event and task, replace the value of the rating by the new one
-    newRatings.every((elt, index) => {
+    newRatings.every((elt: any, index: number) => {
       if (elt.event_id === obj.event_id && elt.task_id === obj.task_id) {
         indexNewRating = index;
         return false;
@@ -90,7 +87,7 @@ export function PastEventsModal(props: any) {
 
   }
 
-  const handleClick = (ids, newVal) => {
+  const handleClick = (ids: any, newVal: number) => {
     const eventsAssignedCopy = clone(eventsAssigned)
 
     if (!newVal) {
@@ -103,7 +100,7 @@ export function PastEventsModal(props: any) {
     // console.log(eltToChange)
     // eltToChange.volunteer_assignment_rating = newVal
 
-    const index = eventsAssignedCopy.findIndex(obj => obj.event_id === ids.event_id && obj.task_id === ids.task_id)
+    const index = eventsAssignedCopy.findIndex((obj: any) => obj.event_id === ids.event_id && obj.task_id === ids.task_id)
     eventsAssignedCopy[index].volunteer_assignment_rating = newVal
 
     setEventsAssigned(eventsAssignedCopy)
@@ -113,8 +110,11 @@ export function PastEventsModal(props: any) {
     newRatingApplied()
   }
 
-  const ratingChanged = (eventId, taskId) => {
-    return !!(newRatings.filter((obj) => obj.event_id === eventId && obj.task_id === taskId)[0])
+  const ratingChanged = (eventId: number, taskId: number) => {
+    return (
+      newRatings.filter((obj: any) => obj.event_id === eventId && obj.task_id === taskId)
+        .length > 0
+    )
   }
 
   if (isLoading) return <div>Chargement...</div>;
@@ -152,7 +152,7 @@ export function PastEventsModal(props: any) {
                 </tr>
               </thead>
               <tbody>
-                {eventsAssigned.map(({ event_id, task_id, event_title, event_start_on, task_name, volunteer_assignment_rating }, index: number) => {
+                {eventsAssigned.map(({ event_id, task_id, event_title, event_start_on, task_name, volunteer_assignment_rating }: any, index: number) => {
                   const isLast = index === eventsAssigned.length - 1;
                   const classes = isLast ? "p-4" : "p-4 border-b border-blue-gray-50";
 

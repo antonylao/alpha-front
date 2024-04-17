@@ -43,11 +43,15 @@ export function RatingDetails(props: any) {
   //set new state for remounting with the correct values for the props of RatingVolunteerProfile and RatingByTask
   const handleRefetch = async () => {
     try {
-      const res = await refetch();
-      const mean = meanRatings(res.data)
+      const mean = meanRatings(data)
       if (mean) { setRating(mean) };
-      const newMeanRatingsForPopover = meanRatingsByTask(res.data)
+      const newMeanRatingsForPopover = meanRatingsByTask(data)
       setMeanRatingsForPopover(newMeanRatingsForPopover)
+      // const res = await refetch();
+      // const mean = meanRatings(res.data)
+      // if (mean) { setRating(mean) };
+      // const newMeanRatingsForPopover = meanRatingsByTask(res.data)
+      // setMeanRatingsForPopover(newMeanRatingsForPopover)
 
 
     } catch (err) {
@@ -56,11 +60,8 @@ export function RatingDetails(props: any) {
   }
 
   useEffect(() => {
-    console.log("useEffect called in RatingDetails for id " + id)
-    console.log(JSON.stringify([isSuccess, taskListSuccess, countRatingApplied]))
     if (isSuccess) { setEventsAssigned(data) }
     if (taskListSuccess && isSuccess) {
-      //issue: fetch on first mount of component
       handleRefetch()
     }
   }, [isSuccess, taskListSuccess, countRatingApplied])
@@ -125,12 +126,11 @@ export function RatingDetails(props: any) {
           {/* I have to enclose the component in a div : but still doesn't work because the value doesn't disply properly in the rating component*/}
           <div>
             <RatingVolunteerProfile volunteerId={id} rating={rating} count={count} />
-            {/* <RatingVolunteerProfile volunteerId={id} rating={rating} count={0} /> */}
           </div>
 
         </PopoverHandler>
         <PopoverContent {...triggers} className="grid grid-cols-2 gap-3">
-          {isSuccess && taskListSuccess && JSON.stringify(meanRatingsForPopover)}
+          {/* {isSuccess && taskListSuccess && JSON.stringify(meanRatingsForPopover)} */}
 
           {meanRatingsForPopover.length > 0 &&
             meanRatingsForPopover.map((obj: any) => (
