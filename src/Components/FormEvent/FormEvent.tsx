@@ -35,7 +35,24 @@ export function FormEvent() {
     watch,
     formState: { errors },
   } = useForm<Inputs>();
-  const onSubmit: SubmitHandler<Inputs> = (data) => console.log(data);
+  const onSubmit: SubmitHandler<Inputs> = async (data) => {
+    try {
+      const response = await fetch('http://localhost:3000/event', {
+        method: 'POST',
+        headers: {
+          'Content-Type': 'application/json'
+        },
+        body: JSON.stringify(data)
+      });
+      if (response.ok) {
+        console.log('Event created successfully');
+      } else {
+        console.error('Failed to create event');
+      }
+    } catch (error) {
+      console.error('Error creating event:', error);
+    }
+  };
 
   register("duree", { required: false });
 
@@ -59,7 +76,7 @@ export function FormEvent() {
     const fetchData = async () => {
       try {
         const response = await fetch(
-          "https://jsonplaceholder.typicode.com/users"
+          "http://localhost:3000/task"
         );
         const result = await response.json();
         setInfos(result);
@@ -71,6 +88,9 @@ export function FormEvent() {
     fetchData();
     return () => {};
   }, []);
+
+  
+  
 
   const handleSelectChange = (e) => {
     const selInfo = e.target.value;
@@ -146,8 +166,8 @@ export function FormEvent() {
               >
                 <option value="">Sélection Tâches</option>
                 {infos.map((info, index) => (
-                  <option key={index} value={info.username}>
-                    {info.username}
+                  <option key={index} value={info.name}>
+                    {info.name}
                   </option>
                 ))}
               </select>

@@ -1,7 +1,7 @@
 import React from 'react';
 import { useParams } from 'react-router-dom';
 
-function EventDuplicatePage() {
+function EventEditPage() {
   const { id } = useParams<{ id: string }>(); 
 
   return (
@@ -11,4 +11,4 @@ function EventDuplicatePage() {
   );
 }
 
-export default EventDuplicatePage;
+export default EventEditPage;

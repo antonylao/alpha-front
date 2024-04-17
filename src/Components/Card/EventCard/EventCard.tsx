@@ -10,6 +10,7 @@ import { useEffect, useState } from "react";
 import { Delete } from "../../Buttons/DeleteEvent/Delete";
 import { Edit } from "../../Buttons/EditEvent/Edit";
 import { Duplicate } from "../../Buttons/DuplicateEvent/Duplicate";
+import { Create } from "../../Buttons/CreateEvent/Create";
 
 export function EventCard() {
   const [events, setEvents] = useState([]);
@@ -71,6 +72,7 @@ export function EventCard() {
 
   return (
     <>
+    <Create/>
       <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-4">
         {events.map((event, index) => (
           <div key={index}>
@@ -117,10 +119,10 @@ export function EventCard() {
                   <div>{event.id}</div>
                   <div className="flex items-center ml-auto space-x-1">
                     <div className="m-1">
-                      <Edit />
+                      <Edit eventId={event.id} />
                     </div>
                     <div className="m-1">
-                      <Duplicate />
+                      <Duplicate eventId={event.id} />
                     </div>
                     <div className="m-1">
                       <Delete eventId={event.id} onDelete={() => handleDelete(event.id)}  />
