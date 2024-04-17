@@ -12,16 +12,17 @@ import { Edit } from "../../Buttons/EditEvent/Edit";
 import { Duplicate } from "../../Buttons/DuplicateEvent/Duplicate";
 
 export function EventCard() {
-  const [posts, setPosts] = useState([]);
+  const [events, setEvents] = useState([]);
 
   useEffect(() => {
     const fetchData = async () => {
       try {
         const response = await fetch(
-          "https://jsonplaceholder.typicode.com/posts"
+
+          "http://localhost:3000/event"
         );
         const result = await response.json();
-        setPosts(result);
+        setEvents(result);
         console.log(result);
       } catch (error) {
         console.error("Erreur lors de la requête API :", error);
@@ -31,17 +32,55 @@ export function EventCard() {
     return () => {};
   }, []);
 
+  const formatDateTime = (dateString) => {
+    const date = new Date(dateString);
+    const day = date.getUTCDate();
+    const month = date.getUTCMonth() + 1; // Les mois commencent à partir de zéro, donc ajoutez 1
+    const year = date.getUTCFullYear();
+    const hours = date.getUTCHours();
+    const minutes = date.getUTCMinutes();
+    if (minutes === 0) {
+      return {
+        date: `${day}/${month}/${year}`,
+        time: `${hours}h`
+      };
+    } else {
+      return {
+        date: `${day}/${month}/${year}`,
+        time: `${hours}h ${minutes}min`
+      };
+    }
+  };
+
+  const handleDelete = async (eventId) => {
+    try {
+      const response = await fetch(`http://localhost:3000/event/${eventId}`, {
+        method: 'DELETE',
+      });
+      if (response.ok) {
+        // Mettre à jour les données après la suppression
+        fetchData();
+      } else {
+        throw new Error('La suppression a échoué');
+      }
+    } catch (error) {
+      console.error('Erreur lors de la suppression de l\'événement :', error);
+    }
+  };
+
+
   return (
     <>
       <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-4">
-        {posts.map((post, index) => (
+        {events.map((event, index) => (
           <div key={index}>
             <Card className="w-full max-w-[26rem] shadow-lg">
               <CardHeader floated={false} color="blue-gray">
                 <img
-                  src="https://images.unsplash.com/photo-1499696010180-025ef6e1a8f9?ixlib=rb-4.0.3&ixid=MnwxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8&auto=format&fit=crop&w=1470&q=80"
-                  alt="ui/ux review check"
+                  src={event.picture}
+                  alt={event.title}
                 />
+                
                 <div className="to-bg-black-10 absolute inset-0 h-full w-full bg-gradient-to-tr from-transparent via-transparent to-black/60 " />
               </CardHeader>
               <CardBody>
@@ -51,27 +90,31 @@ export function EventCard() {
                     color="blue-gray"
                     className="font-medium mr-5"
                   >
-                    {post.title}
+                    {event.title}
                   </Typography>
                   <div
                     className={`border border-black rounded-full ${
-                      post.id === 1
+                      event.type === 1
                         ? "bg-blue-500"
-                        : post.id === 2
+                        : event.type === 2
                         ? "bg-orange-500"
-                        : post.id === 3
+                        : event.type === 3
                         ? "bg-red-500"
                         : ""
                     }`}
                   >
-                    {post.id}
+                    {event.type}
                   </div>
                 </div>
-                <Typography color="gray">{post.body}</Typography>
+                <Typography color="gray">{event.description}</Typography>
+                <Typography color="gray">
+                Début: {formatDateTime(event.startOn).date} - {formatDateTime(event.startOn).time}
+                </Typography>
+                <Typography color="gray">Durée: {event.duration}</Typography>
               </CardBody>
               <CardFooter>
                 <div className="flex items-center">
-                  <div>{post.id}</div>
+                  <div>{event.id}</div>
                   <div className="flex items-center ml-auto space-x-1">
                     <div className="m-1">
                       <Edit />
@@ -80,7 +123,7 @@ export function EventCard() {
                       <Duplicate />
                     </div>
                     <div className="m-1">
-                      <Delete />
+                      <Delete eventId={event.id} onDelete={() => handleDelete(event.id)}  />
                     </div>
                   </div>
                 </div>
