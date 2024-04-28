@@ -15,7 +15,7 @@ import MyProfilePage from "./VOLUNTEER_FRONT/Pages/MyProfile/MyprofilePage";
 // import VolonteerSignIn from "./Volonteers/Pages/SignInUpPage/SignInUpPage"
 
 import { VolunteerEventPage } from "./VOLUNTEER_FRONT/Pages/Event/VOLUNTEEREventPage";
-import { EventsAwaitingComment } from "./VOLUNTEER_FRONT/Pages/EventsAwaitingComment/EventsAwaitingComment";
+import { EventsAwaitingCommentPage } from "./VOLUNTEER_FRONT/Pages/EventsAwaitingComment/EventsAwaitingCommentPage";
 import VolunteerNavbar from "./VOLUNTEER_FRONT/Components/Navbar/VolunteerNavbar";
 
 
@@ -43,7 +43,7 @@ function App() {
 
         {/* VOLUNTEER FRONT PAGES */}
         <Route path="/volunteer_front_events" element={<VolunteerEventPage />} />
-        <Route path="/volunteer_front_events_awaiting_comment" element={<EventsAwaitingComment />} />
+        <Route path="/volunteer_front_events_awaiting_comment" element={<EventsAwaitingCommentPage />} />
         <Route path="/volonteer_signin" element={<VolonteerSignIn />} />
         <Route path="/my_profile" element={<MyProfilePage />} />
 

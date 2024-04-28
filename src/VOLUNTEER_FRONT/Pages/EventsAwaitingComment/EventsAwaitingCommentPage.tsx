@@ -1,15 +1,26 @@
+/* TESTS
+1: change back function to get volunteerId from token, not from path: DONE
+2: display infos on card (component PastEventCard): DONE
+3: make button work (component PastEventCard):
+3.1: if comment applied, display not editable textarea: DONE
+3.2: if comment not applied, display editable textarea: DONE
+3.2.1: when clicking submit button,  change card color: DONE
+3.2.2: when clicking submit button, change to not editable textarea and display comment content : DONE
+*/
+
 import { useQuery } from "@tanstack/react-query";
-import { getVolunteerAssignmentInfoForEventsToCommentOnPage } from "../../../services/api/volunteer_assignments";
+import { getVolunteerAssignmentInfoForMyEventsPage } from "../../../services/api/volunteer_assignments";
 import { useEffect, useState } from "react";
 import { PastEventCard } from "../../Components/CardEvent/PastEventCard/PastEventCard";
 
-export function EventsAwaitingComment() {
+export function EventsAwaitingCommentPage() {
 
   const [finishedEvents, setFinishedEvents] = useState<any>([])
+  console.log("🚀 ~ EventsAwaitingCommentPage ~ finishedEvents:", finishedEvents)
 
   const { data, isSuccess, isLoading, isError } = useQuery({
     queryKey: [`FinishedEvents`],
-    queryFn: () => getVolunteerAssignmentInfoForEventsToCommentOnPage(),
+    queryFn: () => getVolunteerAssignmentInfoForMyEventsPage(),
   })
 
   useEffect(() => {
@@ -24,7 +35,7 @@ export function EventsAwaitingComment() {
     <>
       <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-4 ">
         {finishedEvents.map((event: any) => (
-          <div key={event.event_id}>
+          <div key={event.eventId}>
             <PastEventCard data={event} />
           </div>
         ))}

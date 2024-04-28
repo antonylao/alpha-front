@@ -1,3 +1,16 @@
+/* TESTS: 
+0 verify that the list of event task is correct: DONE
+1 apply when data already in DB (status is refused or cancelled): dont add a data but modify it: DONE
+2: change status number to its key: DONE
+3: change button when status is pending or accepted: DONE
+4 cancel: modify data status to cancelled: DONE
+5 : card color is not modified upon change: NOT SURE BUT LOOKS RIGHT
+6: when volunteer accepted for an event, buttons for other events should disappear
+  - on first load: modify useEffect: DONE
+  - on change to validated: NO NEED (doesnt happen because change is from organiser, not volunteer)
+  - on change from validated to canceled: change on the onClick event: DONE
+*/
+
 import React, { useEffect, useState } from "react";
 import {
   Button,
@@ -9,10 +22,13 @@ import {
 } from "@material-tailwind/react";
 import { ApplyButton } from "../ApplyButton/ApplyButton";
 import { useMutation, useQuery, useQueryClient } from "@tanstack/react-query";
-import { createVolunteerAssignment, getTasksInfoForVolunteerEventIndexPage } from "../../../../services/api/volunteer_assignments";
+import { createPendingVolunteerAssignment, updateVolunteerAssignmentStatus } from "../../../../services/api/volunteer_assignments";
 import { TaskApplyCancelConfirmation } from "./ConfirmationCancel/ConfirmationCancel";
 import axios from "axios";
-import { VolunteerAssignmentStatus } from "../../../../services/utils/BddEnums";
+import { ErrorName, VolunteerAssignmentStatus } from "../../../../services/utils/BackendEnums";
+import { getConnectedUserId } from "../../../../services/utils/JWTUtils";
+import { getTasksInfoForVolunteerEventIndexPage } from "../../../../services/api/event_tasks";
+import { EnumUtils } from "../../../../services/utils/EnumUtils";
 
 const TABLE_HEAD = ["Tâche", "Nb Requis/Validés", "Statut", ""];
 
@@ -21,13 +37,10 @@ export function ModaleTaskList(props: any) {
 
   const { eventId, sendAssignmentsData } = props;
 
-  //get volunteer id via the URL ? 
-  // const {volunteerId} = useParams()
-  //* fix for now: 
-  const volunteerId = 1;
-
   const [open, setOpen] = React.useState(false);
+  const [validatedForEvent, setValidatedForEvent] = useState<boolean>(false)
   const [tasksForEventInfo, setTasksForEventInfo] = useState<Array<any>>([])
+  console.log(`🚀 ~ ModaleTaskList ~ tasksForEventInfo (event ${eventId}):`, tasksForEventInfo)
 
   const { data, isSuccess, isLoading, isError } = useQuery({
     queryKey: [`TasksForEvent${eventId}AndAssignmentInfos`],
@@ -37,27 +50,32 @@ export function ModaleTaskList(props: any) {
   useEffect(() => {
     if (isSuccess) {
       setTasksForEventInfo(data)
+
+      console.log("🚀 ~ useEffect ~ data:", data)
+      //if there is an event for which the volunteer is accepted, change state of validatedForEvent
+      if (!data.every(obj => +obj.volunteerAssignmentStatus !== +VolunteerAssignmentStatus.ACCEPTED)) {
+        setValidatedForEvent(true)
+      }
       sendAssignmentsData(data)
     }
   }, [isSuccess])
 
   const queryClient = useQueryClient();
   const updateAssignmentStatus = useMutation({
-    mutationFn: ({ ids, data }) => {
-      return axios.post(`https://jsonplaceholder.typicode.com/posts/patch/${ids.eventId}`, data)
-    },
-    // doesn't return the correct value with a faker
-    // mutationFn: ({ ids, action }) => {
-    //   switch (action) {
-    //     //! replace by enum values
-    //     case "cancel":
-    //       return updateVolunteerAssignmentStatus({ ids, newVal: 'cancel' })
-    //       break;
-    //     case "apply":
-    //       return createVolunteerAssignment({ ids, status: VolunteerAssignmentStatus.PENDING })
-    //       break;
-    //   }
+    // mutationFn: ({ ids, data }) => {
+    //   return axios.post(`https://jsonplaceholder.typicode.com/posts/patch/${ids.eventId}`, data)
     // },
+    // doesn't return the correct value with a faker
+    mutationFn: async ({ ids, action }) => {
+      switch (action) {
+        case "cancel":
+          return await updateVolunteerAssignmentStatus({ ids, newVal: VolunteerAssignmentStatus.CANCELED })
+          break;
+        case "apply":
+          return await createPendingVolunteerAssignment({ ids })
+          break;
+      }
+    },
     onSuccess: () => {
       console.log("success branch")
       queryClient.invalidateQueries({ queryKey: [`TasksForEvent${eventId}AndAssignmentInfos`], refetchType: 'all' })
@@ -71,30 +89,38 @@ export function ModaleTaskList(props: any) {
     setOpen(!open);
   }
 
-  const handleClick = (ids, action) => {
+  const handleClick = async (ids, action) => {
     console.log("handle click")
     console.log(ids)
     console.log(action)
     const tasksForEventInfoCopy = [...tasksForEventInfo]
-    console.log(tasksForEventInfoCopy)
 
-    const index = tasksForEventInfoCopy.findIndex(obj => obj.volunteer_id === ids.volunteerId && obj.event_id === ids.eventId && obj.task_id === ids.taskId)
-    console.log(index)
+    const index = tasksForEventInfoCopy.findIndex(obj => obj.eventId === ids.eventId && obj.taskId === ids.taskId)
 
     switch (action) {
       case "cancel":
-        tasksForEventInfoCopy[index].volunteer_assignment_status = 'undefined'
+
+        // if the status is validated, change validatedForEvent to false
+        const initialVolunteerAssignmentStatus = tasksForEventInfoCopy[index].volunteerAssignmentStatus
+        if (initialVolunteerAssignmentStatus === String(VolunteerAssignmentStatus.ACCEPTED)) {
+          setValidatedForEvent(false)
+        }
+
+        tasksForEventInfoCopy[index].volunteerAssignmentStatus = String(VolunteerAssignmentStatus.CANCELED)
         setTasksForEventInfo(tasksForEventInfoCopy)
         sendAssignmentsData(data)
-        // updateAssignmentStatus.mutate({ ids, action })
+        updateAssignmentStatus.mutate({ ids, action })
         break;
       case "apply":
-        tasksForEventInfoCopy[index].volunteer_assignment_status = 'pending'
+        tasksForEventInfoCopy[index].volunteerAssignmentStatus = String(VolunteerAssignmentStatus.PENDING)
         setTasksForEventInfo(tasksForEventInfoCopy)
         sendAssignmentsData(data)
-        // updateAssignmentStatus.mutate({ ids, action })
+        //* version with mutation
+        await updateAssignmentStatus.mutate({ ids, action })
         break;
     }
+
+
     console.log("after change")
     console.log(tasksForEventInfoCopy)
 
@@ -167,15 +193,24 @@ export function ModaleTaskList(props: any) {
                           color="blue-gray"
                           className="font-normal"
                         >
-                          {volunteerAssignmentStatus ? volunteerAssignmentStatus : ''}
+                          {/* ! NOT APPLIED doesnt work */}
+                          {EnumUtils.getKey(VolunteerAssignmentStatus, +volunteerAssignmentStatus) || 'NOT CREATED IN DB'}
                         </Typography>
                       </td>
                       <td className={classes}>
+                        {/* 
+                        cases:
+                        validated for an event: no button
+                        when pending: bouton annuler
+                        when accepted: bouton annuler + modal
+                        when no status, or any other status: bouton postuler
+                         */}
                         {
-                          (volunteerAssignmentStatus === 'pending') ?
-                            <Button onClick={() => handleClick({ volunteerId: volunteerId, eventId: eventId, taskId: taskId }, 'cancel')}>Annuler</Button> :
-                            (volunteerAssignmentStatus === 'validated') ? <TaskApplyCancelConfirmation ids={{ volunteerId: volunteerId, eventId: eventId, taskId: taskId }} validated={receiveValidationCancel} /> :
-                              <Button onClick={() => handleClick({ volunteerId: volunteerId, eventId: eventId, taskId: taskId }, 'apply')}>Postuler</Button>
+                          (+volunteerAssignmentStatus === VolunteerAssignmentStatus.ACCEPTED) ? <TaskApplyCancelConfirmation ids={{ volunteerId: getConnectedUserId(), eventId: eventId, taskId: taskId }} validated={receiveValidationCancel} /> :
+                            (validatedForEvent) ? '' :
+                              (+volunteerAssignmentStatus === VolunteerAssignmentStatus.PENDING) ?
+                                <Button onClick={() => handleClick({ volunteerId: getConnectedUserId(), eventId: eventId, taskId: taskId }, 'cancel')}>Annuler</Button> :
+                                <Button onClick={() => handleClick({ volunteerId: getConnectedUserId(), eventId: eventId, taskId: taskId }, 'apply')}>Postuler</Button>
                         }
                       </td>
                     </tr>

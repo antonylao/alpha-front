@@ -1,6 +1,7 @@
 import { parse } from "@formkit/tempo";
 import { useApi } from "../../hooks/useApi";
 import { fakerEvents } from "../../VOLUNTEER_FRONT/Pages/Event/fakerEvents";
+import { RoutesBack } from "../utils/RoutesBackUtils";
 const api = useApi();
 
 
@@ -20,7 +21,7 @@ export async function getEvents() {
 
 export async function getUpcomingEvents() {
     try {
-        const { data } = await api.get("event/upcoming");
+        const { data } = await api.get(RoutesBack.EventController.getAllUpcomingEvents);
         console.log("🚀 ~ getUpcomingEvents ~ datas:", data.datas)
 
         return data.datas;

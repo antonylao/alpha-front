@@ -11,21 +11,24 @@ import { useEffect, useState } from "react";
 import { format, parse } from "@formkit/tempo";
 import { ModaleTaskList } from "./ModaleTaskList/ModaleTaskList";
 import { cardBorderColor, eventTypeBackgroundColor } from "../../../services/utils/Utils";
+import { VolunteerAssignmentStatus } from "../../../services/utils/BackendEnums";
+import { DateTimeUtils } from "../../../services/utils/DateTimeUtils";
 
 export function VolunteerEventCard({ data }: any) {
-  // console.log("🚀 ~ VolunteerEventCard ~ data:", data)
+  console.log(`🚀 ~ VolunteerEventCard ~ data (eventid ${data.id}):`, data)
 
   const [borderColor, setBorderColor] = useState<string>(cardBorderColor(''))
 
+  //set card border color upon receiving assignments data from ModaleTaskList
   const receiveAssignmentsData = (data: any) => {
-    console.log("🚀 ~ receiveAssignmentsData ~ data:", data)
-    if (data.filter((obj) => obj.volunteer_assignment_status === 'validated').length > 0) {
+    console.log(`🚀 ~ receiveAssignmentsData ~ data (eventid ${data.id}):`, data)
+    if (data.filter((obj) => +obj.volunteerAssignmentStatus === +VolunteerAssignmentStatus.ACCEPTED).length > 0) {
       console.log('validated')
       setBorderColor(cardBorderColor('validated'))
-    } else if (data.filter((obj) => obj.volunteer_assignment_status === 'pending').length > 0) {
+    } else if (data.filter((obj) => +obj.volunteerAssignmentStatus === +VolunteerAssignmentStatus.PENDING).length > 0) {
       console.log('pending')
       setBorderColor(cardBorderColor('pending'))
-    } else if (data.filter((obj) => obj.volunteer_assignment_status === 'refused').length > 0) {
+    } else if (data.filter((obj) => +obj.volunteerAssignmentStatus === +VolunteerAssignmentStatus.REFUSED || obj.volunteerAssignmentStatus === VolunteerAssignmentStatus.CANCELED).length > 0) {
       console.log('refused')
       setBorderColor(cardBorderColor('refused'))
     } else {
@@ -58,11 +61,11 @@ export function VolunteerEventCard({ data }: any) {
           </div>
           <Typography color="gray" className="mb-5">{data.description.slice(0, 100)}</Typography>
 
-          <Typography color="gray">{format(parse(data.startOn, "YYYY-MM-DD HH:MM:SS"), { date: "full", time: "short" }, "fr")}</Typography>
+          <Typography color="gray">{DateTimeUtils.formatDateTimeForCard(data.startOn)}</Typography>
         </CardBody>
         <CardFooter>
           <div className="flex items-center">
-            <div>{`Durée: ${format(parse(data.duration, "HH:mm:ss"), { time: "short" }, "fr")}`}</div>
+            <div>{`Durée: ${DateTimeUtils.formatTime(data.duration)}`}</div>
             <div className="flex items-center ml-auto space-x-1">
               <div className="">
                 <ModaleTaskList eventId={data.id} sendAssignmentsData={receiveAssignmentsData} />

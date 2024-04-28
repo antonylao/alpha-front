@@ -1,10 +1,15 @@
 import { jwtDecode } from "jwt-decode";
 
-export function getConnectedUserId() {
+export function getConnectedUserId(): number {
   try {
-    return jwtDecode(import.meta.env.VITE_TOKEN).id
+    const token = localStorage.getItem("accessToken")
+    if (!token) {
+      throw new Error()
+    }
+    return (jwtDecode(token)).id as number
   } catch (error) {
-    console.error("Le JWT Token n'est pas valide ou ne contient pas l'id du user")
+    console.error("Impossible de récupérer l'id du user connecté: le JWT Token n'est pas valide ou ne contient pas l'id du user")
+    throw error
   }
 
 }

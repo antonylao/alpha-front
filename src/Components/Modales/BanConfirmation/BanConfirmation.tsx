@@ -6,9 +6,9 @@ import {
   DialogFooter,
 } from "@material-tailwind/react";
 import { BanButton } from "../../Buttons/Ban/Ban";
- 
-export function BanConfirmation(props:any) {
-  const {banValue, sendToVolunteerCard} = props
+
+export function BanConfirmation(props: any) {
+  const { banValue, sendToVolunteerCard } = props
 
   const [open, setOpen] = React.useState(false);
 

@@ -10,7 +10,7 @@ export function RatingPending(props: any) {
 
   const handleChange = (value: number) => {
     // setValue(value)
-    sendToParent({ volunteer_id: volunteerId, task_id: taskId, event_id: eventId, rating_value: value })
+    sendToParent({ volunteerId: volunteerId, taskId: taskId, eventId: eventId, rating: value })
   }
   return (
     <Rating onChange={handleChange} />

@@ -1,3 +1,5 @@
+import { EventType } from "./BackendEnums";
+
 function escapeRegExp(str: string) {
   return str.replace(/[-\/\\^$*+?.()|[\]{}]/g, '\\$&');
 }
@@ -20,12 +22,13 @@ export function roundToFloat(num: number, nbOfFloatDigits: number) {
 
 //COLOR FUNCTIONS
 
-export function eventTypeBackgroundColor(type: string) {
-  return (type === "concert"
+export function eventTypeBackgroundColor(type: number | string) {
+  type = +type
+  return (type === EventType.CONCERT
     ? "bg-blue-500"
-    : type === "theatre"
+    : type === EventType.THEATRE
       ? "bg-orange-500"
-      : type === "one_man_show"
+      : type === EventType.STANDUP
         ? "bg-red-500"
         : "")
 }

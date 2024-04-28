@@ -13,21 +13,23 @@ import { useMutation, useQueryClient } from "@tanstack/react-query";
 
 export function ModalComment(props: any) {
   const { ids, comment, commentApplied } = props
+  console.log("🚀 ~ ModalComment ~ comment:", comment)
   const [open, setOpen] = React.useState(false);
   const [commentContent, setCommentContent] = useState(comment)
+  const [commentPresentInDB, setCommentPresentInDB] = useState<boolean>(comment ? true : false)
 
   console.log(ids)
 
   //set comment with a useMutation
   const queryClient = useQueryClient();
   const updateComment = useMutation({
-    mutationFn: ({ ids, newVal }: any) => {
-      return axios.patch(`https://jsonplaceholder.typicode.com/posts/patch/${ids.eventId}`, newVal)
-    },
-    // doesn't return the correct value with a faker
-    // mutationFn: ({ ids, newVal }) => {
-    //   return updateVolunteerAssignmentComment({ ids, newVal })
+    // mutationFn: ({ ids, newVal }: any) => {
+    //   return axios.patch(`https://jsonplaceholder.typicode.com/posts/patch/${ids.eventId}`, newVal)
     // },
+    // doesn't return the correct value with a faker
+    mutationFn: ({ ids, newVal }) => {
+      return updateVolunteerAssignmentComment({ ids, newVal })
+    },
 
     onSuccess: () => {
       queryClient.invalidateQueries({ queryKey: [`FinishedEvents`], refetchType: 'all' })
@@ -50,11 +52,13 @@ export function ModalComment(props: any) {
   }
 
   const handleClick = () => {
-    //use mutation fn to apply change to db: doesn't work for now
-    // updateComment.mutate(ids, commentContent)
-    // useMutation equivalent, without invalidating query keys
-    updateVolunteerAssignmentComment({ ids, newVal: commentContent })
+    //button doesnt work if there is no comment
+    if (!commentContent) { return }
+    updateComment.mutate({ ids, newVal: commentContent })
+    //* useMutation equivalent, without invalidating query keys
+    // updateVolunteerAssignmentComment({ ids, newVal: commentContent })
 
+    setCommentPresentInDB(true)
     commentApplied()
     handleOpen()
   }
@@ -67,12 +71,12 @@ export function ModalComment(props: any) {
       <CommentButton onClick={handleOpen} />
       <Dialog open={open} handler={handleOpen}>
         <DialogBody>
-          {comment ? <Textarea disabled label="Commentaire" value={commentContent} /> :
+          {commentPresentInDB ? <Textarea disabled label="Commentaire" value={commentContent} /> :
             <Textarea label="Commentaire" onChange={handleChange} />}
 
         </DialogBody>
         <DialogFooter>
-          {(!comment) &&
+          {(!commentPresentInDB) &&
             <Button variant="gradient" onClick={handleClick}>
               <span>Envoyer</span>
             </Button>}

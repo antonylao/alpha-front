@@ -1,5 +1,3 @@
-//Parent: VolunteerCard
-
 import React, { useEffect, useState } from "react";
 import {
   Popover,
@@ -37,23 +35,16 @@ export function RatingDetails(props: any) {
   const { data: taskList, isSuccess: taskListSuccess, isLoading: taskListLoading, isError: taskListError } = useQuery({
     queryKey: [`taskList`],
     queryFn: getTasks,
-
   })
 
-  //set new state for remounting with the correct values for the props of RatingVolunteerProfile and RatingByTask
+  //set new state for re-mounting with the correct values for the props of RatingVolunteerProfile and RatingByTask
   const handleRefetch = async () => {
     try {
-      const mean = meanRatings(data)
+      const res = await refetch();
+      const mean = meanRatings(res.data)
       if (mean) { setRating(mean) };
-      const newMeanRatingsForPopover = meanRatingsByTask(data)
+      const newMeanRatingsForPopover = meanRatingsByTask(res.data)
       setMeanRatingsForPopover(newMeanRatingsForPopover)
-      // const res = await refetch();
-      // const mean = meanRatings(res.data)
-      // if (mean) { setRating(mean) };
-      // const newMeanRatingsForPopover = meanRatingsByTask(res.data)
-      // setMeanRatingsForPopover(newMeanRatingsForPopover)
-
-
     } catch (err) {
       console.log(err)
     }
@@ -68,7 +59,7 @@ export function RatingDetails(props: any) {
 
   const meanRatings = (listRatings: Array<any>) => {
     listRatings =
-      listRatings.map((obj) => { return obj.volunteer_assignment_rating })
+      listRatings.map((obj) => { return obj.organiserRating })
         .filter((obj) => { return obj })
         .map((obj) => { return Number(obj) })
 
@@ -93,7 +84,7 @@ export function RatingDetails(props: any) {
       const returnArr: Array<any> = []
 
       taskNameList?.every((task) => {
-        const listRatingsByTask = listRatings.filter((obj) => obj.task_name === task.name && obj.volunteer_assignment_rating)
+        const listRatingsByTask = listRatings.filter((obj) => obj.taskName === task.name && obj.organiserRating)
 
         let newItem = {}
         if (listRatingsByTask.length === 0) {

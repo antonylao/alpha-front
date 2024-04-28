@@ -16,11 +16,12 @@ import { useMutation, useQuery, useQueryClient } from "@tanstack/react-query";
 import { getEventsAssignedByVolunteerId, updateVolunteerAssignmentRating } from "../../../services/api/volunteer_assignments";
 import axios from "axios";
 import clone from 'just-clone';
+import { DateTimeUtils } from "../../../services/utils/DateTimeUtils";
 
 const TABLE_HEAD = ["Titre", "Date et heure", "Tâche", "Note", ""];
 
 export function PastEventsModal(props: any) {
-  const { id, newRatingApplied } = props
+  const { volunteerId, newRatingApplied } = props
 
   const [open, setOpen] = React.useState(false);
   const [eventsAssigned, setEventsAssigned] = useState<any>([])
@@ -28,13 +29,10 @@ export function PastEventsModal(props: any) {
 
   const queryClient = useQueryClient();
   const updateRating = useMutation({
-    mutationFn: ({ ids, data }: any) => {
-      return axios.post(`https://jsonplaceholder.typicode.com/posts/patch/${ids.volunteer_id}`, data)
-    },
-    // doesn't return the correct value with a faker
-    // mutationFn: ({ ids, newVal }) => { return updateVolunteerAssignmentRating({ ids, newVal }) },
+    mutationFn: ({ ids, newVal }) => { return updateVolunteerAssignmentRating({ ids, newVal }) },
     onSuccess: () => {
-      queryClient.invalidateQueries({ queryKey: [`eventsAssignedListVolunteer${id}`], refetchType: 'all' })
+      // newRatingApplied()
+      queryClient.invalidateQueries({ queryKey: [`eventsAssignedListVolunteer${volunteerId}`], refetchType: 'all' })
     },
     onError: () => {
       console.log("error branch")
@@ -45,13 +43,14 @@ export function PastEventsModal(props: any) {
   // console.log(updateVolunteerAssignmentRating({ ids: { volunteer_id: 1, event_id: 1, task_id: 1 }, newVal: 3 }))
 
   const { data, isSuccess, isLoading, isError } = useQuery({
-    queryKey: [`eventsAssignedListVolunteer${id}`],
-    queryFn: () => getEventsAssignedByVolunteerId(id),
+    queryKey: [`eventsAssignedListVolunteer${volunteerId}`],
+    queryFn: () => getEventsAssignedByVolunteerId(volunteerId),
   })
 
   useEffect(() => {
     if (isSuccess) {
       const dataCopy = clone(data)
+      console.log("🚀 ~ useEffect ~ dataCopy:", dataCopy)
       setEventsAssigned(dataCopy)
     }
   }, [isSuccess])
@@ -64,12 +63,16 @@ export function PastEventsModal(props: any) {
     setOpen(!open);
   }
 
+  //* NEW RATING APPLIED ON RatingPending COMPONENT
   const receiveRatingValue = (obj: any) => {
     let indexNewRating = NaN;
 
+    console.log("🚀 ~ receiveRatingValue ~ obj:", obj)
+
+
     //if there is already a rating for this event and task, replace the value of the rating by the new one
     newRatings.every((elt: any, index: number) => {
-      if (elt.event_id === obj.event_id && elt.task_id === obj.task_id) {
+      if (elt.eventId === obj.eventId && elt.taskId === obj.taskId) {
         indexNewRating = index;
         return false;
       }
@@ -79,46 +82,41 @@ export function PastEventsModal(props: any) {
 
 
     if (isNaN(indexNewRating)) {
-      setNewRatings([...newRatings, { volunteer_id: obj.volunteer_id, event_id: obj.event_id, task_id: obj.task_id, value: obj.rating_value }])
+      setNewRatings([...newRatings, { volunteerId: obj.volunteerId, eventId: obj.eventId, taskId: obj.taskId, value: obj.rating }])
     } else {
       const newRatingsCopy = newRatings.toSpliced(indexNewRating, 1)
-      setNewRatings([...newRatingsCopy, { volunteer_id: obj.volunteer_id, event_id: obj.event_id, task_id: obj.task_id, value: obj.rating_value }])
+      setNewRatings([...newRatingsCopy, { volunteerId: obj.volunteerId, eventId: obj.eventId, taskId: obj.taskId, value: obj.rating }])
     }
 
   }
 
-  const handleClick = (ids: any, newVal: number) => {
+  //* UPDATES RATING IN DB AND SEND DATA TO PARENT TO REFETCH DATA IN CARD
+  const handleClick = async (ids: any, newVal: number) => {
     const eventsAssignedCopy = clone(eventsAssigned)
 
     if (!newVal) {
       console.log("No rating to apply. Possible to use react hook form for display?")
       return;
     }
-    // eventsAssignedCopy.filter((obj) => obj.event_id === event_id && obj.task_id === task_id)[0]
-    // const eltToChange = eventsAssignedCopy.filter((obj) => obj.event_id === ids.event_id && obj.task_id === ids.task_id)[0]
 
-    // console.log(eltToChange)
-    // eltToChange.volunteer_assignment_rating = newVal
-
-    const index = eventsAssignedCopy.findIndex((obj: any) => obj.event_id === ids.event_id && obj.task_id === ids.task_id)
-    eventsAssignedCopy[index].volunteer_assignment_rating = newVal
+    const index = eventsAssignedCopy.findIndex((obj: any) => obj.eventId === ids.eventId && obj.taskId === ids.taskId)
+    eventsAssignedCopy[index].organiserRating = newVal
 
     setEventsAssigned(eventsAssignedCopy)
-    // updateRating.mutate({ ids, newVal })
-    //mutationFn called directly because we can't use it yet 
-    updateVolunteerAssignmentRating({ ids, newVal })
-    newRatingApplied()
+
+    //* with useMutation: newRatingApplied() is called on the onSuccess
+    updateRating.mutate({ ids, newVal })
   }
 
   const ratingChanged = (eventId: number, taskId: number) => {
     return (
-      newRatings.filter((obj: any) => obj.event_id === eventId && obj.task_id === taskId)
+      newRatings.filter((obj: any) => obj.eventId === eventId && obj.taskId === taskId)
         .length > 0
     )
   }
 
   if (isLoading) return <div>Chargement...</div>;
-  if (isError) return <div>Erreur lors de la récupération des events assignés au bénévole {id}</div>;
+  if (isError) return <div>Erreur lors de la récupération des events assignés au bénévole {volunteerId}</div>;
 
   return (
     <>
@@ -152,19 +150,19 @@ export function PastEventsModal(props: any) {
                 </tr>
               </thead>
               <tbody>
-                {eventsAssigned.map(({ event_id, task_id, event_title, event_start_on, task_name, volunteer_assignment_rating }: any, index: number) => {
+                {eventsAssigned.map(({ eventId, taskId, eventTitle, startOn, taskName, organiserRating }: any, index: number) => {
                   const isLast = index === eventsAssigned.length - 1;
                   const classes = isLast ? "p-4" : "p-4 border-b border-blue-gray-50";
 
                   return (
-                    <tr key={event_title}>
+                    <tr key={`${eventId}-${taskId}-${eventTitle}`}>
                       <td className={classes}>
                         <Typography
                           variant="small"
                           color="blue-gray"
                           className="font-normal"
                         >
-                          {event_title}
+                          {eventTitle}
                         </Typography>
                       </td>
                       <td className={classes}>
@@ -173,7 +171,7 @@ export function PastEventsModal(props: any) {
                           color="blue-gray"
                           className="font-normal"
                         >
-                          {event_start_on}
+                          {DateTimeUtils.formatDateTimeForTable(startOn)}
                         </Typography>
                       </td>
                       <td className={classes}>
@@ -182,7 +180,7 @@ export function PastEventsModal(props: any) {
                           color="blue-gray"
                           className="font-normal"
                         >
-                          {task_name}
+                          {taskName}
                         </Typography>
                       </td>
                       <td className={classes}>
@@ -191,19 +189,19 @@ export function PastEventsModal(props: any) {
                           color="blue-gray"
                           className="font-medium"
                         > */}
-                        {volunteer_assignment_rating ? <RatingDone rating={Number(volunteer_assignment_rating)} /> : <RatingPending volunteerId={id} taskId={task_id} eventId={event_id} sendToParent={receiveRatingValue} />}
+                        {organiserRating ? <RatingDone rating={Number(organiserRating)} /> : <RatingPending volunteerId={volunteerId} taskId={taskId} eventId={eventId} sendToParent={receiveRatingValue} />}
                         {/* </Typography> */}
                       </td>
                       <td className={classes}>
                         {
-                          volunteer_assignment_rating ? undefined : <Button
+                          organiserRating ? undefined : <Button
                             onClick={() => handleClick(
                               {
-                                volunteer_id: id,
-                                task_id: task_id,
-                                event_id: event_id,
+                                volunteerId: volunteerId,
+                                taskId: taskId,
+                                eventId: eventId,
                               },
-                              (ratingChanged(event_id, task_id) ? newRatings.filter((obj: any) => obj.event_id === event_id && obj.task_id === task_id)[0].value : undefined))
+                              (ratingChanged(eventId, taskId) ? newRatings.filter((obj: any) => obj.eventId === eventId && obj.taskId === taskId)[0].value : undefined))
                             }
                           >Appliquer</Button>
                         }

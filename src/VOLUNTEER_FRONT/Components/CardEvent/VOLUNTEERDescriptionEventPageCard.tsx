@@ -9,6 +9,8 @@ import {
   Chip,
 } from "@material-tailwind/react";
 import { eventTypeBackgroundColor } from "../../../services/utils/Utils";
+import { EnumUtils } from "../../../services/utils/EnumUtils";
+import { EventType } from "../../../services/utils/BackendEnums";
 
 const PARAGRAPHS = [
   "Vous trouverez ici tous les événements à venir.",
@@ -35,7 +37,7 @@ export function VolunteerDescriptionEventPageCard({ types }: any) {
           <Typography variant="paragraph" >Codes couleurs pour les types d'événements</Typography>
           <div className="flex flex-wrap gap-2 items-center ml-auto space-x-1">
             {types.map((type: string, index: number) => (
-              <Chip key={index} value={type}
+              <Chip key={index} value={EnumUtils.getKey(EventType, +type)}
                 className={`border border-black rounded-full ${eventTypeBackgroundColor(type)}`} />
             ))}
           </div>

@@ -12,10 +12,11 @@ import { format, parse } from "@formkit/tempo";
 import { ModaleTaskList } from "../ModaleTaskList/ModaleTaskList";
 import { cardBorderColor, eventTypeBackgroundColor } from "../../../../services/utils/Utils";
 import { ModalComment } from "./CommentButton/ModalComment";
+import { DateTimeUtils } from "../../../../services/utils/DateTimeUtils";
 
 export function PastEventCard({ data }: any) {
 
-  const onMountBorderColor = data.comment ? cardBorderColor('commented') : cardBorderColor('not_commented')
+  const onMountBorderColor = data.volunteerComment ? cardBorderColor('commented') : cardBorderColor('not_commented')
 
   const [borderColor, setBorderColor] = useState<string>('')
 
@@ -46,20 +47,19 @@ export function PastEventCard({ data }: any) {
             >
               {data.title}
             </Typography>
-            <Chip value={data.room}
+            <Chip value={data.roomName}
               className={`border border-black rounded-full ${eventTypeBackgroundColor(data.type)}`} />
           </div>
           <Typography color="gray" className="mb-5">{data.description}</Typography>
-
-          <Typography color="gray" className="mb-5">{format(parse(data.start_on, "YYYY-MM-DD HH:MM:SS"), { date: "full", time: "short" }, "fr")}</Typography>
-          <Typography color="gray" >{data.task_name}</Typography>
+          <Typography color="gray" className="mb-5">{DateTimeUtils.formatDateTimeForCard(data.startOn)}</Typography>
+          <Typography color="gray" >{data.taskName}</Typography>
         </CardBody>
         <CardFooter>
           <div className="flex items-center">
-            <div>{`Durée: ${format(parse(data.duration, "HH:mm:ss"), { time: "short" }, "fr")}`}</div>
+            <div>{`Durée: ${DateTimeUtils.formatTime(data.duration)}`}</div>
             <div className="flex items-center ml-auto space-x-1">
               <div className="">
-                <ModalComment ids={{ volunteerId: data.volunteer_id, eventId: data.event_id, taskId: data.task_id }} comment={data.comment} commentApplied={receiveCommentAppliedData} />
+                <ModalComment ids={{ volunteerId: data.volunteerId, eventId: data.eventId, taskId: data.taskId }} comment={data.volunteerComment} commentApplied={receiveCommentAppliedData} />
               </div>
             </div>
           </div>

@@ -12,10 +12,13 @@ import { yupResolver } from "@hookform/resolvers/yup"
 import { SignInFormInterface } from "../../services/utils/CustomTypes";
 import { YupUtils } from "../../services/utils/YupUtils";
 import { useNavigate } from 'react-router-dom';
+import { useState } from "react";
 
 export function SignInPage() {
 
   const navigate = useNavigate();
+  const [errorSignIn, setErrorSignIn] = useState<boolean>(false)
+  console.log("🚀 ~ errorSignIn:", errorSignIn)
 
   const schema = yup.object().shape({
     email: YupUtils.constraints.email.required("Email requis"),
@@ -26,22 +29,24 @@ export function SignInPage() {
     resolver: yupResolver(schema)
   })
 
-  const onSubmit = async (data: SignInFormInterface) => {
-
-    //submit form action
-    // async function signInVolunteer() {
+  const handleSubmitClick = () => {
+    setErrorSignIn(false)
+  }
+  const onSubmit = async (form: SignInFormInterface) => {
     try {
-      console.log("🚀 ~ onSubmit ~ data:", data)
-      const user = await signIn("organiser", data)
-      console.log("🚀 ~ handleSubmit ~ user:", user)
+      const data = await signIn("organiser", form)
+      console.log("🚀 ~ handleSubmit ~ data:", data)
 
       //store accessToken & refreshToken in localStorage
+      localStorage.setItem('accessToken', data.token);
+      localStorage.setItem('refreshToken', data.refreshToken);
 
       // redirect to event page if connection successful
       navigate('/events');
     } catch (error: any) {
       console.error(error.response.data)
       //stay on sign up and display error message
+      setErrorSignIn(true)
     }
   }
 
@@ -54,6 +59,7 @@ export function SignInPage() {
             Sign In
           </Typography>
           <div className="mb-1 flex flex-col gap-6">
+            <Typography variant="paragraph" color="red" >{errorSignIn ? 'Les identifiants ne sont pas valides' : ''}</Typography>
             <Typography variant="h6" color="blue-gray" className="-mb-3">
               Your Email
             </Typography>
@@ -83,7 +89,7 @@ export function SignInPage() {
             <Typography variant="paragraph" color="red" >{errors.password?.message}</Typography>
           </div>
 
-          <Button type="submit" className="mt-6" fullWidth>
+          <Button onClick={handleSubmitClick} type="submit" className="mt-6" fullWidth>
             sign up
           </Button>
           <Typography color="gray" className="mt-4 text-center font-normal">

@@ -6,9 +6,9 @@ import {
   DialogFooter,
 } from "@material-tailwind/react";
 import { WarningButton } from "../../Buttons/Warning/Warning";
- 
-export function WarningConfirmation(props:any) {
-  const {warningValue, banValue, sendToVolunteerCard} = props
+
+export function WarningConfirmation(props: any) {
+  const { warningValue, banValue, sendToVolunteerCard } = props
 
   const [open, setOpen] = React.useState(false);
 
@@ -19,7 +19,7 @@ export function WarningConfirmation(props:any) {
 
     setOpen(!open);
   }
- 
+
   const handleValidate = () => {
     //warning value should be false because of the handleOpen condition
     sendToVolunteerCard(!warningValue)

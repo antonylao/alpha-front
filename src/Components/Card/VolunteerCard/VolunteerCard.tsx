@@ -16,31 +16,23 @@ import { updateVolunteerBan, updateVolunteerWarning } from "../../../services/ap
 import { cardBorderColor } from "../../../services/utils/Utils";
 
 export function VolunteerCard(props: any) {
-  const { id } = props
+  const { data } = props
 
-  const [volunteer, setVolunteer] = useState<any>({})
-  const [warning, setWarning] = useState<boolean>(false)
-  const [ban, setBan] = useState<boolean>(false)
+  const id = data.id
+
+  const [volunteer, setVolunteer] = useState<any>(data)
+  const [warning, setWarning] = useState<boolean>(data.warning)
+  const [ban, setBan] = useState<boolean>(data.ban)
   const [borderColor, setBorderColor] = useState<string>(cardBorderColor(''))
   const [refetchAndRemountRatingDetails, setRefetchAndRemountRatingDetails] = useState<number>(0)
 
-  //performance issue: data is fetched again (already fetched the complete list on the volunteer page)
-  const { data, isSuccess, isLoading, isError } = useQuery({
-    queryKey: [`volunteer_${id}`],
-    // queryFn: getVolunteerById(id),
-    queryFn: () => { return fakerVolunteers.datas.filter((obj) => obj.id === id)[0] },
-  })
-
   useEffect(() => {
-    if (isSuccess) {
-      setVolunteer(data)
-      if (data["ban"] === 'true') {
-        handleBan()
-      } else if (data["warning"] === 'true') {
-        handleWarning()
-      }
+    if (ban === true) {
+      setBorderColor(cardBorderColor("ban"))
+    } else if (warning === true) {
+      setBorderColor(cardBorderColor("warning"))
     }
-  }, [isSuccess])
+  }, [])
 
   const handleBan = () => {
     const newBan = true
@@ -58,26 +50,21 @@ export function VolunteerCard(props: any) {
     setBorderColor(cardBorderColor("warning"))
   }
 
-  const receiveWarningData = () => {
-    handleWarning()
-  }
 
-  const receiveBanData = () => {
-    handleBan()
-  }
-
+  //functions from props: reverse data flow
+  const receiveWarningData = () => { handleWarning() }
+  const receiveBanData = () => { handleBan() }
   const newRatingToApplyInRatingDetails = () => {
     setRefetchAndRemountRatingDetails(refetchAndRemountRatingDetails + 1)
+    console.log("🚀 ~ newRatingToApplyInRatingDetails ~ ")
+    //NB: then pass to props refetchAndRemountRatingDetails
   }
-
-  if (isLoading) return <div>Chargement...</div>;
-  if (isError) return <div>Erreur lors de la récupération du bénévole {id}</div>;
 
   return (
     <Card className={`w-full max-w-[26rem] shadow-lg border-2 break-words h-full ${borderColor} `}>
       <div className="flex justify-center mt-3">
         <img
-          src={volunteer.picture}
+          src={volunteer.profilePicture}
           className="rounded-full object-cover aspect-square p-4"
           alt="ui/ux review check"
         />
@@ -104,13 +91,8 @@ export function VolunteerCard(props: any) {
         </div>
         <p>warning: {String(warning)}, ban: {String(ban)}</p>
       </CardBody>
-      <CardFooter className="flex place-content-end mt-auto gap-3">
-        {/* <CardFooter className="group mt-8 inline-flex flex-row-reverse flex-wrap items-center gap-3"> */}
-        {/* buttons are inside the modal components */}
-        {/* <BanButton />
-        <WarningButton />
-        <PastEventsButton /> */}
-        <PastEventsModal id={id} newRatingApplied={newRatingToApplyInRatingDetails} />
+      <CardFooter className="group flex place-content-end mt-auto gap-3">
+        <PastEventsModal volunteerId={id} newRatingApplied={newRatingToApplyInRatingDetails} />
         <WarningConfirmation warningValue={warning} banValue={ban} sendToVolunteerCard={receiveWarningData} />
         <BanConfirmation banValue={ban} sendToVolunteerCard={receiveBanData} />
       </CardFooter>

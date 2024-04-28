@@ -1,3 +1,5 @@
+//dont forget errorName enum!
+
 export enum EventType {
   CONCERT = 1,
   THEATRE = 2,
@@ -23,4 +25,7 @@ export enum VolunteerAssignmentStatus {
   CANCELED = 4
 }
 
+export enum ErrorName {
+  JWT_TOKEN_EXPIRED = "TokenExpiredError",
+}
 
