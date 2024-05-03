@@ -12,6 +12,7 @@ import { Edit } from "../../Buttons/EditEvent/Edit";
 import { Duplicate } from "../../Buttons/DuplicateEvent/Duplicate";
 import { Create } from "../../Buttons/CreateEvent/Create";
 
+
 export function EventCard() {
   const [events, setEvents] = useState([]);
 
@@ -69,6 +70,7 @@ export function EventCard() {
     }
   };
 
+  
 
   return (
     <>
@@ -79,8 +81,10 @@ export function EventCard() {
             <Card className="w-full max-w-[26rem] shadow-lg">
               <CardHeader floated={false} color="blue-gray">
                 <img
-                  src={event.picture}
+                src={`http://localhost:3000/uploads/${event.picture}`}
+                 
                   alt={event.title}
+                  className="w-full h-auto bg-cover"
                 />
                 
                 <div className="to-bg-black-10 absolute inset-0 h-full w-full bg-gradient-to-tr from-transparent via-transparent to-black/60 " />

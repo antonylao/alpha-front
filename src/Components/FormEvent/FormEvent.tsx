@@ -9,23 +9,44 @@ import "react-time-picker/dist/TimePicker.css";
 import "react-clock/dist/Clock.css";
 import "react-datepicker/dist/react-datepicker.css";
 import "./FormEvent.css";
+import axios from "axios";
 
 type Inputs = {
   title: string;
   description: string;
-  image: string;
-  date: Date | undefined;
-  duree: string | undefined;
-  selectedTasks: { [taskName: string]: number };
+  picture: string;
+  type: number;
+  startOn: Date | undefined;
+  duration: string | undefined;
 };
 
+type Info = {
+  id: number;
+  name: string;
+  
+}
+
+type SelectedTask = {
+  quantity: number;
+  id: number;
+  name: string
+}
+
+type Room = {
+  id: number;
+  name: string
+}
+
 export function FormEvent() {
-  const [infos, setInfos] = useState([]);
-  const [selectedInfos, setSelectedInfos] = useState<{
-    [taskName: string]: number;
-  }>({});
+  const [infos, setInfos] = useState<Info[]>([]);
+  const [rooms, setRooms] = useState<Room[]>([])
+  const [selectedTasks, setSelectedTasks] = useState<SelectedTask[]>([]);
+  const [selectedRoom, setSelectedRoom] = useState<Room[]>([])
   const [startDate, setStartDate] = useState(new Date());
   const [duration, setDuration] = useState("");
+  const [eventTypes, setEventTypes] = useState([]);
+
+
   console.log("value duration", duration);
 
   const {
@@ -35,34 +56,47 @@ export function FormEvent() {
     watch,
     formState: { errors },
   } = useForm<Inputs>();
+
+
   const onSubmit: SubmitHandler<Inputs> = async (data) => {
+    console.log("je rentre dans onSubmit,", { selectedTasks })
     try {
-      const response = await fetch('http://localhost:3000/event', {
-        method: 'POST',
-        headers: {
-          'Content-Type': 'application/json'
-        },
-        body: JSON.stringify(data)
-      });
-      if (response.ok) {
-        console.log('Event created successfully');
-      } else {
-        console.error('Failed to create event');
+      const formData = new FormData();
+      formData.append('title', data.title);
+      formData.append('type', data.type);
+      formData.append('description', data.description);
+      if (data.startOn){
+        formData.append('startOn', data.startOn);
       }
+      formData.append('duration', data.duration);
+      formData.append("picture", data.picture[0]);
+      if (selectedTasks){
+        formData.append("selectedTasks", JSON.stringify(selectedTasks))
+      }
+      console.log("avant le fetch")
+      const response = await axios.post('http://localhost:3000/event', formData, {
+        headers: {
+          'Content-Type': 'multipart/form-data'
+        }
+      });
+
+
+      console.log('Got response:', response)
     } catch (error) {
       console.error('Error creating event:', error);
+      alert('Failed to create event:  ' + error)
     }
   };
 
-  register("duree", { required: false });
+  register("duration", { required: false });
 
   const lookChange = watch([
     "title",
     "description",
-    "image",
-    "date",
-    "duree",
-    "selectedTasks",
+    "type",
+    "picture",
+    "startOn",
+    "duration",
   ]);
   console.log("lookChange:", lookChange);
 
@@ -79,6 +113,8 @@ export function FormEvent() {
           "http://localhost:3000/task"
         );
         const result = await response.json();
+
+        console.log('got TASKS LIST FROM API:', result)
         setInfos(result);
         console.log(result);
       } catch (error) {
@@ -89,29 +125,105 @@ export function FormEvent() {
     return () => {};
   }, []);
 
-  
-  
+  useEffect(() => {
+    const fetchData = async () => {
+      try {
+        const response = await fetch(
+          "http://localhost:3000/room"
+        );
+        const result = await response.json();
+
+        console.log('got ROOMS LIST FROM API:', result)
+        setRooms(result);
+        console.log(result);
+      } catch (error) {
+        console.log("erreur lors de la requete API" + error);
+      }
+    };
+    fetchData();
+    return () => {};
+  }, []);
+
+
+  useEffect(() => {
+    const fetchEventTypes = async () => {
+      try {
+        const response = await axios.get('http://localhost:3000/event');
+        setEventTypes(response.data);
+        console.log('response eventType' +response.data) // Suppose your API returns an array of event types
+      } catch (error) {
+        console.error('Error fetching event types:', error);
+      }
+    };
+
+    fetchEventTypes();
+  }, []);
 
   const handleSelectChange = (e) => {
-    const selInfo = e.target.value;
-    setSelectedInfos((prevSelectedInfos) => ({
-      ...prevSelectedInfos,
-      [selInfo]: (prevSelectedInfos[selInfo] || 0) + 1,
-    }));
+    if (!e.target.value){
+      return;
+    }
+
+    const taskId = +e.target.value;
+
+    if (!taskId){
+      return;
+    }
+    console.log('Changed task, its type is :', typeof taskId)
+
+    const prevSelectedTasks = [...selectedTasks];
+
+    console.log('prevSelectedTasks:', prevSelectedTasks)
+    const foundTaskIndex = prevSelectedTasks.findIndex(item=> item.id === taskId)
+
+    console.log('getting task from infos:', infos)
+    const [task] = infos.filter((task)=> task.id === taskId)
+    console.log('foundTaskIndex: ', foundTaskIndex)
+    console.log('got task:', task)
+
+    if (foundTaskIndex === -1){ // not found
+      prevSelectedTasks.push({
+        ...task,
+        quantity: 1
+      })
+    } else {
+      prevSelectedTasks[foundTaskIndex].quantity += 1;
+    }
+
+    setSelectedTasks(prevSelectedTasks)
   };
 
-  const handleDelete = (key, e) => {
-    e.preventDefault();
-    setSelectedInfos((prevSelectedInfos) => {
-      const updatedSelections = { ...prevSelectedInfos };
-      if (updatedSelections[key] > 1) {
-        updatedSelections[key]--;
-      } else {
-        delete updatedSelections[key];
-      }
-      return updatedSelections;
-    });
-  };
+  // const handleDelete = (key, e) => {
+  //   e.preventDefault();
+  //   setSelectedTasks((prevSelectedTasks) => {
+  //     const updatedSelections = { ...prevSelectedTasks };
+  //     if (updatedSelections[key] > 1) {
+  //       updatedSelections[key]--;
+  //     } else {
+  //       delete updatedSelections[key];
+  //     }
+  //     return updatedSelections;
+  //   });
+  // };
+
+  // const handleTypeChange = (e)=>{
+  //   console.log('je clique dessus pour changer le type')
+
+  //   if (!e.target.value){
+  //     return;
+  //   }
+
+  // }
+
+
+  const handleRoomChange = (e)=>{
+    console.log('je clique dessus pour changer de salle')
+
+    if (!e.target.value){
+      return;
+    }
+
+  }
 
   return (
     <Card color="transparent" className="border border-black" shadow={false}>
@@ -125,6 +237,44 @@ export function FormEvent() {
           onSubmit={handleSubmit(onSubmit)}
           className="mt-8 mb-2 w-full sm:w-96"
         >
+     <div>
+     <div className="w-full sm:w-72">
+     <Typography variant="h6" color="blue-gray" className="-mb-3">
+              Salle 
+            </Typography>
+              <select
+                id="category"
+                name="category"
+                className="mt-1 block w-full py-2 px-3 border border-gray-300 bg-white rounded-md shadow-sm focus:outline-none focus:ring-indigo-500 focus:border-indigo-500 sm:text-sm"
+                 onChange={handleRoomChange}
+                
+              >
+                
+                {rooms.map((room, index) => (
+                  <option key={index} value={room.id}>
+                    {room.name}
+                  </option>
+                ))}
+              </select>
+            </div>
+
+
+
+    </div>
+    <select
+  id="eventType"
+  name="eventType"
+  className="mt-1 block w-full py-2 px-3 border border-gray-300 bg-white rounded-md shadow-sm focus:outline-none focus:ring-indigo-500 focus:border-indigo-500 sm:text-sm"
+  onChange={(e) => setValue("type", parseInt(e.target.value))}
+>
+  <option value="">Choisissez le type d'événement</option>
+  <option value="1">CONCERT</option>
+  <option value="2">THEATRE</option>
+  <option value="3">STANDUP</option>
+</select>
+
+
+
           <div className="mb-1 flex flex-col gap-6">
             <Typography variant="h6" color="blue-gray" className="-mb-3">
               Titre
@@ -162,30 +312,30 @@ export function FormEvent() {
                 name="category"
                 className="mt-1 block w-full py-2 px-3 border border-gray-300 bg-white rounded-md shadow-sm focus:outline-none focus:ring-indigo-500 focus:border-indigo-500 sm:text-sm"
                 onChange={handleSelectChange}
-                value={selectedInfos}
+                
               >
-                <option value="">Sélection Tâches</option>
+                <option value={null}>Sélection Tâches</option>
                 {infos.map((info, index) => (
-                  <option key={index} value={info.name}>
+                  <option key={index} value={info.id}>
                     {info.name}
                   </option>
                 ))}
               </select>
             </div>
 
-            {Object.keys(selectedInfos).length > 0 && (
+            {selectedTasks.length > 0 && (
               <div>
                 <p className="mt-2 text-sm text-gray-500">
                   Tâches sélectionnées :
                 </p>
                 <ul className="list-disc pl-5">
-                  {Object.entries(selectedInfos).map(([info, count], index) => (
-                    <li className="border border-black rounded-md" key={index}>
+                  {selectedTasks.map((task) => (
+                    <li className="border border-black rounded-md" key={task.id}>
                       <p>
-                        {info} (x{count})
+                        {task.name} (x{task.quantity})
                       </p>
                       <span>
-                        <button onClick={(e) => handleDelete(info, e)}>
+                        <button onClick={(e) => handleDelete(task.id, e)}>
                           <MdDelete />{" "}
                         </button>
                       </span>
@@ -210,10 +360,8 @@ export function FormEvent() {
                   type="file"
                   id="file-upload"
                   className="hidden"
-                  {...register("image", { required: true })}
-                  {...(errors.image && (
-                    <span>Ce champ ne doit pas être vide</span>
-                  ))}
+                  {...register("picture", { required: false })}
+                  
                 />
               </div>
               <div className="text-center">
@@ -227,7 +375,7 @@ export function FormEvent() {
                     selected={startDate}
                     onChange={(date) => {
                       setStartDate(date);
-                      register("date", { value: date });
+                      register("startOn", { value: date });
                     }}
                   />
                   {errors.date && <span>Ce champ ne doit pas être vide</span>}
@@ -239,23 +387,26 @@ export function FormEvent() {
                   value={duration}
                   onChange={(value) => {
                     console.log("registering DUREE", { value });
-                    setValue("duree", value);
+                    setValue("duration", value);
                     handleChange(value);
                   }}
                   disableClock={true}
                 />
-                {errors.duree && <span>Ce champ ne doit pas être vide</span>}
+                {errors.duration && <span>Ce champ ne doit pas être vide</span>}
               </div>
             </div>
           </div>
-        </form>
-      </div>
-      <div className="flex justify-evenly mb-3">
+          <div className="flex justify-evenly mb-3">
         <Button className="mt-6 bg-red-500 w-full sm:w-auto">Annuler</Button>
-        <Button className="mt-6 bg-green-500 w-full sm:w-auto">
+        <Button type="submit" className="mt-6 bg-green-500 w-full sm:w-auto">
           Confirmer
         </Button>
       </div>
+        </form>
+      </div>
+      
     </Card>
   );
 }
+
+
