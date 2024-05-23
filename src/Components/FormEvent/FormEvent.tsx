@@ -206,14 +206,7 @@ export function FormEvent() {
   //   });
   // };
 
-  // const handleTypeChange = (e)=>{
-  //   console.log('je clique dessus pour changer le type')
-
-  //   if (!e.target.value){
-  //     return;
-  //   }
-
-  // }
+  
 
 
   const handleRoomChange = (e)=>{
