@@ -206,6 +206,21 @@ export function FormEvent() {
   //   });
   // };
 
+  const handleDelete = (taskId, e) => {
+    e.preventDefault();
+    setSelectedTasks((prevSelectedTasks) => {
+      const updatedSelections = prevSelectedTasks.map(task => {
+        if (task.id === taskId) {
+          return { ...task, quantity: task.quantity - 1 };
+        }
+        return task;
+      }).filter(task => task.quantity > 0);
+
+      return updatedSelections;
+    });
+  };
+
+
   
 
 
