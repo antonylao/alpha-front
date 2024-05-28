@@ -41,11 +41,11 @@ function App() {
 
         {/* If using replace, the navigation will replace the current entry in the history stack instead of adding a new one. */}
         <Route path="/" element={<Navigate to="/events" replace />} />
+          <Route path="/events" Component={EventCard} />
         <Route path="/signin" element={<SignInPage />} />
 
 
         <Route element={<PrivateRoute />} >
-          <Route path="/events" Component={EventCard} />
           <Route path="/create-event/" Component={FormEvent} />
           <Route path="/duplicate-event/:id" Component={EventDuplicatePage} />
           <Route path="/edit-event/:id" Component={EventEditPage} />
@@ -57,9 +57,9 @@ function App() {
 
         {/* VOLUNTEER FRONT PAGES */}
         <Route path="/volunteer_front_events" element={<VolunteerEventPage />} />
-        <Route path="/volunteer_front_events_awaiting_comment" element={<EventsAwaitingComment />} />
+        <Route path="/volunteer_front_events_awaiting_comment" element={<EventsAwaitingCommentPage />} />
 
-        <Route path="/volonteer_signin" element={<SignInSignUpPage />} />
+        <Route path="/volunteer_signin" element={<SignInSignUpPage />} />
         <Route path="/my_profile" element={<MyProfilePage />} />
 
         {/* not defined paths */}

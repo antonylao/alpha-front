@@ -11,6 +11,10 @@ import { Delete } from "../../Buttons/DeleteEvent/Delete";
 import { Edit } from "../../Buttons/EditEvent/Edit";
 import { Duplicate } from "../../Buttons/DuplicateEvent/Duplicate";
 import { Create } from "../../Buttons/CreateEvent/Create";
+import { RoutesBack } from "../../../services/utils/RoutesBackUtils";
+import { useApi } from "../../../hooks/useApi";
+
+const api = useApi();
 
 
 export function EventCard() {
@@ -19,11 +23,11 @@ export function EventCard() {
   useEffect(() => {
     const fetchData = async () => {
       try {
-        const response = await fetch(
+        const {data} = await api.get(
 
-          "http://localhost:3000/api/event"
+          RoutesBack.EventController.getAllEvents
         );
-        const result = await response.json();
+        const result = await data.datas;
         setEvents(result);
         console.log(result);
       } catch (error) {
