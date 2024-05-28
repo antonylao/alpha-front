@@ -16,9 +16,9 @@ export async function getComments() {
 export async function getCommentsV2() {
     try {
         const { data } = await api.get("api/organiser/comments");
-        console.log("🚀 ~ getCommentsV2 ~ data:", data)
+        console.log("🚀 ~ getCommentsV2 ~ data:", data.datas)
         // console.log(data)
-        return data.comments;
+        return data.datas;
     } catch (err) {
         console.log("ERROR")
         console.log(err)

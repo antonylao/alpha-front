@@ -10,6 +10,8 @@ import "react-time-picker/dist/TimePicker.css";
 import "react-clock/dist/Clock.css";
 import "react-datepicker/dist/react-datepicker.css";
 import axios from 'axios';
+import { RoutesBack } from '../../../services/utils/RoutesBackUtils';
+import { useApi } from '../../../hooks/useApi';
 
 type Inputs = {
   title: string;
@@ -46,6 +48,8 @@ function EventEditPage() {
   const [duration, setDuration] = useState("");
   const [eventTypes, setEventTypes] = useState([]);
 
+  const api = useApi();
+
   const { register, handleSubmit, setValue, watch, formState: { errors } } = useForm<Inputs>();
 
   const onSubmit = async (data) => {
@@ -64,7 +68,8 @@ function EventEditPage() {
       }
       console.log('FormData to be sent:', Array.from(formData.entries()));
 
-      const response = await axios.put(`http://localhost:3000/event/${id}`, formData, {
+      // const response = await axios.put(`http://localhost:3000/api/event/${id}`, formData, {
+      const response = await api.put(RoutesBack.EventController.updateEvent.replace(":event_id", String(id)), formData, {
         headers: {
           'Content-Type': 'multipart/form-data'
         }
@@ -96,7 +101,7 @@ function EventEditPage() {
 
   const preloadEventData = async () => {
     try {
-      const response = await axios.get(`http://localhost:3000/event/${id}`);
+      const response = await api.get(RoutesBack.EventController.updateEvent.replace(":event_id", String(id)));
       if (response.status === 200) {
         const eventData = response.data;
         setValue('title', eventData.title);
@@ -123,11 +128,11 @@ function EventEditPage() {
   useEffect(() => {
     const fetchData = async () => {
       try {
-        const taskResponse = await axios.get("http://localhost:3000/task");
+        const taskResponse = await api.get("http://localhost:3000/task");
         setInfos(taskResponse.data);
-        const roomResponse = await axios.get("http://localhost:3000/room");
+        const roomResponse = await api.get("http://localhost:3000/room");
         setRooms(roomResponse.data);
-        const eventTypesResponse = await axios.get("http://localhost:3000/event");
+        const eventTypesResponse = await api.get(RoutesBack.EventController.updateEvent.replace(":event_id", String(id)));
         setEventTypes(eventTypesResponse.data);
       } catch (error) {
         console.error("Erreur lors de la requête API:", error);

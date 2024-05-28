@@ -8,6 +8,9 @@ import CalendarStart from "../../Components/SearchBar/SearchBarComment/Calendar/
 import CalendarEnd from "../../Components/SearchBar/SearchBarComment/Calendar/calendarend"
 import SearchBarComment from '../../Components/SearchBar/SearchBarComment/SearchBar'
 import "./Comment.css"
+import { DateTimeUtils } from "../../services/utils/DateTimeUtils";
+import { EnumUtils } from "../../services/utils/EnumUtils";
+import { EventType } from "../../services/utils/BackendEnums";
 
 
 export default function CommentPage() {
@@ -49,6 +52,10 @@ export default function CommentPage() {
     } 
 
    
+    function formatDateTimeForCard(startOn: any): import("react").ReactNode {
+        throw new Error("Function not implemented.");
+    }
+
     return (
 
 
@@ -76,27 +83,27 @@ export default function CommentPage() {
                 <SearchBarComment sendToCommentPage={receiveSearchBarCommentData} />
             </div>
             <div className="commentlist grid grid-cols-1 md:grid-cols-2 lg:grid-cols-2 gap-4">
-            {comments.map((comment: any, index: number) => 
-                <div key={index} className="relative text-gray-700 bg-white shadow-md bg-clip-border rounded-xl w-96 p-3 w-auto">
+            {comments.map((comment: any, id: number) => 
+                <div key={id} className="relative text-gray-700 bg-white shadow-md bg-clip-border rounded-xl w-96 p-3 w-auto">
                     <div className=" ps-3 pe-3  pb-2 flex justify-between">
                         <div className="flex justify-between">  
                             <p className="pe-5">
-                                {comment.name}
+                                {comment.eventTask.event.title}
                             </p>
                             <div className="relative grid select-none items-center whitespace-nowrap rounded-lg bg-gray-900 py-1.5 px-3  text-xs uppercase text-white h-7 w-17">
-                                <span className="">{comment.id}</span>
+                                <span className="">{EnumUtils.getKey(EventType, comment.eventTask.event.type)}</span>
                             </div>
                         </div>
-                        <p>{comment.id}</p>
+                        <p>{DateTimeUtils.formatDateTimeForCard(comment.eventTask.event.startOn)}</p>
                     </div>
                     <div className="relative grid select-none items-center whitespace-nowrap rounded-lg bg-gray-200 text-xs uppercase text-black h-7 w-12 m-2">
-                        <span className="">{comment.postId}</span>
+                        <span className="">{comment.eventTask.task.name}</span>
                     </div>
                         <p className="block font-sans text-base antialiased font-light leading-relaxed text-inherit p-1 border rounded">
-                        {comment.body}
+                        {comment.volunteerComment}
                         </p>
                     <div className="pt-4 flex justify-end">
-                        <p className="">{comment.email}</p>
+                        <p className="">{comment.user.firstname} {comment.user.lastname}</p>
                     </div>  
                 </div>
                 )}
