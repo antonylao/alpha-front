@@ -24,3 +24,5 @@ git checkout <branch>
 git merge develop
 (check for merge conflict)
 git add ./ ; git commit -m ".."
+
+git branch -r (when pulling and want to see remote branches)
