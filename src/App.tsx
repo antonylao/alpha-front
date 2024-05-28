@@ -5,7 +5,7 @@ import { EventCard } from "./Components/Card/EventCard/EventCard";
 import EventDuplicatePage from './Pages/EventPage/Duplicate/EventDuplicatePage';
 import EventEditPage from './Pages/EventPage/Edit/EventEditPage';
 import { FormEvent } from "./Components/FormEvent/FormEvent";
-import EventPage from "./Pages/EventPage/Index/EventIndexPage";
+// import EventPage from "./Pages/EventPage/Index/EventIndexPage";
 import PendingRequestPage from "./Pages/PendingRequestPage/PendingRequestPage";
 import CommentPage from "./Pages/CommentPage/CommentPage";
 import StickyNavbar from "./Components/Navbar/Navbar"
