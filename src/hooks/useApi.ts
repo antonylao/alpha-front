@@ -3,13 +3,11 @@ import axios, { AxiosInstance } from "axios";
 export function useApi() {
 
     const headers = { 'Access-Control-Allow-Origin': '*' };
-
     const api: AxiosInstance = axios.create({
         baseURL: import.meta.env.VITE_API_BASE_URL_DEV,
         // baseURL: "https://jsonplaceholder.typicode.com",
         //headers
     })
-
     api.interceptors.request.use((config: any) => {
         //Ajouter le Token dans le header: 
         //NB: ne pas ajouter le token pour sign in, sign up, mot de passe oublié
@@ -21,31 +19,19 @@ export function useApi() {
         token ? config.headers['Authorization'] = "Bearer " + token : ''
         return config;
     })
-
     api.interceptors.response.use(
-
         (response: any) => response,
-
         async (error: any) => {
-
             if (error.response && error.response.status === 401) {
-
-
-
-
-
                 const originalRequest = error.config;
                 // pour éviter boucle infinie du refreshToken
                 if (!originalRequest._retry) {
                     originalRequest._retry = true;
                 }
-
                 // Récupérer le RefreshToken dans le localstorage
                 const refreshToken = localStorage.getItem('refreshToken');
-
                 //retouner à la page d'accueil s'il n'y a pas de refreshToken
                 if (refreshToken) {
-
                     try {
                         //! fonction refreshToken a implementer dans services/api/auth
                         // Appeler la route /refreshToken
@@ -61,20 +47,14 @@ export function useApi() {
                     } catch (error) {
                         location.href = "/";
                     }
-
                 } else {
                     location.href = "/";
                 }
-
             }
-
             if (error.response && error.response.status === 500) {
-
             }
-
             return Promise.reject(error)
         }
     )
-
     return api;
 }

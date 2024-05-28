@@ -10,13 +10,13 @@ import PrivateRoute from "./services/utils/PrivateRoute";
 import { SignInPage } from "./Pages/SignInPage/SignInPage";
 import VolunteerPage from "./Pages/VolunteerPage/VolunteerPage";
 import { ReactQueryDevtools } from "@tanstack/react-query-devtools";
-import  VolonteerSignIn  from "./VOLUNTEER_FRONT/Pages/SignInUpPage/SignInUpPage"
 import MyProfilePage from "./VOLUNTEER_FRONT/Pages/MyProfile/MyprofilePage";
 // import VolonteerSignIn from "./Volonteers/Pages/SignInUpPage/SignInUpPage"
 
 import { VolunteerEventPage } from "./VOLUNTEER_FRONT/Pages/Event/VOLUNTEEREventPage";
 import { EventsAwaitingComment } from "./VOLUNTEER_FRONT/Pages/EventsAwaitingComment/EventsAwaitingComment";
 import VolunteerNavbar from "./VOLUNTEER_FRONT/Components/Navbar/VolunteerNavbar";
+import { SignInSignUpPage } from "./VOLUNTEER_FRONT/Pages/SignInUpPage/SignInSignUpPage";
 
 
 
@@ -44,7 +44,8 @@ function App() {
         {/* VOLUNTEER FRONT PAGES */}
         <Route path="/volunteer_front_events" element={<VolunteerEventPage />} />
         <Route path="/volunteer_front_events_awaiting_comment" element={<EventsAwaitingComment />} />
-        <Route path="/volonteer_signin" element={<VolonteerSignIn />} />
+
+        <Route path="/volonteer_signin" element={<SignInSignUpPage />} />
         <Route path="/my_profile" element={<MyProfilePage />} />
 
         {/* not defined paths */}
