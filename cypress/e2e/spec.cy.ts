@@ -1,9 +1,3 @@
-<<<<<<< HEAD
-describe('template spec', () => {
-  it('passes', () => {
-    cy.visit('http://localhost:8090')
-  })
-=======
 
 
 describe('test SignUp', () => {
@@ -25,7 +19,7 @@ describe('test SignUp', () => {
     // cy.get('[data-cy="passworderror"]').contains('Le mot de passe doit comporter au maximum 15 caractères')
     // cy.get('[data-cy="confirmPassworderror"]').contains('Les mots de passes ne sont pas identiques')
     // cy.get('[data-cy="emailerror"]').should('be.visible')
-   })
+  })
 })
 
 describe('test SignUp', () => {
@@ -47,6 +41,5 @@ describe('test SignUp', () => {
     // cy.get('[data-cy="passworderror"]').contains('Le mot de passe doit comporter au maximum 15 caractères')
     // cy.get('[data-cy="confirmPassworderror"]').contains('Les mots de passes ne sont pas identiques')
     // cy.get('[data-cy="emailerror"]').should('be.visible')
-   })
->>>>>>> develop
+  })
 })
