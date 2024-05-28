@@ -21,7 +21,7 @@ export function EventCard() {
       try {
         const response = await fetch(
 
-          "http://localhost:3000/event"
+          "http://localhost:3000/api/event"
         );
         const result = await response.json();
         setEvents(result);
