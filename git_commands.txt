@@ -1,0 +1,26 @@
+(from <my_branch:) git add ./ ; git commit -m "message" ; git push
+git checkout develop
+git pull origin develop
+git checkout <my_branch>
+git merge develop
+(check for merge conflicts)
+git checkout develop
+git merge <my_branch>
+git push origin develop
+
+(when all merges are done to develop)
+git pull origin develop
+git branch -d <my_branch>
+git checkout -b <new_branch>
+git pull origin develop
+
+------------------
+(pour prendre changements de develop)
+depuis <branch>
+git add ./ ; git commit -m ".."
+git checkout develop
+git pull origin develop
+git checkout <branch>
+git merge develop
+(check for merge conflict)
+git add ./ ; git commit -m ".."

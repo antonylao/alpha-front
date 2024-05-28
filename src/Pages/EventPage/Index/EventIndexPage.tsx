@@ -1,3 +1,4 @@
+
 import { Exemple } from "../../../Components/SearchBar/SearchBarEvent/Exemple";
 import { SearchBar } from "../../../Components/SearchBar/SearchBarEvent/SearchBar";
 import { useEffect, useState } from "react";
