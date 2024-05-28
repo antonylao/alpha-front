@@ -1,9 +1,11 @@
-import React from "react";
+import React, { useEffect } from "react";
 import { useForm } from "react-hook-form";
 import { useState } from "react";
 import {yupResolver} from '@hookform/resolvers/yup'
 import * as yup from "yup"; 
-import { updateVolunteerProfile } from "../../../../services/api/volunteers";
+import { useNavigate } from 'react-router-dom';
+import { VolunteerProfileUpdate } from "../../../../services/api/VolunteerProfileUpdate";
+import { VolunteerUpdateInterface } from "../../../../services/utils/CustomTypes";
 import {
     Dialog,
     Avatar,
@@ -15,24 +17,25 @@ import {
     CardBody,
   } from "@material-tailwind/react";
 
-  interface Volunteer {
-    firstName: string,
-    lastName: string,
-    email: string, 
-    password: string,
-    phoneNumber: string,
-    profilePicture: File
-  }
+//   interface Volunteer {
+//     firstName: string,
+//     lastName: string,
+//     email: string, 
+//     password: string,
+//     phoneNumber: string,
+//     profilePicture: File
+//   }
 
 // lien de la video tuto hookform/yup utilisée dans ce code 
 // https://www.youtube.com/watch?v=wlltgs5jmZw&ab_channel=PedroTech
 
-export const FormModifyProfile = (props: any) =>{
+export const FormModifyProfile = () =>{
 
-    const { newProfile } = props
-    const [volunteer, setVolunteer] = useState<Volunteer[]>([])
+    // const { newProfile } = props
+    // const [volunteer, setVolunteer] = useState<Volunteer[]>([])
     const phoneRegex = /^(?:(?:\+|00)33|0)\s*[1-9](?:[\s.-]*\d{2}){4}$/
     const [picture, setPicture] = useState('');
+    const navigate = useNavigate();
 
     const loadPicture = (e: any) => {
         setPicture(URL.createObjectURL(e.target.files[0]));
@@ -65,11 +68,24 @@ export const FormModifyProfile = (props: any) =>{
         resolver: yupResolver(schema)
     })
 
-    const onSubmit = (data: any) => {
-        setVolunteer(data)
-        updateVolunteerProfile(1 , data)
-        newProfile(data)
-    }
+    // const onSubmit = (data: any) => {
+    //     setVolunteer(data)
+    //     updateVolunteerProfile(1 , data)
+    //     newProfile(data)
+    // }
+
+    const onSubmit = async (data: VolunteerUpdateInterface) => {
+        try {
+          console.log("🚀 ~ onSubmit ~ data:", data)
+          const user = await VolunteerProfileUpdate(data)
+          console.log("🚀 ~ handleSubmit ~ user:", user)
+
+          navigate('/api/volunteer_profile');
+        } catch (error: any) {
+        //   console.error(error.response.data)
+        }
+      }
+
 
 
     const [open, setOpen] = React.useState(false);
