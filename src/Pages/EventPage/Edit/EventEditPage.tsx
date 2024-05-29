@@ -67,13 +67,13 @@ function EventEditPage() {
         formData.append('selectedTasks', JSON.stringify(selectedTasks));
       }
       console.log('FormData to be sent:', Array.from(formData.entries()));
-
-      // const response = await axios.put(`http://localhost:3000/api/event/${id}`, formData, {
-      const response = await api.put(RoutesBack.EventController.updateEvent.replace(":event_id", String(id)), formData, {
+      
+      const response = await api.put(RoutesBack.EventController.updateEvent.replace(":id", `${id}`), formData, {
         headers: {
           'Content-Type': 'multipart/form-data'
         }
       });
+
 
       if (response.status === 200) {
         console.log('Événement mis à jour avec succès');
@@ -107,8 +107,8 @@ function EventEditPage() {
         setValue('title', eventData.title);
         setValue('description', eventData.description);
         setValue('type', eventData.type);
-        setValue('startOn', new Date(eventData.startOn));
-        setStartDate(new Date(eventData.startOn));
+        // setValue('startOn', new Date(eventData.startOn));
+        // setStartDate(new Date(eventData.startOn));
         setValue('duration', eventData.duration);
         setDuration(eventData.duration);
         setSelectedTasks(eventData.selectedTasks || []);
