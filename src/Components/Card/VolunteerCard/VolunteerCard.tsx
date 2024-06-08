@@ -89,7 +89,7 @@ export function VolunteerCard(props: any) {
           {/* <RatingVolunteerProfile /> */}
           <RatingDetails id={id} countRatingApplied={refetchAndRemountRatingDetails} />
         </div>
-        <p>warning: {String(warning)}, ban: {String(ban)}</p>
+        {/* <p>warning: {String(warning)}, ban: {String(ban)}</p> */}
       </CardBody>
       <CardFooter className="group flex place-content-end mt-auto gap-3">
         <PastEventsModal volunteerId={id} newRatingApplied={newRatingToApplyInRatingDetails} />
