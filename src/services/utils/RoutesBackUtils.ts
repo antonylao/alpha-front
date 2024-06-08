@@ -1,5 +1,6 @@
 export const RoutesBack =
 {
+  HealthcheckController: { healthcheck: 'healthcheck' },
   AuthController: {
     registerVolunteer: 'auth/signup/volunteer',
     loginVolunteer: 'auth/signin/volunteer',
@@ -9,7 +10,7 @@ export const RoutesBack =
     signout: 'api/auth/signout',
     emailConfirmation: 'auth/signin/:userId/emailConfirmation'
   },
-  TaskController: { getAllTasks: 'task' },
+  TaskController: { getAllTasks: 'task', getAllTasksV2: 'taskV2' },
   UserController: {
     readAllVolunteersForOrganiserVolunteerIndex: 'api/organiserCheck/volunteer',
     readVolunteer: 'api/volunteer_profile',
@@ -28,9 +29,9 @@ export const RoutesBack =
     readAllComments: 'api/organiser/comments',
     readAllPendingRequests: 'organiser/pending_requests',
     updateRating: 'api/organiserCheck/volunteer/:volunteerId/past_events/:eventId/task/:taskId/rating',
-    getFinishedAssignmentsInfo: 'api/volunteerCheck/volunteer/signedInId/my_events',      
+    getFinishedAssignmentsInfo: 'api/volunteerCheck/volunteer/signedInId/my_events',
     updateComment: 'api/volunteerCheck/event/:eventId/task/:taskId/comment',
-    createPendingVolunterAssignment: 'api/volunteerCheck/event/:eventId/task/:taskId',    
+    createPendingVolunterAssignment: 'api/volunteerCheck/event/:eventId/task/:taskId',
     cancelAssignment: 'api/volunteerCheck/event/:eventId/task/:taskId/cancel',
     getAllVolunteerAssignments: 'volunteerAssignment',
     createAssignment: 'createAssignment'
@@ -42,18 +43,18 @@ export const RoutesBack =
     getEventById: 'api/event/:id',
     createEvent: 'api/event',
     updateEvent: 'api/event/:id',
-    deleteEvent: 'api/event/:id',
     getAllUpcomingEvents: 'api/volunteerCheck/event/upcoming',
+    deleteEvent: 'api/event/:id',
     readCommentsByEventId: 'api/event/:event_id/comments',
     readRatingsByEventId: 'api/event/:event_id/ratings',
-    updateRatingsByEventId: 'api/event/:event_id/task/:task_id/user/:user_id/rating',     
-    updateStatusByEventId: 'api/event/:event_id/task/:task_id/user/:user_id/status'       
+    updateRatingsByEventId: 'api/event/:event_id/task/:task_id/user/:user_id/rating',
+    updateStatusByEventId: 'api/event/:event_id/task/:task_id/user/:user_id/status'
   },
   EventTaskController: {
     createEventTask: 'event_task',
-    getUpcomingEventInfosForTaskApply: 'api/volunteerCheck/event/upcoming/:eventId/task', 
+    getUpcomingEventInfosForTaskApply: 'api/volunteerCheck/event/upcoming/:eventId/task',
     readEventTaskById: 'api/event/:event_id/task/:task_id',
-    updateEventTaskProgressionById: 'api/event/:event_id/task/:task_id/progression',      
+    updateEventTaskProgressionById: 'api/event/:event_id/task/:task_id/progression',
     updateEventTaskRequiredVolunteersById: 'api/event/:event_id/task/:task_id/required_volunteers',
     deleteEventTaskById: 'api/event/:event_id/task/:task_id'
   },

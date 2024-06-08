@@ -8,7 +8,7 @@ import { RatingVolunteerProfile } from "../Rating/RatingVolunteerProfile";
 import { RatingByTask } from "../Rating/RatingByTask";
 import { getEventsAssignedByVolunteerId } from "../../services/api/volunteer_assignments";
 import { useQuery } from "@tanstack/react-query";
-import { getTasks } from "../../services/api/tasks";
+import { getTasksV2 } from "../../services/api/tasks";
 import { roundToFloat } from "../../services/utils/Utils";
 
 export function RatingDetails(props: any) {
@@ -18,9 +18,9 @@ export function RatingDetails(props: any) {
   const [rating, setRating] = useState<number>(0)
   const [meanRatingsForPopover, setMeanRatingsForPopover] = useState<any>([])
   const [openPopover, setOpenPopover] = useState(false);
-  // console.log(eventsAssigned)
-
-  const count = eventsAssigned?.filter((obj: any) => obj.volunteer_assignment_rating).length
+  console.log(`events assigned to id ${id}`, eventsAssigned)
+  const [count, setCount] = useState(0)
+  // const count = eventsAssigned?.filter((obj: any) => obj.volunteer_assignment_rating).length
 
   const triggers = {
     onMouseEnter: () => setOpenPopover(true),
@@ -34,7 +34,7 @@ export function RatingDetails(props: any) {
 
   const { data: taskList, isSuccess: taskListSuccess, isLoading: taskListLoading, isError: taskListError } = useQuery({
     queryKey: [`taskList`],
-    queryFn: getTasks,
+    queryFn: getTasksV2,
   })
 
   //set new state for re-mounting with the correct values for the props of RatingVolunteerProfile and RatingByTask
@@ -51,7 +51,12 @@ export function RatingDetails(props: any) {
   }
 
   useEffect(() => {
-    if (isSuccess) { setEventsAssigned(data) }
+    if (isSuccess) {
+      setEventsAssigned(data)
+      console.log("🚀 ~ useEffect ~ data:", data)
+      // setCount(data?.filter((obj: any) => obj.volunteer_assignment_rating).length)
+      setCount(data?.length)
+    }
     if (taskListSuccess && isSuccess) {
       handleRefetch()
     }
@@ -85,6 +90,7 @@ export function RatingDetails(props: any) {
 
       taskNameList?.every((task) => {
         const listRatingsByTask = listRatings.filter((obj) => obj.taskName === task.name && obj.organiserRating)
+        console.log(`🚀 ~ taskNameList?.every ~ listRatingsByTask ~ for user id ${id}:`, listRatingsByTask)
 
         let newItem = {}
         if (listRatingsByTask.length === 0) {

@@ -34,14 +34,15 @@ function App() {
     <>
 
       <StickyNavbar />
-      <VolunteerNavbar />
+      {/* TODO: Condition on which navbar to display: for now display both */}
+      {/* <VolunteerNavbar /> */}
 
       <Routes>
         {/* <Route path="/" element={ <EventPage />} /> */}
 
         {/* If using replace, the navigation will replace the current entry in the history stack instead of adding a new one. */}
         <Route path="/" element={<Navigate to="/events" replace />} />
-          <Route path="/events" Component={EventCard} />
+        <Route path="/events" Component={EventCard} />
         <Route path="/signin" element={<SignInPage />} />
 
 

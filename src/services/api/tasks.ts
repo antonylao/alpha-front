@@ -1,12 +1,11 @@
-import { fakerTasks } from "../../Pages/VolunteerPage/fakerTasks"
 import { useApi } from "../../hooks/useApi";
 import { RoutesBack } from "../utils/RoutesBackUtils";
 
 const api = useApi();
 
-export async function getTasks() {
+export async function getTasksV2() {
   try {
-    const { data } = await api.get(RoutesBack.TaskController.getAllTasks)
+    const { data } = await api.get(RoutesBack.TaskController.getAllTasksV2)
     return data.datas;
 
     //in VolunteerPage
