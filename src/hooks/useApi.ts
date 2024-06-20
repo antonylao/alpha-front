@@ -6,7 +6,7 @@ export function useApi() {
 
     const headers = { 'Access-Control-Allow-Origin': '*' };
     const api: AxiosInstance = axios.create({
-        baseURL: import.meta.env.VITE_API_BASE_URL_DEV,
+        baseURL: import.meta.env.VITE_API_BASE_URL_PROD,
         // baseURL: "https://jsonplaceholder.typicode.com",
         //headers
     })

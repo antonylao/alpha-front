@@ -4,57 +4,57 @@ import { NavLink } from 'react-router-dom'
 import "./Navbar.css"
 import { FormProfile } from "../Modales/OrganiserProfile/OrganiserProfile";
 import {
-    Navbar,
-    Typography,
-    IconButton,
-    Collapse,
-  } from "@material-tailwind/react";
+  Navbar,
+  Typography,
+  IconButton,
+  Collapse,
+} from "@material-tailwind/react";
 
 
 export default function StickyNavbar() {
   const [openNav, setOpenNav] = React.useState(false);
 
- React.useEffect(() => {
-   window.addEventListener(
-     "resize",
-     () => window.innerWidth >= 960 && setOpenNav(false),
-   );
- }, []);
+  React.useEffect(() => {
+    window.addEventListener(
+      "resize",
+      () => window.innerWidth >= 960 && setOpenNav(false),
+    );
+  }, []);
 
   const navList = (
     <nav>
       <ul className="mt-2 mb-4 flex flex-col gap-2 lg:mb-0 lg:mt-0 lg:flex-row lg:items-center lg:gap-10">
         <NavLink
-        to="/"
-        className={({ isActive }) => (isActive ? "activeLink" : undefined)} >
-        Evènements
+          to="/events"
+          className={({ isActive }) => (isActive ? "activeLink" : undefined)} >
+          Evènements
         </NavLink>
 
         <NavLink
-        to="/comments"
-        className={({ isActive }) => (isActive ? "activeLink" : undefined)}>
-        Commentaires
+          to="/comments"
+          className={({ isActive }) => (isActive ? "activeLink" : undefined)}>
+          Commentaires
         </NavLink>
 
         <NavLink
-        to="/volunteers"
-        className={({ isActive }) => (isActive ? "activeLink" : undefined)}>
-        Bénévoles
+          to="/volunteers"
+          className={({ isActive }) => (isActive ? "activeLink" : undefined)}>
+          Bénévoles
         </NavLink>
 
         <NavLink
-        to="/pending_requests"
-        className={({ isActive }) => (isActive ? "activeLink" : undefined)}>
-        Requêtes en cours
+          to="/pending_requests"
+          className={({ isActive }) => (isActive ? "activeLink" : undefined)}>
+          Requêtes en cours
         </NavLink>
 
         <NavLink
-        to=""
-        className={({ isActive }) => (isActive ? "activeLink" : undefined)}>
-        Déconnexion
+          to=""
+          className={({ isActive }) => (isActive ? "activeLink" : undefined)}>
+          Déconnexion
         </NavLink>
 
-        <FormProfile/>
+        <FormProfile />
       </ul>
     </nav>
   );
@@ -72,10 +72,10 @@ export default function StickyNavbar() {
             className="mr-4 cursor-pointer py-1.5 font-medium"
           >
             <img
-            alt="logo"
-            className="max-h-[100px] max-w-[100px]"
-            src= {logo}
-          />
+              alt="logo"
+              className="max-h-[100px] max-w-[100px]"
+              src={logo}
+            />
           </Typography>
           <div className="flex items-center gap-4">
             <div className="mr-4 pl-4 hidden lg:block">{navList}</div>
