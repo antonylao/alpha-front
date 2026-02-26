@@ -36,8 +36,6 @@ function App() {
   const [activeTab, setActiveTab] = useState("volunteer");
 
   useEffect(() => {
-    console.log(String.fromCodePoint(0x1F516) + " App.tsx ~ activeTab: ")
-    console.log(activeTab)
     // Target the body element and set its background color
     if (activeTab === "volunteer") {
       document.body.style.backgroundColor = '#f0f4f8'; // Light blue-gray
@@ -52,6 +50,8 @@ function App() {
 
   return (
     <>
+      {/*for DEMO: switch organizer/volunteer space*/}
+      {/*
       <div className="pb-10 ">
         <Typography variant="h3">Choisissez votre espace</Typography>
         <Tabs value={activeTab} >
@@ -66,11 +66,11 @@ function App() {
           </TabsHeader >
         </Tabs >
 
-
       </div >
+      */}
 
-      {/* TODO: Condition on which navbar to display: for now display both */}
-      {activeTab === 'volunteer' ? <VolunteerNavbar /> : <StickyNavbar />}
+      <VolunteerNavbar />
+      {/*{activeTab === 'volunteer' ? <VolunteerNavbar /> : <StickyNavbar />}*/}
 
       <Routes>
         {/* <Route path="/" element={ <EventPage />} /> */}

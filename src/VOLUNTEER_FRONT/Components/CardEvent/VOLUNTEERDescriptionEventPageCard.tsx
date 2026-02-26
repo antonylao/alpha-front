@@ -33,7 +33,7 @@ export function VolunteerDescriptionEventPageCard({ types }: any) {
             Voici les liens vers le code source du projet: <a href="https://github.com/antonylao/alpha-back/tree/antony_microservices" target="_blank" style={{ color: "revert", }} className="underline">back</a> et <a href="https://github.com/antonylao/alpha-front/tree/antony_cablage_2" target="_blank" style={{ color: "revert", }} className="underline">front</a>
           </Typography>
           <Typography variant="h5" color="blue-gray" className="font-medium mr-5 pb-8">
-            Vous pouvez également voir mes autres projets dans mon <a href="https://example.com" target="_blank" style={{ color: "revert", }} className="underline">portfolio</a>.
+            Vous pouvez également voir mes autres projets dans mon <a href="https://v0-fullstack-developer-website-gamma.vercel.app/" target="_blank" style={{ color: "revert", }} className="underline">portfolio</a>.
           </Typography>
           <Typography variant="h5" color="blue-gray" className="font-medium mr-5 ml-5 text-left">
             Antony
