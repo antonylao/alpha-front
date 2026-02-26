@@ -46,12 +46,12 @@ export async function updateVolunteerAssignmentRating({ ids, newVal }: any) {
 
 export async function getVolunteerAssignmentInfoForMyEventsPage() {
   try {
-    const { data } = await api.get(RoutesBack.VolunteerAssignmentController.getFinishedAssignmentsInfo);
-    return data.datas
-    // return data;
+    //const { data } = await api.get(RoutesBack.VolunteerAssignmentController.getFinishedAssignmentsInfo);
+    //return data.datas
 
     //* with faker: in VOLUNTEER eventsToCommentOn page
-    // return fakerVolunteerAssignmentsComments.datas
+    return fakerVolunteerAssignmentsComments.datas
+
 
   } catch (err) {
     console.log("ERROR")
@@ -135,8 +135,8 @@ function deleteVolunteerAssignmentRow(ids: any) {
 
   // in VOLUNTEER event index page: component Modale Task List
   //faker equivalent: set 'volunteer_assignment_status' to 'undefined'
-  const data = fakerVolunteerAssignments.datas.filter((obj) => obj.volunteer_id === volunteerId && obj.event_id === eventId && obj.task_id === taskId)[0]
-  data.volunteer_assignment_status
+  const data = fakerVolunteerAssignments.datas.filter((obj) => obj.userId === volunteerId && obj.eventId === eventId && obj.taskId === taskId)[0]
+  data.volunteerAssignmentStatus
 
   return data;
 }

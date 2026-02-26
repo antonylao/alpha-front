@@ -8,6 +8,8 @@ import { normalizeString, stringToRegExp } from "../../../services/utils/Utils"
 import { useQuery } from "@tanstack/react-query"
 import { VolunteerEventCard } from "../../Components/CardEvent/VOLUNTEEREventCard"
 import VolunteerEventTypesToggledContext from "../../../hooks/contexts/volunteerEventTypesToggled.context"
+import { EventType } from "../../../services/utils/BackendEnums"
+import { EnumUtils } from "../../../services/utils/EnumUtils"
 
 export function VolunteerEventPage() {
   const [filteredEvents, setFilteredEvents] = useState<any>([])
@@ -23,7 +25,17 @@ export function VolunteerEventPage() {
 
   // console.log("🚀 ~ VolunteerEventPage ~ data:", data)
 
+  // DEMO change
+  //
+  //const eventTypes = [EnumUtils.getKey(EventType.CONCERT), EnumUtils.getKey(EventType.STANDUP), EnumUtils.getKey(EventType.THEATRE)]
+  //const eventTypes = Object.keys(EventType).filter((key) => isNaN(key))
+
+
+  //original
   const eventTypes = [...new Set<string>(data?.map((event: any) => { return event.type }))]
+  console.log(String.fromCodePoint(0x1F516) + " VOLUNTEEREventPage.tsx ~ eventTypes: ")
+  console.log(eventTypes)
+
 
   useEffect(() => {
     if (isSuccess && useEffectFirstCall) {
@@ -63,8 +75,9 @@ export function VolunteerEventPage() {
         <EventFilter eventTypes={eventTypes} />
         <VolunteerSearchBarEvent sendToEventPage={receiveSearchBarData} />
       </div>
-      <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-4 ">
-        <VolunteerDescriptionEventPageCard types={eventTypes} />
+      <VolunteerDescriptionEventPageCard types={eventTypes} />
+      <div className="pb-3"></div>
+      <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-4 items-stretch ">
         {filteredEvents.map((event: any) => (
           <div key={event.id}>
             <VolunteerEventCard data={event} />

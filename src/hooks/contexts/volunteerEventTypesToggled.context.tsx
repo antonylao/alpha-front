@@ -1,7 +1,7 @@
 import { createContext, useState } from 'react';
 
 const VolunteerEventTypesToggledContext = createContext<any>({
-  eventTypesToggled: [],
+  eventTypesToggled: Set<string>,
   updateEventTypesToggled: () => { },
 })
 

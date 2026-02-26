@@ -41,7 +41,7 @@ export default function VolunteerNavbar() {
           Événements terminés
         </NavLink>
         <NavLink
-          to="#"
+          to="/volunteer_signin"
           className={({ isActive }) => (isActive ? "activeLink" : undefined)}>
           Déconnexion
         </NavLink>

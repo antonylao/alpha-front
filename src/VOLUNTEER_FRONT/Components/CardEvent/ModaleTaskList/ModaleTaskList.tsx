@@ -34,24 +34,30 @@ const TABLE_HEAD = ["Tâche", "Nb Requis/Validés", "Statut", ""];
 
 
 export function ModaleTaskList(props: any) {
+  const logs = false
 
   const { eventId, sendAssignmentsData } = props;
+  if (logs) { console.log(String.fromCodePoint(0x1F516) + " ModaleTaskList.tsx ~ eventId: ") }
+  if (logs) { console.log(eventId) }
 
   const [open, setOpen] = React.useState(false);
   const [validatedForEvent, setValidatedForEvent] = useState<boolean>(false)
   const [tasksForEventInfo, setTasksForEventInfo] = useState<Array<any>>([])
-  console.log(`🚀 ~ ModaleTaskList ~ tasksForEventInfo (event ${eventId}):`, tasksForEventInfo)
+  if (logs) { console.log(`🚀 ~ ModaleTaskList ~ tasksForEventInfo (event ${eventId}):`, tasksForEventInfo) }
 
   const { data, isSuccess, isLoading, isError } = useQuery({
     queryKey: [`TasksForEvent${eventId}AndAssignmentInfos`],
-    queryFn: () => getTasksInfoForVolunteerEventIndexPage(eventId),
+    // DEMO change
+    queryFn: () => getTasksInfoForVolunteerEventIndexPage(1),
+    // original
+    //queryFn: () => getTasksInfoForVolunteerEventIndexPage(eventId),
   })
 
   useEffect(() => {
     if (isSuccess) {
       setTasksForEventInfo(data)
 
-      console.log("🚀 ~ useEffect ~ data:", data)
+      if (logs) { console.log("🚀 ~ useEffect ~ data:", data) }
       //if there is an event for which the volunteer is accepted, change state of validatedForEvent
       if (!data.every(obj => +obj.volunteerAssignmentStatus !== +VolunteerAssignmentStatus.ACCEPTED)) {
         setValidatedForEvent(true)
@@ -77,11 +83,11 @@ export function ModaleTaskList(props: any) {
       }
     },
     onSuccess: () => {
-      console.log("success branch")
+      if (logs) { console.log("success branch") }
       queryClient.invalidateQueries({ queryKey: [`TasksForEvent${eventId}AndAssignmentInfos`], refetchType: 'all' })
     },
     onError: () => {
-      console.log("error branch")
+      if (logs) { console.log("error branch") }
     }
   })
 
@@ -90,9 +96,9 @@ export function ModaleTaskList(props: any) {
   }
 
   const handleClick = async (ids, action) => {
-    console.log("handle click")
-    console.log(ids)
-    console.log(action)
+    if (logs) { console.log("handle click") }
+    if (logs) { console.log(ids) }
+    if (logs) { console.log(action) }
     const tasksForEventInfoCopy = [...tasksForEventInfo]
 
     const index = tasksForEventInfoCopy.findIndex(obj => obj.eventId === ids.eventId && obj.taskId === ids.taskId)
@@ -121,8 +127,8 @@ export function ModaleTaskList(props: any) {
     }
 
 
-    console.log("after change")
-    console.log(tasksForEventInfoCopy)
+    if (logs) { console.log("after change") }
+    if (logs) { console.log(tasksForEventInfoCopy) }
 
   }
 
@@ -132,6 +138,8 @@ export function ModaleTaskList(props: any) {
 
   if (isLoading) return <div>Chargement...</div>;
   if (isError) return <div>Erreur lors de la récupération de la liste des tâches liées à l'événement</div>;
+  if (logs) { console.log(String.fromCodePoint(0x1F516) + " ModaleTaskList.tsx ~ data: ") }
+  if (logs) { console.log(data) }
   return (
     <>
       <ApplyButton onClick={handleOpen} />
@@ -163,7 +171,11 @@ export function ModaleTaskList(props: any) {
                 </tr>
               </thead>
               <tbody>
-                {data?.map(({ userId, eventId, taskId, taskName, countValidatedAssignment, nbVolunteersRequired, volunteerAssignmentStatus }, index: number) => {
+                {/* DEMO change*/}
+                {tasksForEventInfo.map(({ userId, eventId, taskId, taskName, countValidatedAssignment, nbVolunteersRequired, volunteerAssignmentStatus }, index: number) => {
+                  {/*original*/ }
+                  {/*{data?.map(({ userId, eventId, taskId, taskName, countValidatedAssignment, nbVolunteersRequired, volunteerAssignmentStatus }, index: number) => { */ }
+
                   const isLast = index === data.length - 1;
                   const classes = isLast ? "p-4" : "p-4 border-b border-blue-gray-50";
 
@@ -193,8 +205,12 @@ export function ModaleTaskList(props: any) {
                           color="blue-gray"
                           className="font-normal"
                         >
+                          {/*DEMO change */}
+                          {volunteerAssignmentStatus || 'NOT CREATED IN DB'}
+                          {/*original*/}
                           {/* ! NOT APPLIED doesnt work */}
-                          {EnumUtils.getKey(VolunteerAssignmentStatus, +volunteerAssignmentStatus) || 'NOT CREATED IN DB'}
+
+                          {/*{EnumUtils.getKey(VolunteerAssignmentStatus, +volunteerAssignmentStatus) || 'NOT CREATED IN DB'}*/}
                         </Typography>
                       </td>
                       <td className={classes}>

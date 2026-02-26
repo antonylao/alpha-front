@@ -1,39 +1,49 @@
-const fakerData = [
+type fakerVolunteerAssignment = {
+  userId: number,
+  taskId: number,
+  eventId: number,
+  taskName: string,
+  countValidatedAssignment: number
+  nbVolunteersRequired: number
+  volunteerAssignmentStatus: string | undefined
+}
+
+const fakerData: fakerVolunteerAssignment[] = [
   {
-    volunteer_id: 1,
-    task_id: 1,
-    event_id: 1,
-    task_name: "Task 1",
-    volunteer_assignment_count_validated: 3,
-    event_task_nb_volunteers_required: 4,
-    volunteer_assignment_status: undefined,
+    userId: 1,
+    taskId: 1,
+    eventId: 1,
+    taskName: "Mission 1",
+    countValidatedAssignment: 3,
+    nbVolunteersRequired: 4,
+    volunteerAssignmentStatus: 'validé',
   },
   {
-    volunteer_id: 1,
-    task_id: 2,
-    event_id: 1,
-    task_name: "Task 2",
-    volunteer_assignment_count_validated: 3,
-    event_task_nb_volunteers_required: 4,
-    volunteer_assignment_status: 'validated',
+    userId: 1,
+    taskId: 2,
+    eventId: 1,
+    taskName: "Mission 2",
+    countValidatedAssignment: 3,
+    nbVolunteersRequired: 4,
+    volunteerAssignmentStatus: 'validé',
   },
   {
-    volunteer_id: 1,
-    task_id: 6,
-    event_id: 1,
-    task_name: "Task 6",
-    volunteer_assignment_count_validated: 3,
-    event_task_nb_volunteers_required: 4,
-    volunteer_assignment_status: 'pending',
+    userId: 1,
+    taskId: 6,
+    eventId: 1,
+    taskName: "Mission 6",
+    countValidatedAssignment: 3,
+    nbVolunteersRequired: 4,
+    volunteerAssignmentStatus: 'en attente',
   },
   {
-    volunteer_id: 1,
-    task_id: 5,
-    event_id: 1,
-    task_name: "Task 5",
-    volunteer_assignment_count_validated: 3,
-    event_task_nb_volunteers_required: 4,
-    volunteer_assignment_status: undefined,
+    userId: 1,
+    taskId: 5,
+    eventId: 1,
+    taskName: "Mission 5",
+    countValidatedAssignment: 3,
+    nbVolunteersRequired: 4,
+    volunteerAssignmentStatus: 'en attente',
   },
 ]
 

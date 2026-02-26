@@ -12,6 +12,7 @@ import { useQuery } from "@tanstack/react-query";
 import { getVolunteerAssignmentInfoForMyEventsPage } from "../../../services/api/volunteer_assignments";
 import { useEffect, useState } from "react";
 import { PastEventCard } from "../../Components/CardEvent/PastEventCard/PastEventCard";
+import { VolunteerDescriptionEventAwaitingCommentPageCard } from "../../Components/CardEvent/VOLUNTEERDescriptionEventAwaitingCommentPageCard";
 
 export function EventsAwaitingCommentPage() {
 
@@ -33,6 +34,8 @@ export function EventsAwaitingCommentPage() {
   if (isError) return <div>Erreur lors de la récupération de la liste des événements terminés.</div>;
   return (
     <>
+      <VolunteerDescriptionEventAwaitingCommentPageCard />
+      <div className="pb-2"></div>
       <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-4 ">
         {finishedEvents.map((event: any) => (
           <div key={event.eventId}>

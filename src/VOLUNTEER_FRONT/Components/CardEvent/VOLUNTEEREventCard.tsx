@@ -15,21 +15,22 @@ import { VolunteerAssignmentStatus } from "../../../services/utils/BackendEnums"
 import { DateTimeUtils } from "../../../services/utils/DateTimeUtils";
 
 export function VolunteerEventCard({ data }: any) {
-  console.log(`🚀 ~ VolunteerEventCard ~ data (eventid ${data.id}):`, data)
+  const logs = false
+  if (logs) { console.log(`🚀 ~ VolunteerEventCard ~ data (eventid ${data.id}):`, data) }
 
   const [borderColor, setBorderColor] = useState<string>(cardBorderColor(''))
 
   //set card border color upon receiving assignments data from ModaleTaskList
   const receiveAssignmentsData = (data: any) => {
-    console.log(`🚀 ~ receiveAssignmentsData ~ data (eventid ${data.id}):`, data)
+    if (logs) { console.log(`🚀 ~ receiveAssignmentsData ~ data (eventid ${data.id}):`, data) }
     if (data.filter((obj) => +obj.volunteerAssignmentStatus === +VolunteerAssignmentStatus.ACCEPTED).length > 0) {
-      console.log('validated')
+      if (logs) { console.log('validated') }
       setBorderColor(cardBorderColor('validated'))
     } else if (data.filter((obj) => +obj.volunteerAssignmentStatus === +VolunteerAssignmentStatus.PENDING).length > 0) {
-      console.log('pending')
+      if (logs) { console.log('pending') }
       setBorderColor(cardBorderColor('pending'))
     } else if (data.filter((obj) => +obj.volunteerAssignmentStatus === +VolunteerAssignmentStatus.REFUSED || obj.volunteerAssignmentStatus === VolunteerAssignmentStatus.CANCELED).length > 0) {
-      console.log('refused')
+      if (logs) { console.log('refused') }
       setBorderColor(cardBorderColor('refused'))
     } else {
       setBorderColor(cardBorderColor(''))
@@ -38,7 +39,7 @@ export function VolunteerEventCard({ data }: any) {
 
   return (
     <>
-      <Card className={`w-full max-w-[26rem] shadow-lg border-2 ${borderColor} `}>
+      <Card className={`w-full max-w-[26rem] shadow-lg border-2 ${borderColor} h-full `}>
         <CardHeader floated={false} color="blue-gray">
           <img
             src={data.picture}
@@ -61,7 +62,10 @@ export function VolunteerEventCard({ data }: any) {
           </div>
           <Typography color="gray" className="mb-5">{data.description.slice(0, 100)}</Typography>
 
-          <Typography color="gray">{DateTimeUtils.formatDateTimeForCard(data.startOn)}</Typography>
+          {/*DEMO change*/}
+          <Typography color="gray">{data.startOn}</Typography>
+          {/*original*/}
+          {/*<Typography color="gray">{DateTimeUtils.formatDateTimeForCard(data.startOn)}</Typography>*/}
         </CardBody>
         <CardFooter>
           <div className="flex items-center">

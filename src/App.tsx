@@ -23,6 +23,8 @@ import { VolunteerEventPage } from "./VOLUNTEER_FRONT/Pages/Event/VOLUNTEEREvent
 import { EventsAwaitingCommentPage } from "./VOLUNTEER_FRONT/Pages/EventsAwaitingComment/EventsAwaitingCommentPage";
 import VolunteerNavbar from "./VOLUNTEER_FRONT/Components/Navbar/VolunteerNavbar";
 import { SignInSignUpPage } from "./VOLUNTEER_FRONT/Pages/SignInUpPage/SignInSignUpPage";
+import { useEffect, useState } from "react";
+import { Switch, Tab, Tabs, TabsHeader, Typography } from "@material-tailwind/react";
 
 
 
@@ -30,18 +32,54 @@ import { SignInSignUpPage } from "./VOLUNTEER_FRONT/Pages/SignInUpPage/SignInSig
 // import { Exemple } from "./Components/SearchBar/SearchBarEvent/Exemple";
 
 function App() {
+  //const [activeTab, setActiveTab] = useState("volunteer");
+  const [activeTab, setActiveTab] = useState("volunteer");
+
+  useEffect(() => {
+    console.log(String.fromCodePoint(0x1F516) + " App.tsx ~ activeTab: ")
+    console.log(activeTab)
+    // Target the body element and set its background color
+    if (activeTab === "volunteer") {
+      document.body.style.backgroundColor = '#f0f4f8'; // Light blue-gray
+      document.body.style.color = '#333'; // Optional: Set text color for contrast
+    } else if (activeTab === "organizer") {
+      document.body.style.backgroundColor = '#195C32'; // Light blue-gray
+      document.body.style.color = '#fff'; // Optional: Set text color for contrast
+    }
+
+  }, [activeTab]);
+
+
   return (
     <>
+      <div className="pb-10 ">
+        <Typography variant="h3">Choisissez votre espace</Typography>
+        <Tabs value={activeTab} >
+          <TabsHeader className="bg-transparent flex items-center gap-5 text-white">
+            <Tab key="organizer" value="organizer" onClick={() => setActiveTab("organizer")} >
+              <Typography >Organisateur</Typography>
+            </Tab>
+            <Tab key="volunteer" value="volunteer" onClick={() => setActiveTab("volunteer")} >
+              <Typography >Bénévole</Typography>
+            </Tab>
+
+          </TabsHeader >
+        </Tabs >
+
+
+      </div >
 
       {/* TODO: Condition on which navbar to display: for now display both */}
-      <StickyNavbar />
-      {/* <VolunteerNavbar /> */}
+      {activeTab === 'volunteer' ? <VolunteerNavbar /> : <StickyNavbar />}
 
       <Routes>
         {/* <Route path="/" element={ <EventPage />} /> */}
 
         {/* If using replace, the navigation will replace the current entry in the history stack instead of adding a new one. */}
-        <Route path="/" element={<Navigate to="/signin" replace />} />
+        {/*DEMO change*/}
+        <Route path="/" element={<Navigate to="/volunteer_front_events" replace />} />
+        {/*original*/}
+        {/*<Route path="/" element={<Navigate to="/signin" replace />} />*/}
         <Route path="/events" Component={EventCard} />
         <Route path="/signin" element={<SignInPage />} />
 
