@@ -71,11 +71,12 @@ export function VolunteerEventPage() {
   if (isError) return <div>Erreur lors de la récupération de la liste complète des événements</div>;
   return (
     <>
+      <VolunteerDescriptionEventPageCard types={eventTypes} />
+      <div className="pb-2"></div>
       <div className="flex justify-between gap-4">
         <EventFilter eventTypes={eventTypes} />
         <VolunteerSearchBarEvent sendToEventPage={receiveSearchBarData} />
       </div>
-      <VolunteerDescriptionEventPageCard types={eventTypes} />
       <div className="pb-3"></div>
       <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-4 items-stretch ">
         {filteredEvents.map((event: any) => (
