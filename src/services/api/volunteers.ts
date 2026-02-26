@@ -3,8 +3,10 @@ import { useApi } from "../../hooks/useApi";
 import { fakerVolunteers } from "../../Pages/VolunteerPage/fakerVolunteers";
 import { fakerprofile } from "../../VOLUNTEER_FRONT/Pages/MyProfile/fakerprofile";
 import { RoutesBack } from "../utils/RoutesBackUtils";
+import { ENABLE_LOGS } from "../utils/Logs";
 
 const api = useApi();
+const logs = true
 
 interface Volunteer {
   firstName: string
@@ -24,7 +26,7 @@ export async function getVolunteers() {
     //in VolunteerPage
     // return fakerVolunteers.datas
   } catch (err) {
-    console.log(err)
+    if (logs && ENABLE_LOGS) { console.log(err) }
   }
 }
 
@@ -33,7 +35,7 @@ export async function getVolunteerById(id: number) {
     const { data } = await api.get(`users/${id}`)
     return data;
   } catch (err) {
-    console.log(err)
+    if (logs && ENABLE_LOGS) { console.log(err) }
   }
 }
 
@@ -43,7 +45,7 @@ export async function getVolunteerByIdWithoutToken(id: number) {
     const { data } = await axios.get(`${import.meta.env.VITE_API_BASE_URL_DEV}users/${id}`)
     return data;
   } catch (err) {
-    console.log(err)
+    if (logs && ENABLE_LOGS) { console.log(err) }
   }
 }
 
@@ -52,7 +54,7 @@ export async function getVolunteerWarningById(id: number) {
     const { data } = await api.get(`todos/${id}`)
     return data["completed"]
   } catch (err) {
-    console.log(err)
+    if (logs && ENABLE_LOGS) { console.log(err) }
   }
 }
 
@@ -61,7 +63,7 @@ export async function getVolunteerBanById(id: number) {
     const { data } = await api.get(`todos/${199 - id}`)
     return data["completed"]
   } catch (err) {
-    console.log(err)
+    if (logs && ENABLE_LOGS) { console.log(err) }
   }
 }
 
@@ -76,7 +78,7 @@ export async function updateVolunteerWarning(id: number, warning: boolean) {
     // fakerVolunteers.datas.filter((obj) => obj.id === id)[0].warning = String(warning)
     // return fakerVolunteers.datas.filter((obj) => obj.id === id)[0]
   } catch (err) {
-    console.log(err)
+    if (logs && ENABLE_LOGS) { console.log(err) }
   }
 }
 
@@ -91,7 +93,7 @@ export async function updateVolunteerBan(id: number, ban: boolean) {
     // fakerVolunteers.datas.filter((obj) => obj.id === id)[0].ban = String(ban)
     // return fakerVolunteers.datas.filter((obj) => obj.id === id)[0]
   } catch (err) {
-    console.log(err)
+    if (logs && ENABLE_LOGS) { console.log(err) }
   }
 }
 
@@ -107,10 +109,10 @@ export async function updateVolunteerProfile(id: number, newData: Volunteer) {
         data[key] = newData[key]
       }
     })
-    console.log("data update", data)
+    if (logs && ENABLE_LOGS) { console.log("data update", data) }
     return data
   } catch (err) {
-    console.log(err)
+    if (logs && ENABLE_LOGS) { console.log(err) }
   }
 }
 
@@ -119,6 +121,6 @@ export async function addVolunteer(body: any) {
     const { data } = await api.post(`users`, body)
     return data;
   } catch (err) {
-    console.log(err)
+    if (logs && ENABLE_LOGS) { console.log(err) }
   }
 }

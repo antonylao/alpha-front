@@ -2,9 +2,11 @@ import { parse } from "@formkit/tempo";
 import { useApi } from "../../hooks/useApi";
 import { fakerEvents } from "../../VOLUNTEER_FRONT/Pages/Event/fakerEvents";
 import { RoutesBack } from "../utils/RoutesBackUtils";
-const api = useApi();
+import { ENABLE_LOGS } from "../utils/Logs";
 
+const api = useApi();
 const logs = true
+
 export async function getEvents() {
   try {
     // const { data } = await api.get("posts");
@@ -15,9 +17,9 @@ export async function getEvents() {
 
   } catch (err) {
     if (logs) {
-      console.log(String.fromCodePoint(0x1F516) + " events.ts ~ getEvents: ")
-      console.log("ERROR")
-      console.log(err)
+      if (logs && ENABLE_LOGS) { console.log(String.fromCodePoint(0x1F516) + " events.ts ~ getEvents: ") }
+      if (logs && ENABLE_LOGS) { console.log("ERROR") }
+      if (logs && ENABLE_LOGS) { console.log(err) }
     }
   }
 }
@@ -25,7 +27,7 @@ export async function getEvents() {
 export async function getUpcomingEvents() {
   try {
     //const { data } = await api.get(RoutesBack.EventController.getAllUpcomingEvents);
-    // console.log("🚀 ~ getUpcomingEvents ~ datas:", data.datas)
+    // if (logs && ENABLE_LOGS) {console.log("🚀 ~ getUpcomingEvents ~ datas:", data.datas)}  
 
     //return data.datas;
 
@@ -34,9 +36,9 @@ export async function getUpcomingEvents() {
 
   } catch (err) {
     if (logs) {
-      console.log(String.fromCodePoint(0x1F516) + " events.ts ~ getUpcomingEvents: ")
-      console.log("ERROR")
-      console.log(err)
+      if (logs && ENABLE_LOGS) { console.log(String.fromCodePoint(0x1F516) + " events.ts ~ getUpcomingEvents: ") }
+      if (logs && ENABLE_LOGS) { console.log("ERROR") }
+      if (logs && ENABLE_LOGS) { console.log(err) }
     }
   }
 }
@@ -51,9 +53,9 @@ export async function getFinishedEvents() {
 
   } catch (err) {
     if (logs) {
-      console.log(String.fromCodePoint(0x1F516) + " events.ts ~ getFinishedEvents: ")
-      console.log("ERROR")
-      console.log(err)
+      if (logs && ENABLE_LOGS) { console.log(String.fromCodePoint(0x1F516) + " events.ts ~ getFinishedEvents: ") }
+      if (logs && ENABLE_LOGS) { console.log("ERROR") }
+      if (logs && ENABLE_LOGS) { console.log(err) }
     }
   }
 }
@@ -65,9 +67,9 @@ export async function getEventById(id: number) {
     return data;
   } catch (err) {
     if (logs) {
-      console.log(String.fromCodePoint(0x1F516) + " events.ts ~ getEventById: ")
-      console.log("ERROR")
-      console.log(err)
+      if (logs && ENABLE_LOGS) { console.log(String.fromCodePoint(0x1F516) + " events.ts ~ getEventById: ") }
+      if (logs && ENABLE_LOGS) { console.log("ERROR") }
+      if (logs && ENABLE_LOGS) { console.log(err) }
     }
   }
 }

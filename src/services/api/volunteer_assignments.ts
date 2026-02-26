@@ -5,8 +5,10 @@ import { fakerVolunteerAssignments } from "../../VOLUNTEER_FRONT/Pages/Event/fak
 import { fakerVolunteerAssignmentsComments } from "../../VOLUNTEER_FRONT/Pages/EventsAwaitingComment/fakerVolunteerAssignmentsComments";
 import { RoutesBack } from "../utils/RoutesBackUtils";
 import { VolunteerAssignmentStatus } from "../utils/BackendEnums";
+import { ENABLE_LOGS } from "../utils/Logs";
 
 const api = useApi();
+const logs = true
 
 export async function getEventsAssignedByVolunteerId(id: number) {
   try {
@@ -17,7 +19,7 @@ export async function getEventsAssignedByVolunteerId(id: number) {
     //*with faker: in VolunteerPage: component RatingDetails and PastEventsModal
     // return fakerEventsAssigned.datas.filter((obj) => obj.volunteer_id === id)
   } catch (err) {
-    console.log(err)
+    if (logs && ENABLE_LOGS) { console.log(err) }
   }
 }
 
@@ -34,7 +36,7 @@ export async function updateVolunteerAssignmentRating({ ids, newVal }: any) {
     .replace(":volunteerId", volunteerId).replace(":eventId", eventId).replace(":taskId", taskId)
 
   const { data } = await api.patch(path, { rating: newVal })
-  console.log("🚀 ~ updateVolunteerAssignmentRating ~ data.datas:", data.datas)
+  if (logs && ENABLE_LOGS) { console.log("🚀 ~ updateVolunteerAssignmentRating ~ data.datas:", data.datas) }
   return data.datas
 
   //*with faker: in VolunteerPage: component PastEvents
@@ -54,8 +56,8 @@ export async function getVolunteerAssignmentInfoForMyEventsPage() {
 
 
   } catch (err) {
-    console.log("ERROR")
-    console.log(err)
+    if (logs && ENABLE_LOGS) { console.log("ERROR") }
+    if (logs && ENABLE_LOGS) { console.log(err) }
   }
 }
 
@@ -70,7 +72,7 @@ export async function createPendingVolunteerAssignment({ ids }) {
       .replace(":taskId", taskId)
 
     const { data } = await api.post(path)
-    console.log("🚀 ~ createPendingVolunteerAssignment ~ data:", data.datas)
+    if (logs && ENABLE_LOGS) { console.log("🚀 ~ createPendingVolunteerAssignment ~ data:", data.datas) }
     return data.datas
   } catch (error) {
     throw error
@@ -89,7 +91,7 @@ export async function updateVolunteerAssignmentComment({ ids, newVal }: any) {
 
   //* with faker: in VOLUNTEER eventToCommentOn page: component ModalComment
   // const data = fakerVolunteerAssignmentsComments.datas.filter((obj) => obj.volunteer_id === volunteerId && obj.event_id === eventId && obj.task_id === taskId)[0]
-  // console.log(data)
+  // if (logs && ENABLE_LOGS) {console.log(data)}  
   // data.comment = newVal
 
   // return data
@@ -97,7 +99,7 @@ export async function updateVolunteerAssignmentComment({ ids, newVal }: any) {
 
 
 export async function updateVolunteerAssignmentStatus({ ids, newVal }: any) {
-  console.log("🚀 ~ updateVolunteerAssignmentStatus ~ ids:", ids)
+  if (logs && ENABLE_LOGS) { console.log("🚀 ~ updateVolunteerAssignmentStatus ~ ids:", ids) }
   const volunteerId = ids.volunteer_id
   const eventId = ids.eventId
   const taskId = ids.taskId
@@ -110,11 +112,11 @@ export async function updateVolunteerAssignmentStatus({ ids, newVal }: any) {
         .replace(":taskId", taskId)
       break;
     default:
-      console.log("🚀 ~ updateVolunteerAssignmentStatus ~ error ~ fn updateVolunteerAssignmentStatus: path doesnt exist:")
+      if (logs && ENABLE_LOGS) { console.log("🚀 ~ updateVolunteerAssignmentStatus ~ error ~ fn updateVolunteerAssignmentStatus: path doesnt exist:") }
       throw new Error("fn updateVolunteerAssignmentStatus: path doesnt exist")
       break;
   }
-  console.log("🚀 ~ updateVolunteerAssignmentStatus ~ path:", path)
+  if (logs && ENABLE_LOGS) { console.log("🚀 ~ updateVolunteerAssignmentStatus ~ path:", path) }
 
   const { data } = await api.patch(path)
   return data.datas
