@@ -24,7 +24,7 @@ export async function getEvents() {
 
 export async function getUpcomingEvents() {
   try {
-    const { data } = await api.get(RoutesBack.EventController.getAllUpcomingEvents);
+    //const { data } = await api.get(RoutesBack.EventController.getAllUpcomingEvents);
     // console.log("🚀 ~ getUpcomingEvents ~ datas:", data.datas)
 
     //return data.datas;
