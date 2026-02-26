@@ -9,33 +9,36 @@ import {
 import { useContext, useState } from "react";
 import VolunteerEventTypesToggledContext from "../../../hooks/contexts/volunteerEventTypesToggled.context";
 import { EventType } from "../../../services/utils/BackendEnums";
+import { ENABLE_LOGS } from "../../../services/utils/Logs";
+
+const logs = false
 
 export function CheckboxesEvents(props: any) {
 
 
   const { eventTypes } = props
-  console.log(String.fromCodePoint(0x1F516) + " CheckboxesEvents.tsx ~ eventTypes: ")
-  console.log(eventTypes)
+  if (logs && ENABLE_LOGS) { console.log(String.fromCodePoint(0x1F516) + " CheckboxesEvents.tsx ~ eventTypes: ") }
+  if (logs && ENABLE_LOGS) { console.log(eventTypes) }
   const { eventTypesToggled, updateEventTypesToggled } = useContext(VolunteerEventTypesToggledContext)
-  console.log(String.fromCodePoint(0x1F516) + " CheckboxesEvents.tsx ~ eventTypesToggled: ")
-  console.log(eventTypesToggled)
+  if (logs && ENABLE_LOGS) { console.log(String.fromCodePoint(0x1F516) + " CheckboxesEvents.tsx ~ eventTypesToggled: ") }
+  if (logs && ENABLE_LOGS) { console.log(eventTypesToggled) }
 
   const handleChange = (e) => {
     // DEMO change
     const checkboxId: string = e.target.id
-    console.log(String.fromCodePoint(0x1F516) + " CheckboxesEvents.tsx ~ checkboxId: ")
-    console.log(checkboxId)
+    if (logs && ENABLE_LOGS) { console.log(String.fromCodePoint(0x1F516) + " CheckboxesEvents.tsx ~ checkboxId: ") }
+    if (logs && ENABLE_LOGS) { console.log(checkboxId) }
     const checkBoxValue: boolean = e.target.checked
-    console.log(String.fromCodePoint(0x1F516) + " CheckboxesEvents.tsx ~ checkBoxValue: ")
-    console.log(checkBoxValue)
+    if (logs && ENABLE_LOGS) { console.log(String.fromCodePoint(0x1F516) + " CheckboxesEvents.tsx ~ checkBoxValue: ") }
+    if (logs && ENABLE_LOGS) { console.log(checkBoxValue) }
     // original
     //const checkboxId: string = e.target.id
     //const checkBoxValue: boolean = e.target.checked
 
     // TEST
     const eventTypesToggledCopy = new Set(eventTypesToggled)
-    console.log(String.fromCodePoint(0x1F516) + " CheckboxesEvents.tsx ~ eventTypesToggledCopy: ")
-    console.log(eventTypesToggledCopy)
+    if (logs && ENABLE_LOGS) { console.log(String.fromCodePoint(0x1F516) + " CheckboxesEvents.tsx ~ eventTypesToggledCopy: ") }
+    if (logs && ENABLE_LOGS) { console.log(eventTypesToggledCopy) }
     //const eventTypesToggledCopy = new Set()
 
     //DEMO change
@@ -53,8 +56,8 @@ export function CheckboxesEvents(props: any) {
     */
 
     updateEventTypesToggled(eventTypesToggledCopy)
-    console.log(String.fromCodePoint(0x1F516) + " CheckboxesEvents.tsx ~ eventTypesToggledCopy: ")
-    console.log(eventTypesToggledCopy)
+    if (logs && ENABLE_LOGS) { console.log(String.fromCodePoint(0x1F516) + " CheckboxesEvents.tsx ~ eventTypesToggledCopy: ") }
+    if (logs && ENABLE_LOGS) { console.log(eventTypesToggledCopy) }
   }
   return (
     <Card>

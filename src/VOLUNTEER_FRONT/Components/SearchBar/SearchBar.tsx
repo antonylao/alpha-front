@@ -1,5 +1,7 @@
 import { Input } from "@material-tailwind/react"
 
+const logs = false
+
 export default function VolunteerSearchBarEvent(props: any) {
   const { sendToEventPage } = props
 

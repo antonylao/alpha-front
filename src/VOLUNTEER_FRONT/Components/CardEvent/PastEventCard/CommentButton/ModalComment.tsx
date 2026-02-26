@@ -10,15 +10,18 @@ import { CommentButton } from "./CommentButton";
 import axios from "axios";
 import { updateVolunteerAssignmentComment } from "../../../../../services/api/volunteer_assignments";
 import { useMutation, useQueryClient } from "@tanstack/react-query";
+import { ENABLE_LOGS } from "../../../../../services/utils/Logs";
+
+const logs = false
 
 export function ModalComment(props: any) {
   const { ids, comment, commentApplied } = props
-  console.log("🚀 ~ ModalComment ~ comment:", comment)
+  if (logs && ENABLE_LOGS) { console.log("🚀 ~ ModalComment ~ comment:", comment) }
   const [open, setOpen] = React.useState(false);
   const [commentContent, setCommentContent] = useState(comment)
   const [commentPresentInDB, setCommentPresentInDB] = useState<boolean>(comment ? true : false)
 
-  console.log(ids)
+  if (logs && ENABLE_LOGS) { console.log(ids) }
 
   //set comment with a useMutation
   const queryClient = useQueryClient();

@@ -13,24 +13,26 @@ import { ModaleTaskList } from "./ModaleTaskList/ModaleTaskList";
 import { cardBorderColor, eventTypeBackgroundColor } from "../../../services/utils/Utils";
 import { VolunteerAssignmentStatus } from "../../../services/utils/BackendEnums";
 import { DateTimeUtils } from "../../../services/utils/DateTimeUtils";
+import { ENABLE_LOGS } from "../../../services/utils/Logs";
+
+const logs = false
 
 export function VolunteerEventCard({ data }: any) {
-  const logs = false
-  if (logs) { console.log(`🚀 ~ VolunteerEventCard ~ data (eventid ${data.id}):`, data) }
+  if (logs && ENABLE_LOGS) { console.log(`🚀 ~ VolunteerEventCard ~ data (eventid ${data.id}):`, data) }
 
   const [borderColor, setBorderColor] = useState<string>(cardBorderColor(''))
 
   //set card border color upon receiving assignments data from ModaleTaskList
   const receiveAssignmentsData = (data: any) => {
-    if (logs) { console.log(`🚀 ~ receiveAssignmentsData ~ data (eventid ${data.id}):`, data) }
+    if (logs && ENABLE_LOGS) { console.log(`🚀 ~ receiveAssignmentsData ~ data (eventid ${data.id}):`, data) }
     if (data.filter((obj) => +obj.volunteerAssignmentStatus === +VolunteerAssignmentStatus.ACCEPTED).length > 0) {
-      if (logs) { console.log('validated') }
+      if (logs && ENABLE_LOGS) { console.log('validated') }
       setBorderColor(cardBorderColor('validated'))
     } else if (data.filter((obj) => +obj.volunteerAssignmentStatus === +VolunteerAssignmentStatus.PENDING).length > 0) {
-      if (logs) { console.log('pending') }
+      if (logs && ENABLE_LOGS) { console.log('pending') }
       setBorderColor(cardBorderColor('pending'))
     } else if (data.filter((obj) => +obj.volunteerAssignmentStatus === +VolunteerAssignmentStatus.REFUSED || obj.volunteerAssignmentStatus === VolunteerAssignmentStatus.CANCELED).length > 0) {
-      if (logs) { console.log('refused') }
+      if (logs && ENABLE_LOGS) { console.log('refused') }
       setBorderColor(cardBorderColor('refused'))
     } else {
       setBorderColor(cardBorderColor(''))

@@ -29,21 +29,22 @@ import { ErrorName, VolunteerAssignmentStatus } from "../../../../services/utils
 import { getConnectedUserId } from "../../../../services/utils/JWTUtils";
 import { getTasksInfoForVolunteerEventIndexPage } from "../../../../services/api/event_tasks";
 import { EnumUtils } from "../../../../services/utils/EnumUtils";
+import { ENABLE_LOGS } from "../../../../services/utils/Logs";
 
 const TABLE_HEAD = ["Tâche", "Nb Requis/Validés", "Statut", ""];
 
+const logs = false
 
 export function ModaleTaskList(props: any) {
-  const logs = false
 
   const { eventId, sendAssignmentsData } = props;
-  if (logs) { console.log(String.fromCodePoint(0x1F516) + " ModaleTaskList.tsx ~ eventId: ") }
-  if (logs) { console.log(eventId) }
+  if (logs && ENABLE_LOGS) { console.log(String.fromCodePoint(0x1F516) + " ModaleTaskList.tsx ~ eventId: ") }
+  if (logs && ENABLE_LOGS) { console.log(eventId) }
 
   const [open, setOpen] = React.useState(false);
   const [validatedForEvent, setValidatedForEvent] = useState<boolean>(false)
   const [tasksForEventInfo, setTasksForEventInfo] = useState<Array<any>>([])
-  if (logs) { console.log(`🚀 ~ ModaleTaskList ~ tasksForEventInfo (event ${eventId}):`, tasksForEventInfo) }
+  if (logs && ENABLE_LOGS) { console.log(`🚀 ~ ModaleTaskList ~ tasksForEventInfo (event ${eventId}):`, tasksForEventInfo) }
 
   const { data, isSuccess, isLoading, isError } = useQuery({
     queryKey: [`TasksForEvent${eventId}AndAssignmentInfos`],
@@ -57,7 +58,7 @@ export function ModaleTaskList(props: any) {
     if (isSuccess) {
       setTasksForEventInfo(data)
 
-      if (logs) { console.log("🚀 ~ useEffect ~ data:", data) }
+      if (logs && ENABLE_LOGS) { console.log("🚀 ~ useEffect ~ data:", data) }
       //if there is an event for which the volunteer is accepted, change state of validatedForEvent
       if (!data.every(obj => +obj.volunteerAssignmentStatus !== +VolunteerAssignmentStatus.ACCEPTED)) {
         setValidatedForEvent(true)
@@ -83,11 +84,11 @@ export function ModaleTaskList(props: any) {
       }
     },
     onSuccess: () => {
-      if (logs) { console.log("success branch") }
+      if (logs && ENABLE_LOGS) { console.log("success branch") }
       queryClient.invalidateQueries({ queryKey: [`TasksForEvent${eventId}AndAssignmentInfos`], refetchType: 'all' })
     },
     onError: () => {
-      if (logs) { console.log("error branch") }
+      if (logs && ENABLE_LOGS) { console.log("error branch") }
     }
   })
 
@@ -96,9 +97,9 @@ export function ModaleTaskList(props: any) {
   }
 
   const handleClick = async (ids, action) => {
-    if (logs) { console.log("handle click") }
-    if (logs) { console.log(ids) }
-    if (logs) { console.log(action) }
+    if (logs && ENABLE_LOGS) { console.log("handle click") }
+    if (logs && ENABLE_LOGS) { console.log(ids) }
+    if (logs && ENABLE_LOGS) { console.log(action) }
     const tasksForEventInfoCopy = [...tasksForEventInfo]
 
     const index = tasksForEventInfoCopy.findIndex(obj => obj.eventId === ids.eventId && obj.taskId === ids.taskId)
@@ -127,8 +128,8 @@ export function ModaleTaskList(props: any) {
     }
 
 
-    if (logs) { console.log("after change") }
-    if (logs) { console.log(tasksForEventInfoCopy) }
+    if (logs && ENABLE_LOGS) { console.log("after change") }
+    if (logs && ENABLE_LOGS) { console.log(tasksForEventInfoCopy) }
 
   }
 
@@ -138,8 +139,8 @@ export function ModaleTaskList(props: any) {
 
   if (isLoading) return <div>Chargement...</div>;
   if (isError) return <div>Erreur lors de la récupération de la liste des tâches liées à l'événement</div>;
-  if (logs) { console.log(String.fromCodePoint(0x1F516) + " ModaleTaskList.tsx ~ data: ") }
-  if (logs) { console.log(data) }
+  if (logs && ENABLE_LOGS) { console.log(String.fromCodePoint(0x1F516) + " ModaleTaskList.tsx ~ data: ") }
+  if (logs && ENABLE_LOGS) { console.log(data) }
   return (
     <>
       <ApplyButton onClick={handleOpen} />

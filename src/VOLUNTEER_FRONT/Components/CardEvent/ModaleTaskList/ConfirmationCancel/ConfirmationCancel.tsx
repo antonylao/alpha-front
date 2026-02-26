@@ -7,6 +7,8 @@ import {
 } from "@material-tailwind/react";
 import { WarningButton } from "../../../../../Components/Buttons/Warning/Warning";
 
+const logs = false
+
 export function TaskApplyCancelConfirmation(props: any) {
 
   const { ids, validated } = props

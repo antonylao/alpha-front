@@ -13,11 +13,14 @@ import { getVolunteerAssignmentInfoForMyEventsPage } from "../../../services/api
 import { useEffect, useState } from "react";
 import { PastEventCard } from "../../Components/CardEvent/PastEventCard/PastEventCard";
 import { VolunteerDescriptionEventAwaitingCommentPageCard } from "../../Components/CardEvent/VOLUNTEERDescriptionEventAwaitingCommentPageCard";
+import { ENABLE_LOGS } from "../../../services/utils/Logs";
+
+const logs = false
 
 export function EventsAwaitingCommentPage() {
 
   const [finishedEvents, setFinishedEvents] = useState<any>([])
-  console.log("🚀 ~ EventsAwaitingCommentPage ~ finishedEvents:", finishedEvents)
+  if (logs && ENABLE_LOGS) { console.log("🚀 ~ EventsAwaitingCommentPage ~ finishedEvents:", finishedEvents) }
 
   const { data, isSuccess, isLoading, isError } = useQuery({
     queryKey: [`FinishedEvents`],

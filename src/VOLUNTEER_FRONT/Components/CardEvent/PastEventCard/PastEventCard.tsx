@@ -14,6 +14,8 @@ import { cardBorderColor, eventTypeBackgroundColor } from "../../../../services/
 import { ModalComment } from "./CommentButton/ModalComment";
 import { DateTimeUtils } from "../../../../services/utils/DateTimeUtils";
 
+const logs = false
+
 export function PastEventCard({ data }: any) {
 
   const onMountBorderColor = data.volunteerComment ? cardBorderColor('commented') : cardBorderColor('not_commented')

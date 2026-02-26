@@ -6,6 +6,8 @@ import {
   Chip,
 } from "@material-tailwind/react";
 
+const logs = false
+
 const PARAGRAPHS = [
   "Sur cette page, vous pouvez commentez les événements auxquels vous avez participé. Cela permettra à l'organisateur de s'améliorer, mais ne proférez pas d'insultes s'il-vous-plaît ! :)"
 

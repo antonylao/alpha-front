@@ -10,6 +10,9 @@ import { VolunteerEventCard } from "../../Components/CardEvent/VOLUNTEEREventCar
 import VolunteerEventTypesToggledContext from "../../../hooks/contexts/volunteerEventTypesToggled.context"
 import { EventType } from "../../../services/utils/BackendEnums"
 import { EnumUtils } from "../../../services/utils/EnumUtils"
+import { ENABLE_LOGS } from "../../../services/utils/Logs"
+
+const logs = false
 
 export function VolunteerEventPage() {
   const [filteredEvents, setFilteredEvents] = useState<any>([])
@@ -23,7 +26,7 @@ export function VolunteerEventPage() {
     queryFn: () => getUpcomingEvents(),
   })
 
-  // console.log("🚀 ~ VolunteerEventPage ~ data:", data)
+  // if (logs && ENABLE_LOGS) {console.log("🚀 ~ VolunteerEventPage ~ data:", data)}  
 
   // DEMO change
   //
@@ -33,8 +36,8 @@ export function VolunteerEventPage() {
 
   //original
   const eventTypes = [...new Set<string>(data?.map((event: any) => { return event.type }))]
-  console.log(String.fromCodePoint(0x1F516) + " VOLUNTEEREventPage.tsx ~ eventTypes: ")
-  console.log(eventTypes)
+  if (logs && ENABLE_LOGS) { console.log(String.fromCodePoint(0x1F516) + " VOLUNTEEREventPage.tsx ~ eventTypes: ") }
+  if (logs && ENABLE_LOGS) { console.log(eventTypes) }
 
 
   useEffect(() => {

@@ -12,6 +12,7 @@ import { eventTypeBackgroundColor } from "../../../services/utils/Utils";
 import { EnumUtils } from "../../../services/utils/EnumUtils";
 import { EventType } from "../../../services/utils/BackendEnums";
 
+const logs = false
 const PARAGRAPHS = [
   "Merci de visiter mon site! Ceci fait partie d'un projet open-source que j'ai développé. J'y ai apporté quelques modifications pour but de démonstration.",
   "Vous êtes directement connecté en tant que bénévole, et vous pouvez postuler pour des tâches lors de différents événements."
